@@ -49,7 +49,7 @@ class AbstractBaseModel(models.Model):
 
         prep_save_kwargs = {}
 
-        if not self.id or len(self.id) < 1:
+        if not self.id:
             kwargs['force_insert'] = True
 
 #            if 'id_length' in kwargs:
