@@ -1,32 +1,28 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.http import Http404
 from django_tools.paging import paging
 
+User = get_user_model()
+
 
 class AbstractBaseModel(models.Model):
     """Base model for other db model to extend.  This class contains common 
-    model attributes needed by almost all model.
-    
-    _id = id of the model
-    id = same as _id 
+    model attributes needed by almost all models.
+     
     created = cu = created user.  The user who created this instance.  
     created_dttm = cdt = created datetime.  
     last_modified = lmu = last user to modify this instance 
     last_modified_dttm = udt = updated datetime. Datetime this document was last 
         updated.
     """
-#    id = models.AutoField(primary_key=True)
-    created_id = models.PositiveIntegerField()
-    # TODO: this needs to be a configurable user based on settings preference
-    #       that defaults to the django user if a different user class is not
-    #       provided.
-    created = models.ForeignKey(User)
+#    created_id = models.PositiveIntegerField()
+    created = models.ForeignKey(User, related_name="%(class)s_related_created")
     created_dttm = models.DateTimeField(default=datetime.utcnow)
-    last_modified_id = models.PositiveIntegerField()
-    last_modified = models.ForeignKey(User)
+#    last_modified_id = models.PositiveIntegerField()
+    last_modified = models.ForeignKey(User, related_name="%(class)s_related_modified")
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
 
     class Meta:
@@ -49,8 +45,8 @@ class AbstractBaseModel(models.Model):
 
         prep_save_kwargs = {}
 
-        if not self.id:
-            kwargs['force_insert'] = True
+#        if not self.id:
+#            kwargs['force_insert'] = True
 
 #            if 'id_length' in kwargs:
 #                prep_save_kwargs['id_length'] = kwargs.pop('id_length')
@@ -98,17 +94,17 @@ class AbstractBaseModel(models.Model):
 #                instance.id = available_ids.pop() if available_ids else random_alphanum_id(id_len=id_length)
                 instance.created_dttm = utc_now
 
-            if not instance.created_id and instance.created:
-                if isinstance(instance.created, basestring):
-                    instance.created_id = instance.created
-                else:
-                    instance.created_id = instance.created.id
+#            if not instance.created_id and instance.created:
+#                if isinstance(instance.created, basestring):
+#                    instance.created_id = instance.created
+#                else:
+#                    instance.created_id = instance.created.id
 
-            if not instance.last_modified_id:
-                if instance.last_modified:
-                    instance.last_modified_id = instance.last_modified.id
-                elif instance.created_id:
-                    instance.last_modified_id = instance.created_id
+#            if not instance.last_modified_id:
+#                if instance.last_modified:
+#                    instance.last_modified_id = instance.last_modified.id
+#                elif instance.created_id:
+#                    instance.last_modified_id = instance.created_id
 
             if instance.created and not instance.last_modified:
                 instance.last_modified = instance.created
@@ -203,6 +199,7 @@ class AbstractBaseModel(models.Model):
         except cls.DoesNotExist:
             return [], has_more
 
+        # TODO: need to return a queryset instead of a tuple
         return paging(query_set=query_set,
                       page=page,
                       page_size=page_size,
