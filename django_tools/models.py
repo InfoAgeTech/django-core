@@ -19,14 +19,15 @@ class AbstractBaseModel(models.Model):
         updated.
     """
 #    created_id = models.PositiveIntegerField()
-    created = models.ForeignKey(User, related_name="%(class)s_related_created")
+    created = models.ForeignKey(User, related_name='+')
     created_dttm = models.DateTimeField(default=datetime.utcnow)
 #    last_modified_id = models.PositiveIntegerField()
-    last_modified = models.ForeignKey(User, related_name="%(class)s_related_modified")
+    last_modified = models.ForeignKey(User, related_name='+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
 
     class Meta:
         abstract = True
+        ordering = ['-created_dttm']
 
     def __unicode__(self):
         return self.id
