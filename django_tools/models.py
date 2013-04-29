@@ -18,10 +18,8 @@ class AbstractBaseModel(models.Model):
     last_modified_dttm = udt = updated datetime. Datetime this document was last 
         updated.
     """
-#    created_id = models.PositiveIntegerField()
     created = models.ForeignKey(User, related_name='+')
     created_dttm = models.DateTimeField(default=datetime.utcnow)
-#    last_modified_id = models.PositiveIntegerField()
     last_modified = models.ForeignKey(User, related_name='+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
 
@@ -41,18 +39,7 @@ class AbstractBaseModel(models.Model):
         - id_length: the length of characters to use for the id.  Default 
                          is 10.
         """
-        if not kwargs:
-            kwargs = {}
-
-        prep_save_kwargs = {}
-
-#        if not self.id:
-#            kwargs['force_insert'] = True
-
-#            if 'id_length' in kwargs:
-#                prep_save_kwargs['id_length'] = kwargs.pop('id_length')
-
-        self.__class__.save_prep(self, **prep_save_kwargs)
+        self.__class__.save_prep(self)
         super(AbstractBaseModel, self).save(*args, **kwargs)
 
     @classmethod
@@ -74,18 +61,11 @@ class AbstractBaseModel(models.Model):
                          is 10.
         
         """
-#        id_length = kwargs.get('id_length') or 10
-
         if (isinstance(instance_or_instances, models.Model) or
             issubclass(instance_or_instances.__class__, models.Model())):
             instances = [instance_or_instances]
         else:
             instances = instance_or_instances
-
-#        num_instance_needing_ids = len([d for d in instances if not d.id])
-#        if num_instance_needing_ids > 0:
-#            available_ids = cls.get_available_ids(id_length=id_length,
-#                                                  num_ids=num_instance_needing_ids)
 
         utc_now = datetime.utcnow()
         for instance in instances:
@@ -94,18 +74,6 @@ class AbstractBaseModel(models.Model):
             if not instance.id or len(instance.id) < 1:
 #                instance.id = available_ids.pop() if available_ids else random_alphanum_id(id_len=id_length)
                 instance.created_dttm = utc_now
-
-#            if not instance.created_id and instance.created:
-#                if isinstance(instance.created, basestring):
-#                    instance.created_id = instance.created
-#                else:
-#                    instance.created_id = instance.created.id
-
-#            if not instance.last_modified_id:
-#                if instance.last_modified:
-#                    instance.last_modified_id = instance.last_modified.id
-#                elif instance.created_id:
-#                    instance.last_modified_id = instance.created_id
 
             if instance.created and not instance.last_modified:
                 instance.last_modified = instance.created
@@ -205,6 +173,18 @@ class AbstractBaseModel(models.Model):
                       page=page,
                       page_size=page_size,
                       select_related=select_related)
+
+    @classmethod
+    def _get_many_to_many_model(cls, field_name):
+        """Get the model for the many to many field.
+        
+        :param field_name: field name to get the model for.
+        """
+
+        for field in cls._meta.many_to_many:
+            if field.attname == field_name:
+                # This is the for_objs model class
+                return field.related.parent_model
 
     def update_field(self, field_name, value, update_user):
         """
