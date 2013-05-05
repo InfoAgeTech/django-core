@@ -49,7 +49,9 @@ class CommonManager(BaseManager):
         # TODO: This might be making a bad assumption that this is inheriting
         # from AbstractBaseModel
         self.model.save_prep(instance_or_instances=objs)
-        return super(CommonManager, self).bulk_create(*args, **kwargs)
+        return super(CommonManager, self).bulk_create(objs=objs,
+                                                      *args,
+                                                      **kwargs)
 
     def delete_by_id(self, id):
         """Deletes a document by id."""
