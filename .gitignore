@@ -2,3 +2,4 @@
 .pydevproject
 *.pyc
 .settings/
+/django_tools.db

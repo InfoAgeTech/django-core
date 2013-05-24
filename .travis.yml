@@ -1,0 +1,16 @@
+language: python
+python:
+  - "2.7"
+branches:
+  only:
+    - master
+env:
+  - DJANGO_VERSION=1.5.1
+install:
+  - pip install -r requirements.txt --use-mirrors
+  - pip install -q Django==$DJANGO_VERSION
+  - pip install django_nose
+  - python setup.py -q install
+# command to run tests
+script:
+  - python manage.py test
