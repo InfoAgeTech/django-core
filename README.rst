@@ -4,12 +4,12 @@ NOTE: This is not stable yet and will likely change!  Please don't use in produc
 django-tools
 ============
 :Info: django-tools is a python tools module written for django.
-:Repository: https://github.com/troygrosfield/django-tools
+:Repository: https://github.com/InfoAgeTech/django-tools
 :Author: Troy Grosfield (http://github.com/troygrosfield)
 :Maintainer: Troy Grosfield (http://github.com/troygrosfield)
 
-.. image:: https://travis-ci.org/troygrosfield/django-tools.png?branch=master
-  :target: http://travis-ci.org/troygrosfield/django-tools
+.. image:: https://travis-ci.org/InfoAgeTech/django-tools.png?branch=master
+  :target: http://travis-ci.org/InfoAgeTech/django-tools
   
 About
 =====
