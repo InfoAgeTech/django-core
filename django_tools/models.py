@@ -79,6 +79,9 @@ class AbstractBaseModel(models.Model):
         * last_modified_dttm
         
         """
+        if not instance_or_instances:
+            return
+
         if (isinstance(instance_or_instances, models.Model) or
             issubclass(instance_or_instances.__class__, models.Model())):
             instances = [instance_or_instances]
