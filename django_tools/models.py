@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django_tools.managers import CommonManager
 from copy import deepcopy
+from python_tools.list_utils import make_obj_list
 
 User = get_user_model()
 
@@ -43,7 +44,54 @@ class AbstractBaseModel(models.Model):
                          is 10.
         """
         self.__class__.save_prep(self)
-        super(AbstractBaseModel, self).save(*args, **kwargs)
+        return super(AbstractBaseModel, self).save(*args, **kwargs)
+
+    @classmethod
+    def save_prep(cls, instance_or_instances):
+        """Common save functionality for all models. This can be called with a 
+        saved or unsaved instance or one or many objects. This is beneficial 
+        when additional process needs to happen before a bulk_create which 
+        doesn't explicitly call the .save on each instance being saved. This
+        method will go through each object and do necessary presave processing.
+        
+        This method can be extended by classes and implement this abstact class
+        by simply creating the def save_prep method and making sure to call 
+        super class method making sure the save_prep method is properly called 
+        from each inheriting class:
+        
+        Example:
+        
+            @classmethod
+            def save_prep(cls, instance_or_instances):
+                # Do additional processing for inheriting class
+                return super(MyInheritingClass, cls).save_prep(instance_or_instances)
+         
+        Note: Make sure not to call the save_prep method in the save method of 
+        inheriting classes or it will get called twice which likely isn't wanted
+        since this Abstract class explicitly calls the save_prep on save().
+        
+        All objects are assumed to have the following fields:
+        
+        * id
+        * created
+        * created_dttm
+        * last_modified
+        * last_modified_dttm
+        
+        """
+        instances = make_obj_list(instance_or_instances)
+
+        utc_now = datetime.utcnow()
+        for instance in instances:
+            instance.last_modified_dttm = utc_now
+
+            if not instance.created_dttm:
+                instance.created_dttm = utc_now
+
+            if instance.created:
+                if (not hasattr(instance, 'last_modified') or
+                    not instance.last_modified):
+                    instance.last_modified = instance.created
 
     def copy(self, exclude_fields=None):
         """Returns an unsaved copy of this object with all fields except for:
@@ -66,39 +114,6 @@ class AbstractBaseModel(models.Model):
             setattr(instance, field, default or None)
 
         return instance
-
-    @classmethod
-    def save_prep(cls, instance_or_instances):
-        """Common save functionality for all models.  All documents are 
-        assumed to have the following fields:
-        
-        * id
-        * created
-        * created_dttm
-        * last_modified
-        * last_modified_dttm
-        
-        """
-        if not instance_or_instances:
-            return
-
-        if (isinstance(instance_or_instances, models.Model) or
-            issubclass(instance_or_instances.__class__, models.Model())):
-            instances = [instance_or_instances]
-        else:
-            instances = instance_or_instances
-
-        utc_now = datetime.utcnow()
-        for instance in instances:
-            instance.last_modified_dttm = utc_now
-
-            if not instance.created_dttm:
-                instance.created_dttm = utc_now
-
-            if instance.created:
-                if (not hasattr(instance, 'last_modified') or
-                    not instance.last_modified):
-                    instance.last_modified = instance.created
 
     @classmethod
     def _get_many_to_many_model(cls, field_name):
