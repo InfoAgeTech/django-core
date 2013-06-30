@@ -29,4 +29,4 @@ class ModelTests(TestCase):
         self.assertTrue(test_model_copy.created_dttm <= utcnow)
         self.assertTrue(test_model_copy.last_modified_dttm <= utcnow)
 
-        self.assertEqual(test_model_copy.last_modified_user, test_model_copy.created)
+        self.assertEqual(test_model_copy.last_modified_user, test_model_copy.created_user)
