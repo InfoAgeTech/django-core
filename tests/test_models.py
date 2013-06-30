@@ -21,7 +21,7 @@ class ModelTests(TestCase):
         cls.user.delete()
 
     def test_copy(self):
-        test_model = TestModel.objects.create(created=self.user)
+        test_model = TestModel.objects.create(created_user=self.user)
         test_model_copy = test_model.copy()
 
         utcnow = datetime.utcnow()

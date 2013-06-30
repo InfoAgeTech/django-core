@@ -21,9 +21,9 @@ class AbstractBaseModel(models.Model):
     * last_modified_dttm: updated datetime. Datetime this document was last 
         updated.
     """
-    created = models.ForeignKey(User, related_name='+')
+    created_user = models.ForeignKey(User, related_name='+')
     created_dttm = models.DateTimeField(default=datetime.utcnow)
-    last_modified = models.ForeignKey(User, related_name='+')
+    last_modified_user = models.ForeignKey(User, related_name='+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
     objects = CommonManager()
 
@@ -88,10 +88,10 @@ class AbstractBaseModel(models.Model):
             if not instance.created_dttm:
                 instance.created_dttm = utc_now
 
-            if instance.created:
+            if instance.created_user:
                 if (not hasattr(instance, 'last_modified') or
                     not instance.last_modified):
-                    instance.last_modified = instance.created
+                    instance.last_modified_user = instance.created_user
 
     def copy(self, exclude_fields=None):
         """Returns an unsaved copy of this object with all fields except for:
@@ -106,7 +106,7 @@ class AbstractBaseModel(models.Model):
 
         exclude_fields += ['id', 'created_dttm', 'last_modified_dttm']
         instance = deepcopy(self)
-        instance.last_modified = instance.created
+        instance.last_modified_user = instance.created_user
 
         # unset all the attributes that you don't want copied over
         for field in set(exclude_fields):
