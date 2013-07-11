@@ -24,7 +24,7 @@ USE_I18N = True
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django_tools',
+    'django_core',
     'django_nose',
     'python_tools',
     'tests',  # so the test models get picked up
@@ -43,6 +43,6 @@ here = lambda *x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': here('django_tools.db')
+        'NAME': here('django_core.db')
     }
 }

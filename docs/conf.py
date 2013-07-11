@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# django-tools documentation build configuration file, created by
+# django-core documentation build configuration file, created by
 # sphinx-quickstart on Thu Feb 21 12:52:04 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -16,7 +16,7 @@ import sys, os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.append(os.path.abspath('../django_tools'))
+sys.path.append(os.path.abspath('../django_core'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'django-tools'
+project = u'django-core'
 copyright = u'2013, Troy Grosfield'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_show_copyright = True
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-toolsdoc'
+htmlhelp_basename = 'django-coredoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'django-tools.tex', u'django-tools Documentation',
+  ('index', 'django-core.tex', u'django-core Documentation',
    u'Troy Grosfield', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'django-tools', u'django-tools Documentation',
+    ('index', 'django-core', u'django-core Documentation',
      [u'Troy Grosfield'], 1)
 ]
 
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'django-tools', u'django-tools Documentation',
-   u'Troy Grosfield', 'django-tools', 'One line description of project.',
+  ('index', 'django-core', u'django-core Documentation',
+   u'Troy Grosfield', 'django-core', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -245,7 +245,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'django-tools'
+epub_title = u'django-core'
 epub_author = u'Troy Grosfield'
 epub_publisher = u'Troy Grosfield'
 epub_copyright = u'2013, Troy Grosfield'

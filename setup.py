@@ -12,13 +12,13 @@ classifiers = [
 
 
 setup(
-    name='django-tools',
+    name='django-core',
     version='0.0.1',
     description='tools app for django',
     # long_description=open('README.md').read(),
     author='Troy Grosfield',
     author_email='troy.grosfield@gmail.com',
-    url='https://github.com/troygrosfield/django-tools',
+    url='https://github.com/InfoAgeTech/django-core',
     # license='MIT',
     packages=find_packages(),
     include_package_data=True,

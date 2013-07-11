@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django_tools.models import AbstractBaseModel
+from django_core.models import AbstractBaseModel
 
 class TestModel(AbstractBaseModel):
     some_string_w_default = models.CharField(max_length=50, default='hello')

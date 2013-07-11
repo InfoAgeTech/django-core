@@ -1,14 +1,14 @@
 NOTE: This is not stable yet and will likely change!  Please don't use in production until the 1.0 release.
 
-============
-django-tools
-============
-django-tools is a python tools module written for django.
+===========
+django-core
+===========
+django-core is a python tools module written for django.
 
 Build Status
 ============
-.. image:: https://travis-ci.org/InfoAgeTech/django-tools.png?branch=master
-  :target: http://travis-ci.org/InfoAgeTech/django-tools
+.. image:: https://travis-ci.org/InfoAgeTech/django-core.png?branch=master
+  :target: http://travis-ci.org/InfoAgeTech/django-core
   
 Intallation
 ===========
