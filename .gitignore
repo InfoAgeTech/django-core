@@ -3,3 +3,4 @@
 *.pyc
 .settings/
 /django_tools.db
+/django_core.db

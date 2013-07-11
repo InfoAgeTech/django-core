@@ -13,20 +13,19 @@ class LoginRequiredMixin(object):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
 
-class StaffRequiredMixin(object):
+class StaffRequiredMixin(LoginRequiredMixin):
     """Require a logged in Staff member."""
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
             raise PermissionDenied
 
         return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
 
-class SuperuserRequiredMixin(object):
+
+class SuperuserRequiredMixin(LoginRequiredMixin):
     """Require a logged in user to be a superuser."""
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             raise PermissionDenied
