@@ -32,7 +32,7 @@ class AbstractBaseModel(models.Model):
         ordering = ['-created_dttm']
 
     def __unicode__(self):
-        return self.id
+        return unicode(self.id)
 
     def __str__(self):
         return str(self.id)
