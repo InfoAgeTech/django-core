@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+# TODO: I no longer think I have a need for this since i'm using django's querysets
 def paging(query_set, page=1, page_size=25, select_related=False):
     """
     Database helper that figures out paging logic for you.
