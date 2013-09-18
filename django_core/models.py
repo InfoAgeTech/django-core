@@ -93,25 +93,50 @@ class AbstractBaseModel(models.Model):
                     not instance.last_modified):
                     instance.last_modified_user = instance.created_user
 
-    def copy(self, exclude_fields=None):
-        """Returns an unsaved copy of this object with all fields except for:
+    def copy(self, exclude_fields=None, **override_fields):
+        """Returns an unsaved copy of this object with all fields except for any 
+        fields that are unique in the DB. Those fields must be explicitly set
+        before saving the instance:
         
         * id
-        * create_dttm
+        * created_dttm
         * last_modified_dttm
+        
+        NOTE: If a field doesn't except null values, you must explicitly set
+        the value in the override fields or this method will error out since you
+        can't set that fields to be null.
+        
+        :param exlucde_fields: fields to exclude from the copy.  They will 
+            fallback to the field default if one is given or None.
+        :param override_fields: kwargs with fields to override.  The key is the 
+            field name, the value is the value to set the copied object to.
+            
+            Example:
+            
+            >> new_obj = some_obj.copy(my_field='hello world')
+            >> new_obj.my_field
+            'hello world'
         
         """
         if not exclude_fields:
             exclude_fields = []
 
-        exclude_fields += ['id', 'created_dttm', 'last_modified_dttm']
+        exclude_fields += ['created_dttm', 'last_modified_dttm']
+        # Don't copy data for any unique fields.  These must be explicitly set.
+        exclude_fields += [field.name
+                           for field in self._meta.fields if field.unique]
         instance = deepcopy(self)
         instance.last_modified_user = instance.created_user
+        instance.last_modified_user_id = instance.created_user_id
 
         # unset all the attributes that you don't want copied over
         for field in set(exclude_fields):
             default = self.__class__._meta.get_field_by_name(field)[0].get_default()
             setattr(instance, field, default or None)
+
+        if override_fields:
+            for field, val in override_fields.items():
+                setattr(instance, field, val)
 
         return instance
 

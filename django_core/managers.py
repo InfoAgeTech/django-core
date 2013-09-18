@@ -2,7 +2,7 @@
 from django.db import models
 from django.http.response import Http404
 from django.template.defaultfilters import slugify
-from python_tools.random_utils import random_alphanum_id
+from python_tools.random_utils import random_alphanum
 
 
 class BaseManager(models.Manager):
@@ -144,7 +144,7 @@ class TokenManager(BaseManager):
         
         """
         while True:
-            tokens = [random_alphanum_id(id_len=length) for t in range(5)]
+            tokens = [random_alphanum(length=length) for t in range(5)]
             obj_ids = self.filter(token__in=tokens).values_list('id')
             available = set(tokens).difference(obj_ids)
 

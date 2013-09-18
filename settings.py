@@ -30,10 +30,12 @@ INSTALLED_APPS = (
     'tests',  # so the test models get picked up
 )
 
-# Added in django 1.5 secret key is required.  This is a random generated string
+# Added in django 1.5 secret key is required.  This is a random generated
+# string.
 SECRET_KEY = '12345abcd'
 
-# Added in django 1.4.4. See: https://docs.djangoproject.com/en/1.4/releases/1.4.4/#host-header-poisoning
+# Added in django 1.4.4. See:
+# https://docs.djangoproject.com/en/1.4/releases/1.4.4/#host-header-poisoning
 ALLOWED_HOSTS = ['*']
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
