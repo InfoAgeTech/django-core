@@ -10,15 +10,15 @@ User = get_user_model()
 
 
 class AbstractBaseModel(models.Model):
-    """Base model for other db model to extend.  This class contains common 
+    """Base model for other db model to extend.  This class contains common
     model attributes needed by almost all models.
-    
+
     Fields
     ======
-    * created: created user.  The user who created this instance.  
-    * created_dttm: created datetime.  
-    * last_modified: last user to modify this instance 
-    * last_modified_dttm: updated datetime. Datetime this document was last 
+    * created: created user.  The user who created this instance.
+    * created_dttm: created datetime.
+    * last_modified: last user to modify this instance
+    * last_modified_dttm: updated datetime. Datetime this document was last
         updated.
     """
     created_user = models.ForeignKey(User, related_name='+')
@@ -39,8 +39,8 @@ class AbstractBaseModel(models.Model):
 
     def save(self, *args, **kwargs):
         """Optional kwargs:
-        
-        - id_length: the length of characters to use for the id.  Default 
+
+        - id_length: the length of characters to use for the id.  Default
                          is 10.
         """
         self.__class__.save_prep(self)
@@ -48,36 +48,37 @@ class AbstractBaseModel(models.Model):
 
     @classmethod
     def save_prep(cls, instance_or_instances):
-        """Common save functionality for all models. This can be called with a 
-        saved or unsaved instance or one or many objects. This is beneficial 
-        when additional process needs to happen before a bulk_create which 
+        """Common save functionality for all models. This can be called with a
+        saved or unsaved instance or one or many objects. This is beneficial
+        when additional process needs to happen before a bulk_create which
         doesn't explicitly call the .save on each instance being saved. This
         method will go through each object and do necessary presave processing.
-        
+
         This method can be extended by classes and implement this abstact class
-        by simply creating the def save_prep method and making sure to call 
-        super class method making sure the save_prep method is properly called 
+        by simply creating the def save_prep method and making sure to call
+        super class method making sure the save_prep method is properly called
         from each inheriting class:
-        
+
         Example:
-        
+
             @classmethod
             def save_prep(cls, instance_or_instances):
                 # Do additional processing for inheriting class
                 return super(MyInheritingClass, cls).save_prep(instance_or_instances)
-         
-        Note: Make sure not to call the save_prep method in the save method of 
-        inheriting classes or it will get called twice which likely isn't wanted
-        since this Abstract class explicitly calls the save_prep on save().
-        
+
+        Note: Make sure not to call the save_prep method in the save method of
+        inheriting classes or it will get called twice which likely isn't
+        wanted since this Abstract class explicitly calls the save_prep on
+        save().
+
         All objects are assumed to have the following fields:
-        
+
         * id
         * created
         * created_dttm
         * last_modified
         * last_modified_dttm
-        
+
         """
         instances = make_obj_list(instance_or_instances)
 
@@ -94,29 +95,29 @@ class AbstractBaseModel(models.Model):
                     instance.last_modified_user = instance.created_user
 
     def copy(self, exclude_fields=None, **override_fields):
-        """Returns an unsaved copy of this object with all fields except for any 
-        fields that are unique in the DB. Those fields must be explicitly set
-        before saving the instance:
-        
+        """Returns an unsaved copy of this object with all fields except for
+        any fields that are unique in the DB. Those fields must be explicitly
+        set before saving the instance:
+
         * id
         * created_dttm
         * last_modified_dttm
-        
+
         NOTE: If a field doesn't except null values, you must explicitly set
-        the value in the override fields or this method will error out since you
-        can't set that fields to be null.
-        
-        :param exlucde_fields: fields to exclude from the copy.  They will 
+        the value in the override fields or this method will error out since
+        you can't set that fields to be null.
+
+        :param exlucde_fields: fields to exclude from the copy.  They will
             fallback to the field default if one is given or None.
-        :param override_fields: kwargs with fields to override.  The key is the 
+        :param override_fields: kwargs with fields to override.  The key is the
             field name, the value is the value to set the copied object to.
-            
+
             Example:
-            
+
             >> new_obj = some_obj.copy(my_field='hello world')
             >> new_obj.my_field
             'hello world'
-        
+
         """
         if not exclude_fields:
             exclude_fields = []
@@ -143,7 +144,7 @@ class AbstractBaseModel(models.Model):
     @classmethod
     def _get_many_to_many_model(cls, field_name):
         """Get the model for the many to many field.
-        
+
         :param field_name: field name to get the model for.
         """
 
