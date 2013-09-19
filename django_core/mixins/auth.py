@@ -5,15 +5,15 @@ from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
 
 
-class LoginRequiredMixin(object):
+class LoginRequiredViewMixin(object):
     """Use this with CBVs to ensure user is logged in."""
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+        return super(LoginRequiredViewMixin, self).dispatch(*args, **kwargs)
 
 
-class StaffRequiredMixin(LoginRequiredMixin):
+class StaffRequiredMixin(LoginRequiredViewMixin):
     """Require a logged in Staff member."""
 
     def dispatch(self, request, *args, **kwargs):
@@ -23,7 +23,7 @@ class StaffRequiredMixin(LoginRequiredMixin):
         return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
-class SuperuserRequiredMixin(LoginRequiredMixin):
+class SuperuserRequiredMixin(LoginRequiredViewMixin):
     """Require a logged in user to be a superuser."""
 
     def dispatch(self, request, *args, **kwargs):

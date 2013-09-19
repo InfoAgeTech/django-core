@@ -26,7 +26,7 @@ class ApiFormView(JSONResponseMixin, BaseFormView):
         return kwargs
 
     def form_invalid(self, form, context=None, **kwargs):
-        """This will return the request with form errors as well as any 
+        """This will return the request with form errors as well as any
         additional context.
         """
         if not context:

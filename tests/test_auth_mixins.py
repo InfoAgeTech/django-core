@@ -37,7 +37,7 @@ class AuthMixinTests(TestCase):
             mixin = StaffRequiredMixin()
             mixin.dispatch(request)
 
-    @patch('django_core.mixins.auth.LoginRequiredMixin.dispatch')
+    @patch('django_core.mixins.auth.LoginRequiredViewMixin.dispatch')
     def test_staff_required_mixin_is_staff(self, dispatch):
         """Test for mixin requiring a staff user when user is staff."""
         dispatch.return_value = 'worked'
@@ -63,7 +63,7 @@ class AuthMixinTests(TestCase):
             mixin = SuperuserRequiredMixin()
             mixin.dispatch(request)
 
-    @patch('django_core.mixins.auth.LoginRequiredMixin.dispatch')
+    @patch('django_core.mixins.auth.LoginRequiredViewMixin.dispatch')
     def test_superuser_required_mixin_is_supersuer(self, dispatch):
         """Test for mixin requiring a superuser when user is a superuser."""
         dispatch.return_value = 'worked'

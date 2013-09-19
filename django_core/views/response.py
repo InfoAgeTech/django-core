@@ -21,7 +21,7 @@ class JSONResponseMixin(object):
         # Don't care to return a django form or view in the response here.
         # Remove those from the context.
         if isinstance(content, dict):
-            response_content = {k:deepcopy(v) for k, v in content.items()
+            response_content = {k: deepcopy(v) for k, v in content.items()
                                 if k not in ('form', 'view') or k in ('form', 'view')
                                 and not isinstance(v, (Form, View))}
         else:
@@ -34,20 +34,20 @@ class JSONResponseMixin(object):
 
 # TODO: this should go away in favor of JSONResponseMixin above
 class JsonResponse(HttpResponse):
-    """Returns a HttpResponse that has content that's json encoded. Returns a 
+    """Returns a HttpResponse that has content that's json encoded. Returns a
     status of 200.
-    
+
     Response content sample::
-    
+
         {
             notification: "notification html",
             additional_content_key1: additional_content_value1
         }
-    
-    :param content: a dictionary of content that should be returned with the 
+
+    :param content: a dictionary of content that should be returned with the
         response.
     :return: HttpResponse with json encoded notification content.
-    
+
     """
     def __init__(self, content, status=200):
         super(JsonResponse, self).__init__(content=json.dumps(content),

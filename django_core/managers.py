@@ -17,29 +17,29 @@ class BaseManager(models.Manager):
 
 class CommonManager(BaseManager):
 
-    def get_by_id(self, id, fields=None):
+    def get_by_id(self, id, fields=None, **kwargs):
         """Gets a document by an id.
-        
+
         :param id: id of the document to retrieve.
-        :param fields: a tuple of field names to return.  If None, all fields 
+        :param fields: a tuple of field names to return.  If None, all fields
             are returned (default).
         """
-        return self.get_or_none(id=id)
+        return self.get_or_none(id=id, **kwargs)
 
-    def get_by_id_or_404(self, id):
+    def get_by_id_or_404(self, id, **kwargs):
         """Gets by a instance instance r raises a 404 is one isn't found."""
-        obj = self.get_by_id(id=id)
+        obj = self.get_by_id(id=id, **kwargs)
 
         if obj:
             return obj
 
         raise Http404
 
-    def get_by_ids(self, ids):
+    def get_by_ids(self, ids, **kwargs):
         """Gets documents by ids.
-        
+
         :param ids: list of ids of documents to return
-        :param fields: a tuple of field names to return.  If None, all fields 
+        :param fields: a tuple of field names to return.  If None, all fields
             are returned (default).
         """
         return self.filter(id__in=ids)
@@ -58,10 +58,10 @@ class CommonManager(BaseManager):
         return self.delete_by_ids(ids=[id])
 
     def delete_by_ids(self, ids):
-        """Delete objects by ids. 
-        
+        """Delete objects by ids.
+
         :param ids: list of objects ids to delete.
-        :return: True if objects were deleted.  Otherwise, return False if no 
+        :return: True if objects were deleted.  Otherwise, return False if no
                 objects were found or the delete was not successful.
         """
         try:
@@ -100,16 +100,16 @@ class SlugManager(BaseManager):
 
     def get_next_slug(self, slug, **kwargs):
         """Gets the next available slug.
-        
+
         :param slug: the slug to slugify
         :param kwargs: additional filter criteria to check for when looking for
             a unique slug.
-        
+
         Example:
-        
+
         if the value "my-slug" is already taken, this method will append "-n"
         to the end of the slug until the next available slug is found.
-        
+
         """
         original_slug = slug = slugify(slug)
         count = 0
@@ -138,10 +138,10 @@ class TokenManager(BaseManager):
 
     def get_next_token(self, length=25, **kwargs):
         """Gets the next available token.
-        
+
         :param kwargs: additional filter criteria to check for when looking for
             a unique token.
-        
+
         """
         while True:
             tokens = [random_alphanum(length=length) for t in range(5)]
