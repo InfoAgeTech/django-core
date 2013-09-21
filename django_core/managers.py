@@ -7,9 +7,16 @@ from python_tools.random_utils import random_alphanum
 
 class BaseManager(models.Manager):
 
-    def get_or_none(self, **kwargs):
-        """Gets a single object based on kwargs or None if one is not found."""
+    def get_or_none(self, select_related=False, **kwargs):
+        """Gets a single object based on kwargs or None if one is not found.
+
+        :param select_related: boolean when set to True will follow foreign-key
+            relationships and "prefretch" them.  See:
+            https://docs.djangoproject.com/en/dev/ref/models/querysets/
+        """
         try:
+            if select_related:
+                return self.select_related().get(**kwargs)
             return self.get(**kwargs)
         except self.model.DoesNotExist:
             return None
