@@ -20,7 +20,9 @@ class StaffRequiredMixin(LoginRequiredViewMixin):
         if not request.user.is_staff:
             raise PermissionDenied
 
-        return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(StaffRequiredMixin, self).dispatch(request,
+                                                        *args,
+                                                        **kwargs)
 
 
 class SuperuserRequiredMixin(LoginRequiredViewMixin):
@@ -30,4 +32,6 @@ class SuperuserRequiredMixin(LoginRequiredViewMixin):
         if not request.user.is_superuser:
             raise PermissionDenied
 
-        return super(SuperuserRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super(SuperuserRequiredMixin, self).dispatch(request,
+                                                            *args,
+                                                            **kwargs)

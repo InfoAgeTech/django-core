@@ -15,3 +15,16 @@ class CommonSingleObjectMixin(object):
         obj = super(CommonSingleObjectMixin, self).get_object(**kwargs)
         self.object = obj
         return obj
+
+    def get_queryset(self, select_related=False, **kwargs):
+        """Get the related objects queryset.
+
+        :param select_related: boolean if the related objects are wanting to
+            be selected. (i.e. query will be made of all related objects.
+        """
+        queryset = super(CommonSingleObjectMixin, self).get_queryset(**kwargs)
+
+        if select_related:
+            return queryset.select_related()
+
+        return queryset
