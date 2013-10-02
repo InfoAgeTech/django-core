@@ -7,17 +7,50 @@ from python_tools.random_utils import random_alphanum
 
 class BaseManager(models.Manager):
 
-    def get_or_none(self, select_related=False, **kwargs):
+    def get_or_none(self, prefetch_related=None, select_related=False,
+                    **kwargs):
         """Gets a single object based on kwargs or None if one is not found.
 
+        :param prefetch_related: list or tuple of fields to prefetch for an
+            object.  This takes precedence over select_related.
+
+            Example:
+
+            >> get_or_none(prefetch_related=['some_field',
+            ...                              'some_field__some_fields_field'])
+
+            See:
+            https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related
+
         :param select_related: boolean when set to True will follow foreign-key
-            relationships and "prefretch" them.  See:
-            https://docs.djangoproject.com/en/dev/ref/models/querysets/
+            relationships to prevent many db queries when looping over foreign
+            keys. If this value is boolean True, the immediate foreign keys
+            will be selected, but not foreign keys of foreign keys.  If this
+            value is set to a list or tuple, then those will be the fields to
+            to follow and select.
+
+            Example:
+
+            >> # Both of the following are valid
+            >> get_or_none(select_related=True)
+            >> get_or_none(select_related=['some_field',
+            ...                            'some_field__some_fields_field'])
+
+            See: https://docs.djangoproject.com/en/dev/ref/models/querysets/
+
+
         """
         try:
-            if select_related:
-                return self.select_related().get(**kwargs)
-            return self.get(**kwargs)
+            if prefetch_related:
+                query_set = self.prefetch_related(*prefetch_related)
+            elif select_related == True:
+                query_set = self.select_related()
+            elif isinstance(select_related, (list, tuple)):
+                query_set = self.select_related(*select_related)
+            else:
+                query_set = self
+
+            return query_set.get(**kwargs)
         except self.model.DoesNotExist:
             return None
 
