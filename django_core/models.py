@@ -59,6 +59,8 @@ class AbstractBaseModel(models.Model):
         super class method making sure the save_prep method is properly called
         from each inheriting class:
 
+        All models.CharField will be stripped prior to saving.
+
         Example:
 
             @classmethod
@@ -93,6 +95,18 @@ class AbstractBaseModel(models.Model):
                 if (not hasattr(instance, 'last_modified') or
                     not instance.last_modified):
                     instance.last_modified_user = instance.created_user
+
+            instance.strip_fields()
+
+    def strip_fields(self):
+        """Strips whitespace from all text related model fields. This includes
+        CharField and TextFields and all subclasses of those two fields.
+        """
+        for field in self._meta.fields:
+            if isinstance(field, (models.CharField, models.TextField)):
+                value = getattr(self, field.name)
+                if value and hasattr(value, 'strip'):
+                    setattr(self, field.name, value.strip())
 
     def copy(self, exclude_fields=None, **override_fields):
         """Returns an unsaved copy of this object with all fields except for

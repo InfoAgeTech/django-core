@@ -86,9 +86,11 @@ class CommonManager(BaseManager):
 
     def bulk_create(self, objs, *args, **kwargs):
         """Insert many object at once."""
-        # TODO: This might be making a bad assumption that this is inheriting
-        # from AbstractBaseModel
-        self.model.save_prep(instance_or_instances=objs)
+        if hasattr(self.model, 'save_prep'):
+            # Method from AbstractBaseModel. If the model class doesn't
+            # subclass AbstractBaseModel, then don't call this.
+            self.model.save_prep(instance_or_instances=objs)
+
         return super(CommonManager, self).bulk_create(objs=objs,
                                                       *args,
                                                       **kwargs)
