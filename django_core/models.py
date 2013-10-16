@@ -121,7 +121,7 @@ class AbstractBaseModel(models.Model):
         the value in the override fields or this method will error out since
         you can't set that fields to be null.
 
-        :param exlucde_fields: fields to exclude from the copy.  They will
+        :param exclude_fields: fields to exclude from the copy.  They will
             fallback to the field default if one is given or None.
         :param override_fields: kwargs with fields to override.  The key is the
             field name, the value is the value to set the copied object to.
