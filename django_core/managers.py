@@ -57,12 +57,10 @@ class BaseManager(models.Manager):
 
 class CommonManager(BaseManager):
 
-    def get_by_id(self, id, fields=None, **kwargs):
+    def get_by_id(self, id, **kwargs):
         """Gets a document by an id.
 
         :param id: id of the document to retrieve.
-        :param fields: a tuple of field names to return.  If None, all fields
-            are returned (default).
         """
         return self.get_or_none(id=id, **kwargs)
 

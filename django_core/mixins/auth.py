@@ -13,25 +13,25 @@ class LoginRequiredViewMixin(object):
         return super(LoginRequiredViewMixin, self).dispatch(*args, **kwargs)
 
 
-class StaffRequiredMixin(LoginRequiredViewMixin):
+class StaffRequiredViewMixin(LoginRequiredViewMixin):
     """Require a logged in Staff member."""
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
             raise PermissionDenied
 
-        return super(StaffRequiredMixin, self).dispatch(request,
-                                                        *args,
-                                                        **kwargs)
+        return super(StaffRequiredViewMixin, self).dispatch(request,
+                                                            *args,
+                                                            **kwargs)
 
 
-class SuperuserRequiredMixin(LoginRequiredViewMixin):
+class SuperuserRequiredViewMixin(LoginRequiredViewMixin):
     """Require a logged in user to be a superuser."""
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
             raise PermissionDenied
 
-        return super(SuperuserRequiredMixin, self).dispatch(request,
-                                                            *args,
-                                                            **kwargs)
+        return super(SuperuserRequiredViewMixin, self).dispatch(request,
+                                                                *args,
+                                                                **kwargs)

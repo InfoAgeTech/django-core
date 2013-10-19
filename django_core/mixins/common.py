@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class CommonSingleObjectMixin(object):
+class CommonSingleObjectViewMixin(object):
 
     def get_object(self, **kwargs):
         """Sometimes preprocessing of a view need to happen before the object
@@ -12,6 +12,6 @@ class CommonSingleObjectMixin(object):
         if hasattr(self, 'object') and self.object:
             return self.object
 
-        obj = super(CommonSingleObjectMixin, self).get_object(**kwargs)
+        obj = super(CommonSingleObjectViewMixin, self).get_object(**kwargs)
         self.object = obj
         return obj
