@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
+import uuid
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIHandler
 from django.test import Client
 from django.test import TestCase
-from django_core.mixins.auth import StaffRequiredMixin
-from django_core.mixins.auth import SuperuserRequiredMixin
-import uuid
 from mock import patch
 
+from django_core.mixins.auth import StaffRequiredViewMixin
+from django_core.mixins.auth import SuperuserRequiredViewMixin
+
 User = get_user_model()
+
 
 class AuthMixinTests(TestCase):
 
@@ -34,7 +36,7 @@ class AuthMixinTests(TestCase):
             request = WSGIHandler()
             request.user = self.user
 
-            mixin = StaffRequiredMixin()
+            mixin = StaffRequiredViewMixin()
             mixin.dispatch(request)
 
     @patch('django_core.mixins.auth.LoginRequiredViewMixin.dispatch')
@@ -47,7 +49,7 @@ class AuthMixinTests(TestCase):
         request = WSGIHandler()
         request.user = self.user
 
-        mixin = StaffRequiredMixin()
+        mixin = StaffRequiredViewMixin()
         actual_return = mixin.dispatch(request)
 
         self.assertEqual(actual_return, dispatch.return_value)
@@ -60,7 +62,7 @@ class AuthMixinTests(TestCase):
             request = WSGIHandler()
             request.user = self.user
 
-            mixin = SuperuserRequiredMixin()
+            mixin = SuperuserRequiredViewMixin()
             mixin.dispatch(request)
 
     @patch('django_core.mixins.auth.LoginRequiredViewMixin.dispatch')
@@ -74,7 +76,7 @@ class AuthMixinTests(TestCase):
         request = WSGIHandler()
         request.user = self.user
 
-        mixin = SuperuserRequiredMixin()
+        mixin = SuperuserRequiredViewMixin()
         actual_return = mixin.dispatch(request)
 
         self.assertEqual(actual_return, dispatch.return_value)
