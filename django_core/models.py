@@ -29,7 +29,13 @@ class AbstractBaseModel(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['-created_dttm']
+        # Default ordering is by id instead of created_dttm for 2 reasons:
+        # 1) id is indexed (primary key)
+        # 2) it's safer than created_dttm since created_dttm could be the same
+        #    value which would lead to inconsistent ording in responses from
+        #    queries.  This works because id is an integer field that's auto
+        #    incremented.
+        ordering = ('-id',)
 
     def __unicode__(self):
         return unicode(self.id)
@@ -40,8 +46,8 @@ class AbstractBaseModel(models.Model):
     def save(self, *args, **kwargs):
         """Optional kwargs:
 
-        - id_length: the length of characters to use for the id.  Default
-                         is 10.
+        * id_length: the length of characters to use for the id.  Default
+            is 10.
         """
         self.__class__.save_prep(self)
         return super(AbstractBaseModel, self).save(*args, **kwargs)
