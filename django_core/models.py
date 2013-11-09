@@ -21,10 +21,13 @@ class AbstractBaseModel(models.Model):
     * last_modified_dttm: updated datetime. Datetime this document was last
         updated.
     """
-    created_user = models.ForeignKey(User, related_name='created_user+')
+    created_user = models.ForeignKey(
+                    User,
+                    related_name='%(app_label)s_%(class)s_created_user+')
     created_dttm = models.DateTimeField(default=datetime.utcnow)
-    last_modified_user = models.ForeignKey(User,
-                                           related_name='last_modified_user+')
+    last_modified_user = models.ForeignKey(
+                    User,
+                    related_name='%(app_label)s_%(class)s_last_modified_user+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
     objects = CommonManager()
 
