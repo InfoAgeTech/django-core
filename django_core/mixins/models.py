@@ -31,7 +31,7 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_edit_url_link(self, text=None, cls=None, icon_class=None,
                           **attrs):
         """Gets the html edit link for the object."""
-        if text is None:
+        if text == None:
             text = 'Edit'
 
         return build_link(href=self.get_edit_url(),
@@ -43,7 +43,7 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_delete_url_link(self, text=None, cls=None, icon_class=None,
                             **attrs):
         """Gets the html delete link for the object."""
-        if text is None:
+        if text == None:
             text = 'Delete'
 
         return build_link(href=self.get_delete_url(),
