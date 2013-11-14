@@ -29,6 +29,11 @@ def get_absolute_url_link(obj, text=None):
                                            text or absolute_url)
 
 
+@register.simple_tag
+def absolute_url_link(obj, auth_user=None, **kwargs):
+    return obj.get_absolute_url_link(**kwargs)
+
+
 @register.filter
 def get_edit_url_link(obj, text=None):
     """Gets the absolute url html link for the object.
@@ -53,6 +58,11 @@ def get_edit_url_link(obj, text=None):
                                            text or edit_url)
 
 
+@register.simple_tag
+def edit_url_link(obj, auth_user=None, **kwargs):
+    return obj.get_edit_url_link(**kwargs)
+
+
 @register.filter
 def get_delete_url_link(obj, text=None):
     """Gets the absolute url html link for the object.
@@ -67,3 +77,8 @@ def get_delete_url_link(obj, text=None):
     delete_url = obj.get_delete_url()
     return u'<a href="{0}">{1}</a>'.format(delete_url,
                                            text or delete_url)
+
+
+@register.simple_tag
+def delete_url_link(obj, auth_user=None, **kwargs):
+    return obj.get_delete_url_link(**kwargs)
