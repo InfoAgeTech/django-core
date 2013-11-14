@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.html import escape
-from django_core.html.builders import build_link
+from ..html.builders import build_link
 
 
 class AbstractUrlLinkModelMixin(models.Model):
@@ -19,8 +19,11 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_absolute_url_link(self, text=None, cls=None, icon_class=None,
                               **attrs):
         """Gets the html link for the object."""
+        if text == None:
+            text = self.id
+
         return build_link(href=self.get_absolute_url(),
-                          text=escape(text if text is not None else self.id),
+                          text=escape(text),
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
@@ -28,8 +31,11 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_edit_url_link(self, text=None, cls=None, icon_class=None,
                           **attrs):
         """Gets the html edit link for the object."""
+        if text is None:
+            text = 'Edit'
+
         return build_link(href=self.get_edit_url(),
-                          text=escape(text if text is not None else 'Edit'),
+                          text=escape(text),
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
@@ -37,8 +43,11 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_delete_url_link(self, text=None, cls=None, icon_class=None,
                             **attrs):
         """Gets the html delete link for the object."""
+        if text is None:
+            text = 'Delete'
+
         return build_link(href=self.get_delete_url(),
-                          text=escape(text if text is not None else 'Delete'),
+                          text=escape(text),
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
