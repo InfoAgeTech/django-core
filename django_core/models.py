@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from copy import deepcopy
 from datetime import datetime
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django_core.managers import CommonManager
 from python_tools.list_utils import make_obj_list
+
 
 User = get_user_model()
 

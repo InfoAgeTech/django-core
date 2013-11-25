@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from .common import CommonSingleObjectViewMixin
 from django.core.exceptions import PermissionDenied
 from django.http.response import Http404
+
+from .common import CommonSingleObjectViewMixin
 
 
 class CreatorRequiredViewMixin(CommonSingleObjectViewMixin):

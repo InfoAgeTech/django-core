@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import json
 from copy import deepcopy
+import json
 
+from django.forms import Form
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.generic.base import View
-from django.forms import Form
 
 
 class JSONResponseMixin(object):

@@ -6,10 +6,10 @@ from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIHandler
 from django.test import Client
 from django.test import TestCase
-from mock import patch
-
 from django_core.mixins.auth import StaffRequiredViewMixin
 from django_core.mixins.auth import SuperuserRequiredViewMixin
+from mock import patch
+
 
 User = get_user_model()
 

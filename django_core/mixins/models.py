@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.html import escape
+
 from ..html.builders import build_link
 
 

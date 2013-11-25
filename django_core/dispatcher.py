@@ -20,7 +20,7 @@ class Dispatcher(object):
                                     post='views.foo_add',)),
         )
 
-    If request.method is equal to head, the foo_head view will be called; if it 
+    If request.method is equal to head, the foo_head view will be called; if it
     is "get", foo_page will be called; et cetera.
 
     If the method specified in request.method is not one handled by

@@ -16,9 +16,9 @@ def html(template):
     Parameters:
 
     * template: template name to use
-     
+
     :see: http://djangosnippets.org/snippets/821/
-    
+
     """
     def renderer(func):
         def wrapper(request, *args, **kw):

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.template import Library
+
 from ..html.builders import build_link
+
 
 register = Library()
 

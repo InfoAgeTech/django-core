@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from .models import TestModel
 from datetime import datetime
+from random import randint
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from python_tools.random_utils import random_alphanum
-from random import randint
+
+from .models import TestModel
 
 
 User = get_user_model()
