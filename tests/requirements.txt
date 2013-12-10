@@ -1,2 +1,3 @@
+django_nose
 mock
 https://github.com/InfoAgeTech/python-tools/tarball/master
