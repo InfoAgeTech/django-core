@@ -9,10 +9,9 @@ env:
   - DJANGO_VERSION=1.6
 install:
   - pip install -r requirements.txt --use-mirrors
+  - pip install -r tests/requirements.txt --use-mirrors
   - pip install -q Django==$DJANGO_VERSION
-  - pip install https://github.com/InfoAgeTech/python-tools/tarball/master
-  - pip install django_nose
   - python setup.py -q install
 # command to run tests
 script:
-  - python manage.py test
+  - python tests/manage.py test

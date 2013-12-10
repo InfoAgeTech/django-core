@@ -27,7 +27,7 @@ INSTALLED_APPS = (
     'django_core',
     'django_nose',
     'python_tools',
-    'tests',  # so the test models get picked up
+    'test_models',  # so the test models get picked up
 )
 
 # Added in django 1.5 secret key is required.  This is a random generated

@@ -1,2 +1,2 @@
 django
-mock
+https://github.com/InfoAgeTech/python-tools/tarball/master

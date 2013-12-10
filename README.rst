@@ -9,14 +9,14 @@ Build Status
 ============
 .. image:: https://travis-ci.org/InfoAgeTech/django-core.png?branch=master
   :target: http://travis-ci.org/InfoAgeTech/django-core
-  
+
 Intallation
 ===========
 Download the source from Github and run ``python setup.py install``.
 
 Dependencies
 ============
-TODO 
+TODO
 
 Examples
 ========
@@ -24,6 +24,6 @@ TODO
 
 Tests
 =====
-From the project root where the manage.py file is, run::
+From the tests directory where the manage.py file is, run::
 
    python manage.py test
