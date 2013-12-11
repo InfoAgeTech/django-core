@@ -70,3 +70,23 @@ class CommonManagerTests(SingleUserTestCase):
                                               user=user)
         obj_db = TestManagerModel.objects.get_by_user(user=user)
         self.assertEqual(obj, obj_db[0])
+
+    def test_is_slug_available(self):
+        """Test if a slug is available."""
+        self.assertTrue(TestManagerModel.objects.is_slug_available(
+                                                    slug=random_alphanum()))
+
+    def test_not_is_slug_available(self):
+        """Test if a slug is not available."""
+        slug = slugify(random_alphanum())
+        TestManagerModel.objects.create(created_user=self.user,
+                                        slug=slug)
+        self.assertFalse(TestManagerModel.objects.is_slug_available(slug=slug))
+
+    def test_get_next_slug(self):
+        """Test if a slug is not available."""
+        slug = slugify(random_alphanum())
+        TestManagerModel.objects.create(created_user=self.user,
+                                        slug=slug)
+        next_slug = TestManagerModel.objects.get_next_slug(slug=slug)
+        self.assertEqual(next_slug, '{0}-1'.format(slug))
