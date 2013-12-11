@@ -26,6 +26,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django_core',
     'django_nose',
+    'django_testing',
     'python_tools',
     'test_models',  # so the test models get picked up
 )
