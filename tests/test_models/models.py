@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth import get_user_model
 from django.db import models
 from django_core.models import AbstractBaseModel
 
+from .managers import BaseTestManager
+
+
+User = get_user_model()
 
 class TestModel(AbstractBaseModel):
     some_string_w_default = models.CharField(max_length=50, default='hello')
@@ -17,3 +22,10 @@ class TestModel(AbstractBaseModel):
     some_unique_field_default = models.CharField(max_length=20,
                                                  unique=True,
                                                  default='Hello world')
+
+
+class TestManagerModel(AbstractBaseModel):
+    slug = models.SlugField(null=True, blank=True)
+    token = models.CharField(max_length=50, null=True, blank=True)
+    user = models.ForeignKey(User, null=True, blank=True)
+    objects = BaseTestManager()
