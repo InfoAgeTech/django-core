@@ -3,12 +3,12 @@
 from django.http.response import Http404
 from django.utils.text import slugify
 from django_testing.testcases.users import SingleUserTestCase
+from django_testing.user_utils import create_user
 from python_tools.random_utils import random_alphanum
 
 from tests.test_models.models import TestManagerModel
 
 from .test_models.models import TestModel
-from django_testing.user_utils import create_user
 
 
 class CommonManagerTests(SingleUserTestCase):

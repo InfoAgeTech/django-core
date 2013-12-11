@@ -4,7 +4,7 @@ from datetime import datetime
 from random import randint
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django_testing.testcases.users import SingleUserTestCase
 from python_tools.random_utils import random_alphanum
 
 from .test_models.models import TestModel
@@ -13,17 +13,7 @@ from .test_models.models import TestModel
 User = get_user_model()
 
 
-class ModelTests(TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        super(ModelTests, cls).setUpClass()
-        cls.user = User.objects.create_user(username=random_alphanum())
-
-    @classmethod
-    def tearDownClass(cls):
-        super(ModelTests, cls).tearDownClass()
-        cls.user.delete()
+class ModelTests(SingleUserTestCase):
 
     def test_copy(self):
         test_model = TestModel.objects.create(
