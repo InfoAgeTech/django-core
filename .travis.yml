@@ -11,7 +11,9 @@ install:
   - pip install -r requirements.txt --use-mirrors
   - pip install -r tests/requirements.txt --use-mirrors
   - pip install -q Django==$DJANGO_VERSION
+  - pip install coveralls
   - python setup.py -q install
-# command to run tests
 script:
-  - python tests/manage.py test
+  - coverage run tests/manage.py test
+after_success: 
+  - coveralls
