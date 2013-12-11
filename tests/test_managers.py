@@ -84,7 +84,7 @@ class CommonManagerTests(SingleUserTestCase):
         self.assertFalse(TestManagerModel.objects.is_slug_available(slug=slug))
 
     def test_get_next_slug(self):
-        """Test if a slug is not available."""
+        """Test getting next available slug."""
         slug = slugify(random_alphanum())
         TestManagerModel.objects.create(created_user=self.user,
                                         slug=slug)
