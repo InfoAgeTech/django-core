@@ -15,13 +15,14 @@ User = get_user_model()
 
 class ModelTests(SingleUserTestCase):
 
-    def test_copy(self):
+    def test_copy1(self):
         test_model = TestModel.objects.create(
             created_user=self.user,
             some_unique_field=random_alphanum(),
             some_unique_field_blank=random_alphanum(),
             some_unique_field_default=random_alphanum()
         )
+
         test_model_copy = test_model.copy()
 
         utcnow = datetime.utcnow()
