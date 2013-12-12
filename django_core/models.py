@@ -178,3 +178,8 @@ class AbstractBaseModel(models.Model):
             if field.attname == field_name:
                 # This is the for_objs model class
                 return field.related.parent_model
+
+    @classmethod
+    def post_save(cls, *args, **kwargs):
+        """Adding a hook here so it's safe to call the super's post_save."""
+        pass
