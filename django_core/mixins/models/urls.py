@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils.html import escape
 
-from ..html.builders import build_link
+from ...html.builders import build_link
 
 
 class AbstractUrlLinkModelMixin(models.Model):
