@@ -6,11 +6,11 @@ branches:
     - master
 env:
   - DJANGO_VERSION=1.5.5
-  - DJANGO_VERSION=1.6
+  - DJANGO_VERSION=1.6.1
 install:
   - pip install -r requirements.txt --use-mirrors
   - pip install -r tests/requirements.txt --use-mirrors
-  - pip install -q Django==$DJANGO_VERSION
+  - pip install -q django==$DJANGO_VERSION
   - pip install coveralls
   - python setup.py -q install
 script:
