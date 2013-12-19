@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django_testing.testcases.users import SingleUserTestCase
 from django_testing.user_utils import create_user
 from python_tools.random_utils import random_alphanum
+from python_tools.random_utils import ALPHANUM
 
 from tests.test_models.models import TestManagerModel
 
@@ -90,3 +91,26 @@ class CommonManagerTests(SingleUserTestCase):
                                         slug=slug)
         next_slug = TestManagerModel.objects.get_next_slug(slug=slug)
         self.assertEqual(next_slug, '{0}-1'.format(slug))
+
+    def test_get_next_token(self):
+        """Test for getting the next avaible token."""
+        used_tokens = [c for c in list(ALPHANUM) if c != '8']
+        objs = [TestManagerModel(token=t, created_user=self.user)
+                for t in used_tokens]
+        TestManagerModel.objects.bulk_create(objs)
+
+        self.assertEqual(TestManagerModel.objects.get_next_token(length=1), '8')
+
+    def test_get_available_tokens(self):
+        """Test for getting the next avaible tokens."""
+        used_tokens = [c for c in list(ALPHANUM) if c not in ('8', 'a', 'm')]
+        objs = [TestManagerModel(token=t, created_user=self.user)
+                for t in used_tokens]
+        TestManagerModel.objects.bulk_create(objs)
+        tokens = TestManagerModel.objects.get_available_tokens(count=3,
+                                                               token_length=1)
+
+        self.assertEqual(len(tokens), 3)
+        self.assertTrue('8' in tokens)
+        self.assertTrue('a' in tokens)
+        self.assertTrue('m' in tokens)

@@ -4,6 +4,7 @@ from django.db import models
 from django_core.models import AbstractBaseModel
 
 from .managers import BaseTestManager
+from django_core.mixins.models.tokens import AbstractTokenModel
 
 
 User = get_user_model()
@@ -24,8 +25,7 @@ class TestModel(AbstractBaseModel):
                                                  default='Hello world')
 
 
-class TestManagerModel(AbstractBaseModel):
+class TestManagerModel(AbstractTokenModel, AbstractBaseModel):
     slug = models.SlugField(null=True, blank=True)
-    token = models.CharField(max_length=50, null=True, blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
     objects = BaseTestManager()

@@ -3,6 +3,7 @@ from django.db import models
 from django.http.response import Http404
 from django.template.defaultfilters import slugify
 from python_tools.random_utils import random_alphanum
+import math
 
 
 class BaseManager(models.Manager):
@@ -176,20 +177,46 @@ class TokenManager(BaseManager):
 
         raise Http404
 
-    def get_next_token(self, length=25, **kwargs):
+    def get_next_token(self, length=15, **kwargs):
         """Gets the next available token.
 
+        :param length: length of the token
         :param kwargs: additional filter criteria to check for when looking for
             a unique token.
 
         """
-        while True:
-            tokens = [random_alphanum(length=length) for t in range(5)]
-            obj_ids = self.filter(token__in=tokens).values_list('id')
-            available = set(tokens).difference(obj_ids)
+        return self.get_available_tokens(count=1,
+                                         token_length=length,
+                                         **kwargs)[0]
 
-            if available:
-                return available.pop()
+    def get_available_tokens(self, count=10, token_length=15, **kwargs):
+        """Gets a list of available tokens.
+
+        :param count: the number of tokens to return.
+        :param token_length: the length of the tokens.  The higher the number
+            the easier it will be to return a list.  If token_length == 1
+            there's a strong probability that the enough tokens will exist in
+            the db.
+
+        """
+        # This is the number of extra tokens to try and retrieve so calls to
+        # the db can be limited
+        token_buffer = int(math.ceil(count * .05))
+
+        if token_buffer < 5:
+            token_buffer = 5
+
+        available = set([])
+
+        while True:
+            tokens = [random_alphanum(length=token_length)
+                      for t in range(count + token_buffer)]
+            db_tokens = self.filter(token__in=tokens).values_list('token',
+                                                                  flat=True)
+            available.update(set(tokens).difference(db_tokens))
+
+            if len(available) >= count:
+                return list(available)[:count]
 
 
 class UserManager(models.Manager):
