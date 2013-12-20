@@ -24,7 +24,7 @@ class AbstractUrlLinkModelMixin(models.Model):
             text = self.id
 
         return build_link(href=self.get_absolute_url(),
-                          text=escape(text),
+                          text=text,
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
@@ -36,7 +36,7 @@ class AbstractUrlLinkModelMixin(models.Model):
             text = 'Edit'
 
         return build_link(href=self.get_edit_url(),
-                          text=escape(text),
+                          text=text,
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
@@ -48,7 +48,7 @@ class AbstractUrlLinkModelMixin(models.Model):
             text = 'Delete'
 
         return build_link(href=self.get_delete_url(),
-                          text=escape(text),
+                          text=text,
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
