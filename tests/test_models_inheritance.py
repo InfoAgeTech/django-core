@@ -8,7 +8,6 @@ from django_testing.testcases.users import SingleUserTestCase
 from python_tools.random_utils import random_alphanum
 
 from .test_models.models import TestModel
-from .test_models.models import TestDeleteModel
 
 User = get_user_model()
 
@@ -107,27 +106,3 @@ class ModelTests(SingleUserTestCase):
         self.assertIsNone(test_model_copy.some_unique_field_blank)
         self.assertEqual(test_model_copy.some_unique_field_default,
                          'Hello world')
-
-    def test_safe_delete(self):
-        """Test for safe deleting an object instance.  This ensure that the
-        object still exists in the database, but has it's "is_deleted" field
-        set to True.
-        """
-        m = TestDeleteModel.objects.create()
-        self.assertFalse(m.is_deleted)
-
-        m.delete_safe()
-        self.assertTrue(m.is_deleted)
-
-        m2 = TestDeleteModel.objects.get(id=m.id)
-        self.assertEqual(m, m2)
-
-    def test_force_delete(self):
-        """Test forcing deleting an object from the database."""
-        m = TestDeleteModel.objects.create()
-        self.assertFalse(m.is_deleted)
-
-        m.delete()
-
-        with self.assertRaises(TestDeleteModel.DoesNotExist):
-            TestDeleteModel.objects.get(id=m.id)
