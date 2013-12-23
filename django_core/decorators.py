@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 
 
+# TODO: This will soon be delete! DO NOT USE!
 def html(template):
     """Decorator for Django views that sends returned dict to render_to_response function
     with given template and RequestContext as context instance.

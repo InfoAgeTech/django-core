@@ -8,6 +8,7 @@ from django.core.urlresolvers import get_callable
 from django.http import HttpResponseNotAllowed
 
 
+# TODO: This will soon be deleted! DO NOT USE!!!
 class Dispatcher(object):
     """Calls a view by request.method value.
 

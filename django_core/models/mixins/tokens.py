@@ -1,5 +1,5 @@
 from django.db import models
-from django_core.managers import TokenManager
+from django_core.models.managers import TokenManager
 from python_tools.list_utils import make_obj_list
 
 

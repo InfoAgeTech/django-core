@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http.response import Http404
 from django.utils.decorators import method_decorator
-
-from ..common import CommonSingleObjectViewMixin
+from django_core.views.mixins.common import CommonSingleObjectViewMixin
 
 
 class CreatorRequiredViewMixin(CommonSingleObjectViewMixin):

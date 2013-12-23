@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+import math
+
 from django.db import models
 from django.http.response import Http404
 from django.template.defaultfilters import slugify
 from python_tools.random_utils import random_alphanum
-import math
+from django_core.models.query import SafeDeleteQuerySet
 
 
 class BaseManager(models.Manager):
@@ -230,3 +232,9 @@ class UserManager(models.Manager):
             return self.filter(user_id=user_id)
         except self.model.DoesNotExist:
             return []
+
+
+class SafeDeleteManager(models.Manager):
+
+    def get_queryset(self, *args, **kwargs):
+        return SafeDeleteQuerySet(model=self.model, using=self._db, *args, **kwargs)
