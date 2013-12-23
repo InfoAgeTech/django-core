@@ -10,7 +10,7 @@ class SafeDeleteQuerySet(QuerySet):
         kwargs.pop('is_deleted', None)
         super(SafeDeleteQuerySet, self).update(is_deleted=True, **kwargs)
 
-    def filter(self, is_deleted=False, *args, **kwargs):
+    def filter(self, is_deleted=None, *args, **kwargs):
         """Always assume you want the objects that aren't considered deleted.
 
         :param is_deleted: field boolean indicating if you want to pull back
@@ -35,7 +35,6 @@ class SafeDeleteQuerySet(QuerySet):
         if (is_deleted != None and
             'pk' not in kwargs and
             self.model._meta.pk.name not in kwargs):
-            is_deleted = None
+            kwargs['is_deleted'] = is_deleted
 
-        return super(SafeDeleteQuerySet, self).get(is_deleted=is_deleted,
-                                                   *args, **kwargs)
+        return super(SafeDeleteQuerySet, self).get(*args, **kwargs)

@@ -1,4 +1,5 @@
 from django.db import models
+from django_core.models.managers import SafeDeleteManager
 
 
 class AbstractSafeDeleteModelMixin(models.Model):
@@ -6,7 +7,9 @@ class AbstractSafeDeleteModelMixin(models.Model):
     want the object to be deleted, but instead just have the "is_deleted"
     field set to True.
     """
+
     is_deleted = models.BooleanField(default=False)
+    objects = SafeDeleteManager()
 
     class Meta:
         abstract = True
