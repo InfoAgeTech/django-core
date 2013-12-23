@@ -31,10 +31,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    test_suite='nose.collector',
-    tests_require=['nose'],
     setup_requires=[
-        'django >= 1.5.5',
+        'django >= 1.6',
     ],
     classifiers=classifiers
 )
