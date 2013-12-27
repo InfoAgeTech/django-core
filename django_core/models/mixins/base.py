@@ -58,6 +58,10 @@ class AbstractBaseModel(models.Model):
         self.__class__.save_prep(self)
         return super(AbstractBaseModel, self).save(*args, **kwargs)
 
+    def get_verbose_name(self):
+        """Gets the verbose name for an object."""
+        return self._meta.verbose_name
+
     @classmethod
     def save_prep(cls, instance_or_instances):
         """Common save functionality for all models. This can be called with a
