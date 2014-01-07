@@ -119,9 +119,17 @@ class IntegerListFieldTests(TestCase):
         x.save()
 
     def test_choice_validation_error(self):
-        """Test validating a ListField with choices that throws a
+        """Test validating a IntegerListField with choices that throws a
         ValidationError for not having a valid choice."""
         x = TestIntegerListFieldModel()
 
         with self.assertRaises(ValidationError):
             x.int_list_field_choices = [1, 2]
+
+    def test_choice_validation_out_of_range(self):
+        """Test validating a IntegerListField with choices that throws a
+        ValidationError for being out of min and max value range."""
+        x = TestIntegerListFieldModel()
+
+        with self.assertRaises(ValidationError):
+            x.int_list_field_choices = [-1, 50, 101]

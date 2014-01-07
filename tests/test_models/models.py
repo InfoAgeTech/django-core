@@ -53,5 +53,7 @@ class TestIntegerListFieldModel(models.Model):
     int_list_field = IntegerListField()
     int_list_field_not_required = IntegerListField(blank=True, null=True)
     int_list_field_choices = IntegerListField(choices=int_list_field_choices,
+                                              min_value=0,
+                                              max_value=100,
                                               blank=True,
                                               null=True)

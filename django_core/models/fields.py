@@ -72,8 +72,17 @@ class IntegerListField(ListField):
 
     default_error_messages = {
         'invalid_integers': _('All values in list "%(value)s" must be of '
-                              'integer types.')
+                              'integer types.'),
+        'invalid_out_of_range_min': _('"%(value)s" out of range. Must be '
+                                      'greater than or equal to %(min)s'),
+        'invalid_out_of_range_max': _('"%(value)s" out of range. Must be '
+                                      'less than or equal to %(max)s')
     }
+
+    def __init__(self, min_value=None, max_value=None, *args, **kwargs):
+        self.min_value = min_value
+        self.max_value = max_value
+        super(IntegerListField, self).__init__(*args, **kwargs)
 
     def get_prep_value(self, value):
 
@@ -86,6 +95,20 @@ class IntegerListField(ListField):
                         self.error_messages['invalid_integers'],
                         code='invalid_integers',
                         params={'value': value}
+                    )
+
+                if self.min_value != None and item < self.min_value:
+                    raise ValidationError(
+                        self.error_messages['invalid_out_of_range_min'],
+                        code='invalid_out_of_range_min',
+                        params={'value': value, 'min': self.min_value}
+                    )
+
+                if self.max_value != None and item > self.max_value:
+                    raise ValidationError(
+                        self.error_messages['invalid_out_of_range_max'],
+                        code='invalid_out_of_range_max',
+                        params={'value': value, 'max': self.max_value}
                     )
 
         return super(IntegerListField, self).get_prep_value(value)
