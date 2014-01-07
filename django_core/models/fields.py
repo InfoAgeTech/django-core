@@ -65,15 +65,6 @@ class ListField(models.TextField):
 
         return super(ListField, self).get_prep_value(value)
 
-    def clean(self, value, model_instance):
-        """
-        Convert the value's type and run validation. Validation errors
-        from to_python and validate are propagated. The correct value is
-        returned if no error is raised.
-        """
-        value = super(ListField, self).clean(value, model_instance)
-        return value
-
 
 class IntegerListField(ListField):
     """Wrapper around ListField ensuring all values are integers."""
