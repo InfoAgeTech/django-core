@@ -80,6 +80,10 @@ class IntegerListField(ListField):
     }
 
     def __init__(self, min_value=None, max_value=None, *args, **kwargs):
+        """
+        :param min_value: the minimum value that can be in the list
+        :param max_value: the maximum value that can be in the list
+        """
         self.min_value = min_value
         self.max_value = max_value
         super(IntegerListField, self).__init__(*args, **kwargs)
