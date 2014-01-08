@@ -4,12 +4,17 @@ import json
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.encoding import smart_text
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 
 
-class ListField(models.TextField):
-    """Model field for python lists."""
+class ListField(models.CharField):
+    """Model field for python lists.
+
+    Note: this extends from CharField so all restrictions apply to this model
+    field that apply to CharField (i.e. max_length)
+    """
     __metaclass__ = models.SubfieldBase
 
     description = "Stores a python list"
@@ -18,6 +23,15 @@ class ListField(models.TextField):
         'invalid_list': _("'%(value)s' value must be a list type."),
         'invalid_choice': _("'%(value)s' is not a valid choice.")
     }
+
+    def __init__(self, max_length=2000, *args, **kwargs):
+        """
+        :param max_length: this is the total length the string could be for all
+            characters in the string. So, a field value of:
+
+            ['hello', 'world'] == length of 18
+        """
+        super(ListField, self).__init__(max_length=max_length, *args, **kwargs)
 
     def to_python(self, value):
         if value == None:
@@ -63,7 +77,7 @@ class ListField(models.TextField):
                 params={'value': value}
             )
 
-        return super(ListField, self).get_prep_value(value)
+        return smart_text(value)
 
 
 class IntegerListField(ListField):
@@ -115,7 +129,14 @@ class IntegerListField(ListField):
                         params={'value': value, 'max': self.max_value}
                     )
 
-        return super(IntegerListField, self).get_prep_value(value)
+        prepped_value = super(IntegerListField, self).get_prep_value(value)
+
+        if value:
+            # Remove all spaces from the stored string since all items will be
+            # integers anyway and spaces aren't needed.
+            return prepped_value.replace(' ', '')
+
+        return prepped_value
 
 
 class JSONField(models.TextField):
