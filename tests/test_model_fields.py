@@ -3,6 +3,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
+from tests.test_models.models import SomeModel
 from tests.test_models.models import TestIntegerListFieldModel
 from tests.test_models.models import TestListFieldModel
 

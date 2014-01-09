@@ -6,17 +6,16 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.encoding import smart_text
 from django.utils.six import string_types
+from django.utils.six import with_metaclass
 from django.utils.translation import ugettext_lazy as _
 
 
-class ListField(models.CharField):
+class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
     """Model field for python lists.
 
     Note: this extends from CharField so all restrictions apply to this model
     field that apply to CharField (i.e. max_length)
     """
-    __metaclass__ = models.SubfieldBase
-
     description = "Stores a python list"
 
     default_error_messages = {
@@ -80,9 +79,8 @@ class ListField(models.CharField):
         return smart_text(value)
 
 
-class IntegerListField(ListField):
+class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
     """Wrapper around ListField ensuring all values are integers."""
-    __metaclass__ = models.SubfieldBase
 
     default_error_messages = {
         'invalid_integers': _('All values in list "%(value)s" must be of '
@@ -139,7 +137,7 @@ class IntegerListField(ListField):
         return prepped_value
 
 
-class JSONField(models.TextField):
+class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
     """Simple JSON field that stores python structures as JSON strings
     on database.
 
@@ -148,7 +146,6 @@ class JSONField(models.TextField):
     https://github.com/omab/django-social-auth/blob/master/social_auth/fields.py
 
     """
-    __metaclass__ = models.SubfieldBase
 
     def to_python(self, value):
         """
