@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals
+
 from copy import deepcopy
 from datetime import datetime
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django_core.models.managers import CommonManager
 from python_tools.list_utils import make_obj_list
 
@@ -11,6 +15,7 @@ from python_tools.list_utils import make_obj_list
 User = get_user_model()
 
 
+@python_2_unicode_compatible
 class AbstractBaseModel(models.Model):
     """Base model for other db model to extend.  This class contains common
     model attributes needed by almost all models.
@@ -42,9 +47,6 @@ class AbstractBaseModel(models.Model):
         #    queries.  This works because id is an integer field that's auto
         #    incremented.
         ordering = ('-id',)
-
-    def __unicode__(self):
-        return unicode(self.id)
 
     def __str__(self):
         return str(self.id)
