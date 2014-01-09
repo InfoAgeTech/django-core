@@ -48,7 +48,7 @@ class Dispatcher(object):
 
     def __init__(self, **methods):
         self.__method_map = dict((method.lower(), handler) for method, handler
-                                 in methods.iteritems())
+                                 in methods.items())
 
     def __getitem__(self, key):
         """Gets the view function for the lowercase version of the method key.
