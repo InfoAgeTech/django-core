@@ -31,5 +31,5 @@ class AbstractTokenModel(models.Model):
             if not instance.token:
                 instance.token = tokens.pop()
 
-        return super(AbstractTokenModel, cls).save_prep(
+        super(AbstractTokenModel, cls).save_prep(
                                             instance_or_instances=instances)

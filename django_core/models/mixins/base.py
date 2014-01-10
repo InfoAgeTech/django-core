@@ -84,7 +84,7 @@ class AbstractBaseModel(models.Model):
             @classmethod
             def save_prep(cls, instance_or_instances):
                 # Do additional processing for inheriting class
-                return super(MyInheritingClass, cls).save_prep(instance_or_instances)
+                super(MyInheritingClass, cls).save_prep(instance_or_instances)
 
         Note: Make sure not to call the save_prep method in the save method of
         inheriting classes or it will get called twice which likely isn't
