@@ -57,3 +57,7 @@ class TestIntegerListFieldModel(models.Model):
                                               max_value=100,
                                               blank=True,
                                               null=True)
+    int_list_field_min_max = IntegerListField(min_value=0,
+                                              max_value=100,
+                                              blank=True,
+                                              null=True)

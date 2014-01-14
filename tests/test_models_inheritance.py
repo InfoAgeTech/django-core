@@ -7,7 +7,8 @@ from django.contrib.auth import get_user_model
 from django_testing.testcases.users import SingleUserTestCase
 from python_tools.random_utils import random_alphanum
 
-from .test_models.models import TestModel
+from tests.test_objects.models import TestModel
+
 
 User = get_user_model()
 

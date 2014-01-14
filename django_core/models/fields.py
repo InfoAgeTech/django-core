@@ -2,6 +2,7 @@
 import ast
 import json
 
+from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.encoding import smart_text
@@ -17,19 +18,29 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
     field that apply to CharField (i.e. max_length)
     """
     description = "Stores a python list"
+    form_class = None
+    choices_form_class = forms.TypedMultipleChoiceField
 
     default_error_messages = {
         'invalid_list': _("'%(value)s' value must be a list type."),
         'invalid_choice': _("'%(value)s' is not a valid choice.")
     }
 
-    def __init__(self, max_length=2000, *args, **kwargs):
+    def __init__(self, max_length=2000, form_class=None,
+                 choices_form_class=None, *args, **kwargs):
         """
         :param max_length: this is the total length the string could be for all
             characters in the string. So, a field value of:
 
             ['hello', 'world'] == length of 18
+        :param form_class: the form field class to user for this field.
         """
+        if form_class:
+            self.default_field_class = form_class
+
+        if choices_form_class:
+            self.choices_form_class = choices_form_class
+
         super(ListField, self).__init__(max_length=max_length, *args, **kwargs)
 
     def to_python(self, value):
@@ -78,6 +89,28 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
 
         return smart_text(value)
 
+    def formfield(self, form_class=None, choices_form_class=None, **kwargs):
+        """Make the default formfield a CommaSeparatedListField."""
+        defaults = {
+            'form_class': form_class or self.get_form_class(),
+            'choices_form_class': choices_form_class or self.get_choices_form_class()
+        }
+        defaults.update(kwargs)
+
+        return super(ListField, self).formfield(**defaults)
+
+    def get_form_class(self):
+        """Gets the form field class to user for the field."""
+        return self.form_class
+
+    def get_choices_form_class(self):
+        return self.choices_form_class
+
+    def validate(self, value, model_instance, **kwargs):
+        """This follows the validate rules for choices_form_class field used.
+        """
+        self.get_choices_form_class().validate(value, model_instance, **kwargs)
+
 
 class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
     """Wrapper around ListField ensuring all values are integers."""
@@ -100,32 +133,40 @@ class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
         self.max_value = max_value
         super(IntegerListField, self).__init__(*args, **kwargs)
 
-    def get_prep_value(self, value):
+    def to_python(self, value):
+        val = super(IntegerListField, self).to_python(value)
 
-        if isinstance(value, list):
+        if isinstance(val, list):
+
+            try:
+                val = [int(item) for item in val]
+            except:
+                raise ValidationError(
+                    self.error_messages['invalid_integers'],
+                    code='invalid_integers',
+                    params={'value': val}
+                )
 
             # Validate that all items in the list are integers.
-            for item in value:
-                if not isinstance(item, int):
-                    raise ValidationError(
-                        self.error_messages['invalid_integers'],
-                        code='invalid_integers',
-                        params={'value': value}
-                    )
+            for item in val:
 
                 if self.min_value != None and item < self.min_value:
                     raise ValidationError(
                         self.error_messages['invalid_out_of_range_min'],
                         code='invalid_out_of_range_min',
-                        params={'value': value, 'min': self.min_value}
+                        params={'value': item, 'min': self.min_value}
                     )
 
                 if self.max_value != None and item > self.max_value:
                     raise ValidationError(
                         self.error_messages['invalid_out_of_range_max'],
                         code='invalid_out_of_range_max',
-                        params={'value': value, 'max': self.max_value}
+                        params={'value': item, 'max': self.max_value}
                     )
+
+        return val
+
+    def get_prep_value(self, value):
 
         prepped_value = super(IntegerListField, self).get_prep_value(value)
 
