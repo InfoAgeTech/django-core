@@ -43,6 +43,6 @@ here = lambda *x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': here('django_core.db')
+        'NAME': here('test_db.db')
     }
 }
