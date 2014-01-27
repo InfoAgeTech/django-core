@@ -7,7 +7,7 @@ NOTE: This is not stable yet and will likely change!  Please don't use in produc
 .. image:: https://badge.fury.io/py/django-core.png
     :target: http://badge.fury.io/py/django-core
 .. image:: https://pypip.in/license/django-core/badge.png
-    :target: https://pypi.python.org/pypi/django-core
+    :target: https://github.com/InfoAgeTech/django-core/blob/master/LICENSE
 
 ===========
 django-core
