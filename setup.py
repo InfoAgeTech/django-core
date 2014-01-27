@@ -22,7 +22,7 @@ README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 setup(
     name='django-core',
     version='0.0.1',
-    description='tools app for django',
+    description='A core set of tools for django applications.',
     long_description=README,
     author='Troy Grosfield',
     maintainer='Troy Grosfield',
