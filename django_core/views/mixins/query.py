@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 
-# TODO: Should this go in something like a django-request app?
 class QueryStringAliasViewMixin(object):
     """Mixin to let you map GET query string keys to form keys.
 
@@ -16,20 +15,21 @@ class QueryStringAliasViewMixin(object):
 
     Example:
 
-    Consuming view implements the following attribute:
+    Consuming view implements the following attribute::
 
         query_key_mapper = {'t': 'title'}
 
-    and a url query string is:
+    and a url query string is::
 
         ?t=hello&foo=bar
 
-    This will result in an initial dict for the form being returned as:
+    This will result in an initial dict for the form being returned as::
 
         {
             'title': 'hello',
             'foo': 'bar'
         }
+
     """
     query_key_mapper = None
 

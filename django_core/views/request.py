@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.views.generic.edit import BaseFormView
-from django_core.views.response import JSONResponseMixin
+
+from ..views.response import JSONResponseMixin
 
 
 class ApiFormView(JSONResponseMixin, BaseFormView):

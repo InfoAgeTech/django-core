@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
-from ...html.builders import build_link
+from django_core.html.builders import build_link
 
 
 class AbstractUrlLinkModelMixin(models.Model):

@@ -1,8 +1,10 @@
+__pycache__
+*.egg-info
+*.db
+*.log
+*.pyc
+.idea
 .project
 .pydevproject
 .settings
-.idea
-*.pyc
-*.log
-*.db
-__pycache__
+docs/guide
