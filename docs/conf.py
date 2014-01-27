@@ -10,13 +10,19 @@
 #
 # All configuration values have a default; values that are commented out
 # serve to show the default.
+from __future__ import unicode_literals
 
-import sys, os
+from datetime import date
+import os
+import sys
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.append(os.path.abspath('../django_core'))
+sys.path.append(os.path.abspath('../tests'))
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 # -- General configuration -----------------------------------------------------
 
@@ -25,7 +31,15 @@ sys.path.append(os.path.abspath('../django_core'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode'
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -40,8 +54,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'django-core'
-copyright = u'2013, Troy Grosfield'
+project = 'django-core'
+copyright = '{0}, Troy Grosfield'.format(date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -183,8 +197,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'django-core.tex', u'django-core Documentation',
-   u'Troy Grosfield', 'manual'),
+  ('index', 'django-core.tex', 'django-core Documentation',
+   'Troy Grosfield', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,7 +227,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'django-core', u'django-core Documentation',
+    ('index', 'django-core', 'django-core Documentation',
      [u'Troy Grosfield'], 1)
 ]
 
@@ -227,8 +241,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'django-core', u'django-core Documentation',
-   u'Troy Grosfield', 'django-core', 'One line description of project.',
+  ('index', 'django-core', 'django-core Documentation',
+   'Troy Grosfield', 'django-core', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -245,10 +259,10 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'django-core'
-epub_author = u'Troy Grosfield'
-epub_publisher = u'Troy Grosfield'
-epub_copyright = u'2013, Troy Grosfield'
+epub_title = 'django-core'
+epub_author = 'Troy Grosfield'
+epub_publisher = 'Troy Grosfield'
+epub_copyright = '{0}, Troy Grosfield'.format(date.today().year)
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
