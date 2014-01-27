@@ -20,7 +20,7 @@ http://django-core.readthedocs.org
 
 Intallation
 ===========
-Install via pypi::
+Install via `pypi <https://pypi.python.org/pypi/django-core>`_::
 
     pip install django-core
 
