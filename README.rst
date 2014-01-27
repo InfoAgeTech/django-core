@@ -1,13 +1,13 @@
 NOTE: This is not stable yet and will likely change!  Please don't use in production until the 1.0 release.
 
-.. |travisci| image:: https://travis-ci.org/InfoAgeTech/django-core.png?branch=master
-  :target: http://travis-ci.org/InfoAgeTech/django-core
-.. |coveralls| image:: https://coveralls.io/repos/InfoAgeTech/django-core/badge.png
-  :target: https://coveralls.io/r/InfoAgeTech/django-core
+.. image:: https://travis-ci.org/InfoAgeTech/django-core.png?branch=master
+    :target: http://travis-ci.org/InfoAgeTech/django-core
+.. image:: https://coveralls.io/repos/InfoAgeTech/django-core/badge.png
+    :target: https://coveralls.io/r/InfoAgeTech/django-core
 
-==================================
-django-core |travisci| |coveralls|
-==================================
+===========
+django-core
+===========
 django-core is a python tools module written for django.
 
 Intallation
