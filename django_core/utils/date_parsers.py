@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 import datetime
 
 from dateutil.parser import parse
-import pytz
+from django.utils.timezone import pytz
 from six import string_types
 
 
