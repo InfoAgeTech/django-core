@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django_core.db.models.fields import IntegerListField
 from django_core.db.models.fields import ListField
-from django_core.db.models import AbstractBaseModel
+from django_core.db.models.mixins.base import AbstractBaseModel
 from django_core.db.models import AbstractTokenModel
 
 from .managers import BaseTestManager
