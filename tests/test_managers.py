@@ -5,7 +5,7 @@ from django.utils.text import slugify
 from django_testing.testcases.users import SingleUserTestCase
 from django_testing.user_utils import create_user
 from python_tools.random_utils import ALPHANUM
-from python_tools.random_utils import random_alphanum
+from django_core.utils.random_utils import random_alphanum
 
 from tests.test_objects.models import TestManagerModel
 from tests.test_objects.models import TestModel

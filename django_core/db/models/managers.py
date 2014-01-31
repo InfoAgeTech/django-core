@@ -4,7 +4,7 @@ import math
 from django.db import models
 from django.http.response import Http404
 from django.template.defaultfilters import slugify
-from python_tools.random_utils import random_alphanum
+from django_core.utils.random_utils import random_alphanum
 
 
 class BaseManager(models.Manager):

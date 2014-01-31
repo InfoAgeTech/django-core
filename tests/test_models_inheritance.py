@@ -5,7 +5,7 @@ from random import randint
 
 from django.contrib.auth import get_user_model
 from django_testing.testcases.users import SingleUserTestCase
-from python_tools.random_utils import random_alphanum
+from django_core.utils.random_utils import random_alphanum
 
 from tests.test_objects.models import TestModel
 

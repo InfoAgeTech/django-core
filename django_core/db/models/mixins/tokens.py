@@ -1,6 +1,6 @@
 from django.db import models
 from django_core.db.models import TokenManager
-from python_tools.list_utils import make_obj_list
+from django_core.utils.list_utils import make_obj_list
 
 
 class AbstractTokenModel(models.Model):
