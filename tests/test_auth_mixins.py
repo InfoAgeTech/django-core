@@ -6,8 +6,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.handlers.wsgi import WSGIHandler
 from django.test import Client
 from django.test import TestCase
-from django_core.views.mixins.auth import StaffRequiredViewMixin
-from django_core.views.mixins.auth import SuperuserRequiredViewMixin
+from django_core.views import StaffRequiredViewMixin
+from django_core.views import SuperuserRequiredViewMixin
 from mock import patch
 
 
