@@ -25,7 +25,7 @@ setup(
     long_description=README,
     author='Troy Grosfield',
     maintainer='Troy Grosfield',
-    url='https://github.com/InfoAgeTech/django-core',
+    url='https://github.com/infoagetech/django-core',
     license='MIT',
     packages=find_packages(),
     include_package_data=True,
