@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import os
+import hashlib
 
 
 class FilePathInfo(object):
@@ -63,3 +64,21 @@ class FilePathInfo(object):
 
     def __init__(self, file_path, **kwargs):
         self.file_path = file_path
+
+
+def get_md5_for_file(file):
+    """Get the md5 hash for a file.
+
+    :param file: the file to get the md5 hash for
+    """
+    md5 = hashlib.md5()
+
+    while True:
+        data = file.read(md5.block_size)
+
+        if not data:
+            break
+
+        md5.update(data)
+
+    return md5.hexdigest()
