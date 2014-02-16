@@ -58,9 +58,8 @@ class FilePathInfo(object):
             self.file_path_without_extension = None
             self.file_path_without_name = None
 
-    @property
     def is_file(self):
-        return os.path.isfile(path=self.full_path)
+        return os.path.isfile(path=self.file_path)
 
     def __init__(self, file_path, **kwargs):
         self.file_path = file_path
