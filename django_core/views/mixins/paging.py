@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 
 class PagingViewMixin(object):
 
     page_num = 1
     page_size = 15
+    page_offset = 0
     paginate_by = page_size
     page_kwarg = 'p'  # used by django's core ListView CBV
 
@@ -16,7 +17,16 @@ class PagingViewMixin(object):
 
         self.page_num, self.page_size = self.get_paging()
         self.paginate_by = self.page_size
+        self.page_offset = (self.page_num - 1) * self.page_size
         return super(PagingViewMixin, self).dispatch(*args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PagingViewMixin, self).get_context_data(*args, **kwargs)
+        context['page_size'] = self.page_size
+        context['page_num'] = self.page_num
+        context['page_offset'] = self.page_offset
+        context['page_kwarg'] = self.page_kwarg
+        return context
 
     def get_paging(self):
         """Gets the paging values passed through the query string params.

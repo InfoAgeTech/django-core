@@ -1,4 +1,5 @@
-# -*- coding -*-
+from __future__ import unicode_literals
+
 import json
 from urllib.request import urlopen
 
