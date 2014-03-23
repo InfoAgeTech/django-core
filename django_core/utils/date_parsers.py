@@ -4,7 +4,7 @@ import datetime
 
 from dateutil.parser import parse
 from django.utils.timezone import pytz
-from six import string_types
+from django.utils.six import string_types
 
 
 def now_by_tz(tz='US/Central', ignoretz=True):
