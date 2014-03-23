@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 import datetime
 
 from dateutil.parser import parse
-from django.utils.timezone import pytz
 from django.utils.six import string_types
+from django.utils.timezone import pytz
 
 
 def now_by_tz(tz='US/Central', ignoretz=True):
