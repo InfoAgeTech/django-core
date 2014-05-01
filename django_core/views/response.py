@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from copy import deepcopy
 import json
 
@@ -46,6 +45,7 @@ class JSONHybridUpdateView(JSONResponseMixin, UpdateView):
 
     def form_valid(self, form):
         if self.request.is_ajax():
+            self.object = form.save()
             return JSONResponseMixin.render_to_response(self, context={})
 
         return UpdateView.form_valid(self, form)
