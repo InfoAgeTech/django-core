@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.views.generic.base import View
+from django.views.generic.edit import UpdateView
 
 
 class JSONResponseMixin(object):
@@ -30,6 +31,31 @@ class JSONResponseMixin(object):
         return HttpResponse(content=json.dumps(response_content),
                             content_type='application/json; charset=utf-8',
                             **kwargs)
+
+
+class JSONHybridUpdateView(JSONResponseMixin, UpdateView):
+    """Hybrid view that handles regular update requests as well as json update
+    requests.
+    """
+    def render_to_response(self, context):
+
+        if self.request.is_ajax():
+            return JSONResponseMixin.render_to_response(self, context)
+
+        return UpdateView.render_to_response(self, context)
+
+    def form_valid(self, form):
+        if self.request.is_ajax():
+            return JSONResponseMixin.render_to_response(self, context={})
+
+        return UpdateView.form_valid(self, form)
+
+    def form_invalid(self, form):
+        if self.request.is_ajax():
+            context = {'errors': form.errors}
+            return JSONResponseMixin.render_to_response(self, context)
+
+        return UpdateView.form_invalid(self, form)
 
 
 # TODO: this should go away in favor of JSONResponseMixin above
