@@ -8,12 +8,19 @@ class PagingViewMixin(object):
     page_offset = 0
     paginate_by = page_size
     page_kwarg = 'p'  # used by django's core ListView CBV
+    _original_page_size = page_size
+    _original_paginate_by = paginate_by
 
     def dispatch(self, *args, **kwargs):
 
         if self.page_size != self.paginate_by:
-            # Default to the paginate_by value if these two if different.
-            self.page_size = self.paginate_by
+
+            if self.page_size != self._original_page_size:
+                # The page_size was changed by the consuming view
+                self.paginate_by = self.page_size
+
+            elif self.paginate_by != self._original_paginate_by:
+                self.page_size = self.paginate_by
 
         self.page_num, self.page_size = self.get_paging()
         self.paginate_by = self.page_size
