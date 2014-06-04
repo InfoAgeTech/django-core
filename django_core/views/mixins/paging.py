@@ -18,7 +18,6 @@ class PagingViewMixin(object):
             if self.page_size != self._original_page_size:
                 # The page_size was changed by the consuming view
                 self.paginate_by = self.page_size
-
             elif self.paginate_by != self._original_paginate_by:
                 self.page_size = self.paginate_by
 
