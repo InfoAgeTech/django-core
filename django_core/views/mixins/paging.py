@@ -27,7 +27,8 @@ class PagingViewMixin(object):
         return super(PagingViewMixin, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(PagingViewMixin, self).get_context_data(*args, **kwargs)
+        context = super(PagingViewMixin, self).get_context_data(*args,
+                                                                **kwargs)
         context['page_size'] = self.page_size
         context['page_num'] = self.page_num
         context['page_offset'] = self.page_offset
