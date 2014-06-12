@@ -2,6 +2,26 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.forms.util import ErrorDict
+from django.forms.widgets import HiddenInput
+
+
+class PrefixFormMixin(forms.ModelForm):
+    """Form mixin for prefix.  Many forms rendered to a page will require a
+    prefix to maintain uniqueness with rendering.  This stores the prefix
+    used to assist with this.
+    """
+    form_prefix = forms.CharField(max_length=50, required=False,
+                                  widget=HiddenInput)
+
+    def __init__(self, *args, **kwargs):
+        # TODO: Data can be in kwargs or it's the first arg param
+        if kwargs.get('prefix') is None and 'data' in kwargs:
+            for key, val in kwargs.get('data', {}).items():
+                if key.endswith('form_prefix'):
+                    kwargs['prefix'] = val
+                    break
+
+        super(PrefixFormMixin, self).__init__(*args, **kwargs)
 
 
 class DeleteFormMixin(forms.ModelForm):
@@ -38,6 +58,3 @@ class DeleteFormMixin(forms.ModelForm):
             return None
 
         return super(DeleteFormMixin, self).save(*args, **kwargs)
-
-    def delete(self):
-        self.instance.delete()
