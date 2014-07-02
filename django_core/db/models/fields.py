@@ -194,15 +194,19 @@ class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
         Convert the input JSON value into python structures, raises
         django.core.exceptions.ValidationError if the data can't be converted.
         """
+        if isinstance(value, dict):
+            return value
+
         if self.blank and not value:
             return None
+
         if isinstance(value, string_types):
             try:
                 return json.loads(value)
             except Exception as e:
                 raise ValidationError(str(e))
-        else:
-            return value
+
+        return value
 
     def validate(self, value, model_instance):
         """Check value is a valid JSON string, raise ValidationError on
