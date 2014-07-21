@@ -40,7 +40,7 @@ class BaseManager(models.Manager):
             ...                            'some_field__some_fields_field'])
 
             See: https://docs.djangoproject.com/en/dev/ref/models/querysets/
-
+        :param kwargs: list of fields and their values to retrieve.
 
         """
         try:
