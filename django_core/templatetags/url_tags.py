@@ -23,7 +23,7 @@ def get_absolute_url_link(obj, text=None):
 
 
 @register.simple_tag
-def absolute_url_link(obj, auth_user=None, **kwargs):
+def absolute_url_link(obj, **kwargs):
     if hasattr(obj, 'get_absolute_url_link'):
         return obj.get_absolute_url_link(**kwargs)
 
@@ -47,7 +47,7 @@ def get_edit_url_link(obj, text=None):
 
 
 @register.simple_tag
-def edit_url_link(obj, auth_user=None, **kwargs):
+def edit_url_link(obj, **kwargs):
     """This method assumes that the "get_delete_url_link" method has been
     implemented on the obj.
     """
@@ -66,7 +66,7 @@ def get_delete_url_link(obj, text=None):
 
 
 @register.simple_tag
-def delete_url_link(obj, auth_user=None, **kwargs):
+def delete_url_link(obj, **kwargs):
     """This method assumes that the "get_delete_url_link" method has been
     implemented on the obj.
     """
