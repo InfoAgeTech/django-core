@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import importlib
 
 from django.conf import settings
@@ -110,3 +111,33 @@ def get_class_from_settings_full_path(settings_key):
                                    "installed".format(settings_key))
 
     return getattr(manager_module, class_name)
+
+
+def get_function_from_settings(settings_key):
+    """Gets a function from the string path defined in a settings file.
+
+    Example:
+
+    # my_app/my_file.py
+    def some_function():
+        # do something
+        pass
+
+    # settings.py
+    SOME_FUNCTION = 'my_app.my_file.some_function'
+
+    > get_function_from_settings('SOME_FUNCTION')
+    <function my_app.my_file.some_function>
+    """
+
+    renderer_func_str = getattr(settings, settings_key, None)
+    if not renderer_func_str:
+        return None
+
+    module_str, renderer_func_name = renderer_func_str.rsplit('.', 1)
+
+    try:
+        mod = importlib.import_module(module_str)
+        return getattr(mod, renderer_func_name)
+    except Exception as e:
+        return None
