@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django import forms
+from django.utils.translation import ugettext as _
 
 
 class UserFormMixin(object):
@@ -24,13 +25,13 @@ class UserAuthorizationRequiredForm(UserFormMixin, forms.Form):
     * change_password
     """
     error_messages = {
-        'password_incorrect': _("Your old password was entered incorrectly. "
-                                "Please enter it again."),
+        'password_incorrect': _('Your old password was entered incorrectly. '
+                                'Please enter it again.'),
     }
-    user_password = forms.CharField(max_length=50, widget=forms.PasswordInput)
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput)
 
     def clean_user_password(self):
-        password = self.cleaned_data['user_password']
+        password = self.cleaned_data['password']
 
         if not self.user.check_password(password):
             raise forms.ValidationError(

@@ -5,7 +5,7 @@ from django_core.utils.list_utils import make_obj_list
 
 class AbstractTokenModel(models.Model):
 
-    token = models.CharField(max_length=50, db_index=True, unique=True)
+    token = models.CharField(max_length=100, db_index=True, unique=True)
     token_length = 15
     objects = TokenManager()
 
@@ -24,12 +24,15 @@ class AbstractTokenModel(models.Model):
         """
         instances = make_obj_list(instance_or_instances)
 
-        tokens = set(cls.objects.get_available_tokens(count=len(instances),
-                                                    token_length=token_length))
+        tokens = set(cls.objects.get_available_tokens(
+            count=len(instances),
+            token_length=token_length
+        ))
 
         for instance in instances:
             if not instance.token:
                 instance.token = tokens.pop()
 
         super(AbstractTokenModel, cls).save_prep(
-                                            instance_or_instances=instances)
+            instance_or_instances=instances
+        )

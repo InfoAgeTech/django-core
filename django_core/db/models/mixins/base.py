@@ -6,7 +6,6 @@ from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-
 from django_core.db.models.managers import CommonManager
 from django_core.utils.list_utils import make_obj_list
 
