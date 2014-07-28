@@ -3,6 +3,7 @@ from django.test.utils import override_settings
 from django_core.utils.loading import get_class_from_settings
 from django_core.utils.loading import get_class_from_settings_from_apps
 from django_core.utils.loading import get_class_from_settings_full_path
+from django_core.utils.loading import get_function_from_settings
 from django_core.utils.loading import get_model_from_settings
 
 from tests.test_objects.models import TestModel
@@ -31,3 +32,7 @@ class LoadingTestCase(TestCase):
         model = get_class_from_settings_from_apps(settings_key='MY_MODEL_SETTING')
         self.assertEqual(model, TestModel)
 
+    @override_settings(MY_SETTING='django_core.utils.loading.get_function_from_settings')
+    def test_get_function_from_settings(self):
+        func = get_function_from_settings(settings_key='MY_SETTING')
+        self.assertEqual(func, get_function_from_settings)
