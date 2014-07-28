@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+
+from django import forms
+
 
 class UserFormMixin(object):
     """Form mixin that puts the user on the form object."""
@@ -10,3 +14,28 @@ class UserFormMixin(object):
             self.user = user
 
         super(UserFormMixin, self).__init__(*args, **kwargs)
+
+
+class UserAuthorizationRequiredForm(UserFormMixin, forms.Form):
+    """Form for requiring a user to enter their password to successfully pass
+    form validation.  This is useful for flows like:
+
+    * change_email
+    * change_password
+    """
+    error_messages = {
+        'password_incorrect': _("Your old password was entered incorrectly. "
+                                "Please enter it again."),
+    }
+    user_password = forms.CharField(max_length=50, widget=forms.PasswordInput)
+
+    def clean_user_password(self):
+        password = self.cleaned_data['user_password']
+
+        if not self.user.check_password(password):
+            raise forms.ValidationError(
+                self.error_messages['password_incorrect'],
+                code='password_incorrect',
+            )
+
+        return password
