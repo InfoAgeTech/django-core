@@ -18,7 +18,7 @@ class AbstractTokenModel(models.Model):
         return super(AbstractTokenModel, self).save(*args, **kwargs)
 
     @classmethod
-    def save_prep(cls, instance_or_instances, token_length=token_length):
+    def save_prep(cls, instance_or_instances):
         """Preprocess the object before the object is saved.  This
         automatically gets called when the save method gets called.
         """
@@ -26,7 +26,7 @@ class AbstractTokenModel(models.Model):
 
         tokens = set(cls.objects.get_available_tokens(
             count=len(instances),
-            token_length=token_length
+            token_length=cls.token_length
         ))
 
         for instance in instances:

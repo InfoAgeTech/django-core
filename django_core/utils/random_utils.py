@@ -1,13 +1,15 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import random
+
 
 # Don't use l or 1 because sometimes hard to tell them apart. Don't use o, O or
 # 0 since hard to tell those apart too.
 NUMBERS = ('2', '3', '4', '5', '6', '7', '8', '9')
 LETTERS = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n',
-            'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
-            'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
-            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+           'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B',
+           'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'P',
+           'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
 
 ALPHANUM = NUMBERS + LETTERS
 
@@ -52,6 +54,10 @@ def random_alphanum(length=10):
         57 ^ 10 = 362,033,331,456,891,249
         ...
     """
-    chars = random.sample(ALPHANUM, length) + random.sample(ALPHANUM, length)
+    chars = random.sample(ALPHANUM, 25)
+
+    while len(chars) < length:
+        chars += random.sample(ALPHANUM, 25)
+
     random.shuffle(chars)
-    return u''.join(chars[:length])
+    return ''.join(chars[:length])
