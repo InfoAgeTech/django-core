@@ -30,7 +30,7 @@ class UserAuthorizationRequiredForm(UserFormMixin, forms.Form):
     }
     password = forms.CharField(max_length=50, widget=forms.PasswordInput)
 
-    def clean_user_password(self):
+    def clean_password(self):
         password = self.cleaned_data['password']
 
         if not self.user.check_password(password):
