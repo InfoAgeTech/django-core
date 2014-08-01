@@ -1,11 +1,35 @@
-# -*- coding: utf=8 -*-
+from __future__ import unicode_literals
+
 from datetime import date
 from datetime import datetime
 
 from django.forms.widgets import DateInput
 from django.forms.widgets import DateTimeInput
+from django.forms.widgets import MultiWidget
 from django.forms.widgets import TextInput
 from django.utils.six import string_types
+
+
+class ExtendedMultiWidget(MultiWidget):
+    """Wrapper around the MultiWidget that allow for putting a custom css class
+    around multiple widgets.
+    """
+
+    def __init__(self, widget_css_class=None, **kwargs):
+        """
+        :param widget_css_class: the string css class(es) to put around the
+            entire widget.
+        """
+        self.widget_css_class = widget_css_class
+        super(ExtendedMultiWidget, self).__init__(**kwargs)
+
+    def format_output(self, *args, **kwargs):
+        output = super(ExtendedMultiWidget, self).format_output(*args,
+                                                                **kwargs)
+        return '<div class="{0}">{1}</div>'.format(
+            self.widget_css_class,
+            output
+        )
 
 
 class Html5DateInput(DateInput):
