@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+
+
 # List of english bad words
 BAD_WORDS_EN = [
     '2g1c', '2girls1cup', '4r5e', '5h1t', '5hit', '@$$', 'a55', 'a_s_s',
@@ -146,37 +149,13 @@ BAD_WORDS_EN = [
     'titty', 'tittyfuck', 'tittywank', 'titwank', 'tongueina', 'topless',
     'tosser', 'towelhead', 'tranny', 'tribadism', 'tubgirl', 'turd', 'tushy',
     'tw4t', 'twat', 'twathead', 'twatty', 'twink', 'twinkie', 'twogirlsonecup',
-     'twunt', 'twunter', 'undressing', 'upskirt', 'urethraplay', 'urophilia',
-     'v14gra', 'v1gra', 'va1jina', 'vag1na', 'vagiina', 'vagina', 'vaj1na',
-     'vajina', 'venusmound', 'viagra', 'vibrator', 'violetblue', 'violetwand',
-     'vittu', 'vorarephilia', 'voyeur', 'vullva', 'vulva', 'w00se', 'w0p',
-     'wang', 'wank', 'wanker', 'wanky', 'wetback', 'wetdream', 'wh00r',
-     'wh0re', 'whitepower', 'whoar', 'whore', 'wichser', 'willies', 'willy',
-     'womenrapping', 'wop', 'wrappingmen', 'wrinkledstarfish', 'xrated', 'xx',
-     'xxx', 'xxxx', 'xxxxx', 'yaoi', 'yed', 'yellowshowers', 'yiffy',
-     'zabourah', 'zoophilia']
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    'twunt', 'twunter', 'undressing', 'upskirt', 'urethraplay', 'urophilia',
+    'v14gra', 'v1gra', 'va1jina', 'vag1na', 'vagiina', 'vagina', 'vaj1na',
+    'vajina', 'venusmound', 'viagra', 'vibrator', 'violetblue', 'violetwand',
+    'vittu', 'vorarephilia', 'voyeur', 'vullva', 'vulva', 'w00se', 'w0p',
+    'wang', 'wank', 'wanker', 'wanky', 'wetback', 'wetdream', 'wh00r',
+    'wh0re', 'whitepower', 'whoar', 'whore', 'wichser', 'willies', 'willy',
+    'womenrapping', 'wop', 'wrappingmen', 'wrinkledstarfish', 'xrated', 'xx',
+    'xxx', 'xxxx', 'xxxxx', 'yaoi', 'yed', 'yellowshowers', 'yiffy',
+    'zabourah', 'zoophilia'
+]

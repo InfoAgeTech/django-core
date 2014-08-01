@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from django_core.db.models import TokenManager
 from django_core.utils.list_utils import make_obj_list

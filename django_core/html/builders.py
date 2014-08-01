@@ -49,7 +49,8 @@ def build_html_element(tag, text=None, icon_class=None, cls=None, **kwargs):
     icon = '<i class="{0}"></i> '.format(icon_class) if icon_class else ''
 
     return mark_safe('<{tag_content}>{icon}{text}</{tag}>'.format(
-                                                    tag_content=tag_content,
-                                                    icon=icon,
-                                                    tag=tag,
-                                                    text=escape(text) or ''))
+        tag_content=tag_content,
+        icon=icon,
+        tag=tag,
+        text=escape(text) or '')
+    )
