@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 
 from django.core.exceptions import ValidationError
 from django.forms.fields import CharField
+from django.forms.fields import DecimalField
+from django.forms.fields import MultiValueField
+
+from .widgets import MultipleDecimalInputWidget
 
 
 class CharFieldStripped(CharField):
@@ -45,3 +47,28 @@ class CommaSeparatedIntegerListField(CommaSeparatedListField):
                 raise ValidationError('All values in list must be whole '
                                       'numbers.')
         return val
+
+
+class MultipleDecimalField(MultiValueField):
+    widget = MultipleDecimalInputWidget
+
+    def __init__(self, num_inputs=2, *args, **kwargs):
+        self.num_inputs = num_inputs
+        fields = [DecimalField(required=False)
+                  for i in range(num_inputs)]
+        widget = self.widget(num_inputs=num_inputs)
+        super(MultipleDecimalField, self).__init__(fields=fields,
+                                                   widget=widget,
+                                                   *args, **kwargs)
+
+    def to_python(self, value):
+        """Validates that the input can be converted to a list of decimals."""
+        if not value:
+            return None
+
+        if isinstance(value, list):
+            for index, position_val in enumerate(value):
+                val = super(MultipleDecimalField, self).to_python(position_val)
+                value[index] = val
+
+        return value

@@ -6,6 +6,7 @@ from datetime import datetime
 from django.forms.widgets import DateInput
 from django.forms.widgets import DateTimeInput
 from django.forms.widgets import MultiWidget
+from django.forms.widgets import NumberInput
 from django.forms.widgets import TextInput
 from django.utils.six import string_types
 
@@ -30,6 +31,56 @@ class ExtendedMultiWidget(MultiWidget):
             self.widget_css_class,
             output
         )
+
+
+class MultipleDecimalInputWidget(ExtendedMultiWidget):
+    """Renders an input with 4 decimal fields."""
+
+    def __init__(self, attrs=None, widgets=None, num_inputs=4,
+                 widget_css_class='horizontal-widget multi-decimal-widget',
+                 **kwargs):
+        self.num_inputs = num_inputs
+
+        if not attrs:
+            attrs = {}
+
+        self.get_widget_css_class(attrs)
+
+        if widgets is None:
+            widgets = tuple([NumberInput() for w in range(num_inputs)])
+
+        super(MultipleDecimalInputWidget, self).__init__(
+            widgets=widgets,
+            attrs=attrs,
+            widget_css_class=widget_css_class,
+            **kwargs
+        )
+
+    def decompress(self, value):
+        if value:
+            return value.split(' ')
+        return [None for i in range(self.num_inputs)]
+
+    def get_widget_css_class(self, attrs):
+        """Gets the class for the widget."""
+        size_class = ''
+        if self.num_inputs == 2:
+            size_class = 'seconds'
+        elif self.num_inputs == 3:
+            size_class = 'thirds'
+        elif self.num_inputs == 4:
+            size_class = 'fourths'
+        elif self.num_inputs == 5:
+            size_class = 'seconds'
+        elif self.num_inputs == 6:
+            size_class = 'sixths'
+        elif self.num_inputs == 7:
+            size_class = 'sevenths'
+
+        if 'class' in attrs:
+            attrs['class'] += ' {0}'.format(size_class)
+        else:
+            attrs['class'] = size_class
 
 
 class Html5DateInput(DateInput):
