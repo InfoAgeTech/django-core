@@ -8,6 +8,7 @@ from django_core.db.models.mixins.base import AbstractBaseModel
 from django_core.db.models import AbstractTokenModel
 
 from .managers import BaseTestManager
+from django_core.db.models.mixins.generic import AbstractGenericObject
 
 
 User = get_user_model()
@@ -62,3 +63,7 @@ class TestIntegerListFieldModel(models.Model):
                                               max_value=100,
                                               blank=True,
                                               null=True)
+
+
+class GenericObject(AbstractGenericObject):
+    """Test model for a generic object."""

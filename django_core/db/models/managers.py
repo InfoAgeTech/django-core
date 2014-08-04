@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import math
 
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.http.response import Http404
 from django.template.defaultfilters import slugify
@@ -232,3 +233,27 @@ class UserManager(models.Manager):
             return self.filter(user_id=user_id)
         except self.model.DoesNotExist:
             return []
+
+
+class GenericManager(models.Manager):
+
+    def get_or_create_generic(self, content_object, **kwargs):
+        """Gets or creates a generic object.  This is a wrapper for
+        get_or_create(...) when you need to get or create a generic object.
+
+        :param obj: the object to get or create
+        :param kwargs: any other kwargs that the model accepts.
+        """
+        content_type = ContentType.objects.get_for_model(content_object)
+        return self.get_or_create(content_type=content_type,
+                                  object_id=content_object.id,
+                                  **kwargs)
+
+    def get_by_content_type(self, content_type):
+        """Gets all objects by a content type."""
+        return self.filter(content_type=content_type)
+
+    def get_by_model(self, model):
+        """Gets all object by a specific model."""
+        content_type = ContentType.objects.get_for_model(model)
+        return self.filter(content_type=content_type)
