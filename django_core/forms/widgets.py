@@ -6,9 +6,16 @@ from datetime import datetime
 from django.forms.widgets import DateInput
 from django.forms.widgets import DateTimeInput
 from django.forms.widgets import MultiWidget
-from django.forms.widgets import NumberInput
 from django.forms.widgets import TextInput
 from django.utils.six import string_types
+
+try:
+    # django >= 1.6
+    from django.forms.widgets import NumberInput
+except ImportError:
+    # django < 1.6 doesn't have the NumberInput class
+    class NumberInput(TextInput):
+        input_type = 'number'
 
 
 class ExtendedMultiWidget(MultiWidget):
