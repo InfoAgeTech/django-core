@@ -2,13 +2,13 @@ from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model
 from django.db import models
+from django_core.db.models import AbstractTokenModel
 from django_core.db.models.fields import IntegerListField
 from django_core.db.models.fields import ListField
 from django_core.db.models.mixins.base import AbstractBaseModel
-from django_core.db.models import AbstractTokenModel
+from django_core.db.models.mixins.generic import AbstractGenericObject
 
 from .managers import BaseTestManager
-from django_core.db.models.mixins.generic import AbstractGenericObject
 
 
 User = get_user_model()
