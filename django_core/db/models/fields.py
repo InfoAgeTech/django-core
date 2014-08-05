@@ -151,14 +151,14 @@ class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
             # Validate that all items in the list are integers.
             for item in val:
 
-                if self.min_value != None and item < self.min_value:
+                if self.min_value is not None and item < self.min_value:
                     raise ValidationError(
                         self.error_messages['invalid_out_of_range_min'],
                         code='invalid_out_of_range_min',
                         params={'value': item, 'min': self.min_value}
                     )
 
-                if self.max_value != None and item > self.max_value:
+                if self.max_value is not None and item > self.max_value:
                     raise ValidationError(
                         self.error_messages['invalid_out_of_range_max'],
                         code='invalid_out_of_range_max',
