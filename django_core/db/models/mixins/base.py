@@ -29,8 +29,7 @@ class AbstractBaseModel(models.Model):
     created_user = models.ForeignKey(
         User,
         related_name='%(app_label)s_%(class)s_created_user+')
-    created_dttm = models.DateTimeField(default=datetime.utcnow,
-                                        editable=False)
+    created_dttm = models.DateTimeField(default=datetime.utcnow)
     last_modified_user = models.ForeignKey(
         User,
         related_name='%(app_label)s_%(class)s_last_modified_user+')
