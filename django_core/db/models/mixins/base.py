@@ -27,12 +27,13 @@ class AbstractBaseModel(models.Model):
         updated.
     """
     created_user = models.ForeignKey(
-                    User,
-                    related_name='%(app_label)s_%(class)s_created_user+')
-    created_dttm = models.DateTimeField(default=datetime.utcnow)
+        User,
+        related_name='%(app_label)s_%(class)s_created_user+')
+    created_dttm = models.DateTimeField(default=datetime.utcnow,
+                                        editable=False)
     last_modified_user = models.ForeignKey(
-                    User,
-                    related_name='%(app_label)s_%(class)s_last_modified_user+')
+        User,
+        related_name='%(app_label)s_%(class)s_last_modified_user+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
     objects = CommonManager()
 
