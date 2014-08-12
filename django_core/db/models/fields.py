@@ -45,7 +45,7 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
         super(ListField, self).__init__(max_length=max_length, *args, **kwargs)
 
     def to_python(self, value):
-        if value == None:
+        if value is None:
             return value
 
         if not value:
@@ -70,7 +70,7 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
 
         try:
             return ast.literal_eval(value)
-        except ValueError as e:
+        except ValueError:
             raise ValidationError(
                 self.error_messages['invalid_list'],
                 code='invalid_list',
@@ -92,10 +92,15 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
 
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """Make the default formfield a CommaSeparatedListField."""
+
+        if choices_form_class is None:
+            choices_form_class = self.get_choices_form_class()
+
         defaults = {
             'form_class': form_class or self.get_form_class(),
-            'choices_form_class': choices_form_class or self.get_choices_form_class()
+            'choices_form_class': choices_form_class
         }
+
         defaults.update(kwargs)
 
         return super(ListField, self).formfield(**defaults)
