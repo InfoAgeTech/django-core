@@ -13,9 +13,12 @@ class EmailOrUsernameBackend(ModelBackend):
     username.
     """
 
-    def authenticate(self, username_or_email, password):
+    def authenticate(self, username, password):
+        """
+        :param username: this is the email or username to check
+        """
         # If username is an email address, then try to pull it up
-        user = self.get_by_username_or_email(username_or_email)
+        user = self.get_by_username_or_email(username)
 
         if not user:
             return None
