@@ -2,10 +2,18 @@
 # http://nedbatchelder.com/code/coverage/config.html#config
 
 [run]
-omit = */*urls.py,*__init__.py
-include = */django_core/*
+omit = 
+    */*urls.py
+    *__init__.py
+include = django_core*
+source = django_core
 
 [report]
+omit = 
+    */*urls.py
+    *__init__.py
+include = 
+    */django_core/*
 # Regexes for lines to exclude from consideration
 exclude_lines =
     # Have to re-enable the standard pragma
