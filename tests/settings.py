@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 import os
+import sys
+
 
 # Do not run in DEBUG in production!!!
 DEBUG = False
@@ -49,3 +51,6 @@ DATABASES = {
         'NAME': here('test_db.db')
     }
 }
+
+if 'test' in sys.argv:
+    NOSE_ARGS = ('--nocapture', '--with-doctest', '--testmatch=^test')
