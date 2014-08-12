@@ -159,13 +159,13 @@ class JsonResponse(HttpResponse):
     Response content sample::
 
         {
-            notification: "notification html",
+            activity: "activity html",
             additional_content_key1: additional_content_value1
         }
 
     :param content: a dictionary of content that should be returned with the
         response.
-    :return: HttpResponse with json encoded notification content.
+    :return: HttpResponse with json encoded activity content.
 
     """
     def __init__(self, content, status=200):

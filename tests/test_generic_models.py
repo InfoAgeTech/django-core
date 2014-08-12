@@ -40,7 +40,7 @@ class GenericObjectModelTests(TestCase):
                          ContentType.objects.get_for_model(self.user))
 
     def test_get_or_create_generic(self):
-        """Test get notifications for a user."""
+        """Test get activities for a user."""
         generic_object, is_created = GenericObject.objects.get_or_create_generic(content_object=self.user)
 
         self.assertTrue(is_created)
