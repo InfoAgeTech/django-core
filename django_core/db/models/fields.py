@@ -9,7 +9,7 @@ from django.db import models
 from django.utils.encoding import smart_text
 from django.utils.six import string_types
 from django.utils.six import with_metaclass
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 
 class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
@@ -19,7 +19,7 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
     field that apply to CharField (i.e. max_length)
     """
     description = "Stores a python list"
-    form_class = None
+    form_class = forms.CharField
     choices_form_class = forms.TypedMultipleChoiceField
 
     default_error_messages = {
@@ -92,15 +92,9 @@ class ListField(with_metaclass(models.SubfieldBase, models.CharField)):
 
     def formfield(self, form_class=None, choices_form_class=None, **kwargs):
         """Make the default formfield a CommaSeparatedListField."""
-
-        if choices_form_class is None:
-            choices_form_class = self.get_choices_form_class()
-
         defaults = {
-            'form_class': form_class or self.get_form_class(),
-            'choices_form_class': choices_form_class
+            'form_class': form_class or self.get_form_class()
         }
-
         defaults.update(kwargs)
 
         return super(ListField, self).formfield(**defaults)
@@ -182,8 +176,6 @@ class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
             return prepped_value.replace(' ', '')
 
         return prepped_value
-
-
 class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
     """Simple JSON field that stores python structures as JSON strings
     on database.
