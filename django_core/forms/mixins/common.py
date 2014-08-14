@@ -6,22 +6,48 @@ from django.forms.widgets import HiddenInput
 
 
 class PrefixFormMixin(forms.ModelForm):
-    """Form mixin for prefix.  Many forms rendered to a page will require a
-    prefix to maintain uniqueness with rendering.  This stores the prefix
-    used to assist with this.
+    """Form mixin for prefix.  Handles prefixing for new vs existing instances
+    for forms.  Many forms rendered to a page will require a prefix to maintain
+    uniqueness with rendering.  This stores the prefix used to assist with
+    this.
+
+    The consuming form must implement the following two fields:
+
+    1. ``default_instance_prefix``: this is the prefix to use when an exsiting
+        instance is used (already exists in the database).
+    2. ``default_new_prefix``: this is the prefix to use when a new instance
+        is being created.
     """
     form_prefix = forms.CharField(max_length=50, required=False,
                                   widget=HiddenInput)
 
-    def __init__(self, *args, **kwargs):
-        # TODO: Data can be in kwargs or it's the first arg param
-        if kwargs.get('prefix') is None and 'data' in kwargs:
-            for key, val in kwargs.get('data', {}).items():
-                if key.endswith('form_prefix'):
-                    kwargs['prefix'] = val
-                    break
+    default_instance_prefix = ''
+    default_new_prefix = ''
 
-        super(PrefixFormMixin, self).__init__(*args, **kwargs)
+    def __init__(self, prefix=None, use_default_prefix=False, *args, **kwargs):
+
+        if prefix is None and use_default_prefix:
+            instance = kwargs.get('instance')
+            prefix = self.get_default_prefix(instance=instance)
+
+        super(PrefixFormMixin, self).__init__(prefix=prefix, *args, **kwargs)
+
+    def get_default_prefix(self, instance=None):
+        """Gets the prefix for this form.
+
+        :param instance: the form model instance.  When calling this method
+            directly this should almost always stay None so it looks for
+            self.instance.
+        """
+        if instance is None and hasattr(self, 'instance'):
+            instance = self.instance
+
+        if instance and instance.id is not None:
+            # it's an existing instance, use the instance prefix
+            return '{0}{1}'.format(self.default_instance_prefix,
+                                   instance.id)
+
+        return self.default_new_prefix
 
 
 class DeleteFormMixin(forms.ModelForm):
@@ -34,8 +60,8 @@ class DeleteFormMixin(forms.ModelForm):
                                 widget=forms.HiddenInput)
 
     def is_valid(self):
-        if (hasattr(self, 'cleaned_data') and
-            self.cleaned_data.get('delete') == True):
+        if hasattr(self, 'cleaned_data') and \
+           self.cleaned_data.get('delete') is True:
             return True
 
         return super(DeleteFormMixin, self).is_valid()
@@ -47,13 +73,13 @@ class DeleteFormMixin(forms.ModelForm):
         # because the object will be delete anyway so remove all errors so it
         # passes validation.
 
-        if self.cleaned_data.get('delete') == True:
+        if self.cleaned_data.get('delete') is True:
             self._errors = ErrorDict()
 
         return cleaned_data
 
     def save(self, *args, **kwargs):
-        if self.cleaned_data.get('delete') == True:
+        if self.cleaned_data.get('delete') is True:
             # saving is not allowed for forms that have delete set to true
             return None
 
