@@ -21,8 +21,8 @@ class PrefixFormMixin(forms.ModelForm):
     form_prefix = forms.CharField(max_length=50, required=False,
                                   widget=HiddenInput)
 
-    default_instance_prefix = ''
-    default_new_prefix = ''
+    default_instance_prefix = None
+    default_new_prefix = None
 
     def __init__(self, prefix=None, use_default_prefix=False, *args, **kwargs):
 
@@ -44,10 +44,17 @@ class PrefixFormMixin(forms.ModelForm):
 
         if instance and instance.id is not None:
             # it's an existing instance, use the instance prefix
-            return '{0}{1}'.format(self.default_instance_prefix,
+            instance_prefix = self.default_instance_prefix
+            if instance_prefix is None:
+                instance_prefix = self.__class__.__name__.lower() + 'i-'
+
+            return '{0}{1}'.format(instance_prefix,
                                    instance.id)
 
-        return self.default_new_prefix
+        if self.default_new_prefix is not None:
+            return self.default_new_prefix
+
+        return self.__class__.__name__.lower() + 'new-'
 
 
 class DeleteFormMixin(forms.ModelForm):

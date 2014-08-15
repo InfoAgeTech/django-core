@@ -1,3 +1,4 @@
+from django.http.response import Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 
@@ -13,12 +14,28 @@ class AjaxViewMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
 
-        if not self.request.is_ajax():
-            return super(AjaxViewMixin,
-                         self).render_to_response(context, **response_kwargs)
+        if self.request.is_ajax():
+            return render_to_response(
+                self.ajax_template_name,
+                context,
+                context_instance=RequestContext(self.request)
+            )
 
-        return render_to_response(
-            self.ajax_template_name,
+        return super(AjaxViewMixin, self).render_to_response(context,
+                                                             **response_kwargs)
+
+
+class RequiresAjaxViewMixin(object):
+    """View that requires ajax.  If not called via ajax, then this returns a
+    404.
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+
+        if not self.request.is_ajax():
+            raise Http404
+
+        return super(RequiresAjaxViewMixin, self).render_to_response(
             context,
-            context_instance=RequestContext(self.request)
+            **response_kwargs
         )
