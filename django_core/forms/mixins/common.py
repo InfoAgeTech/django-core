@@ -18,6 +18,7 @@ class PrefixFormMixin(forms.ModelForm):
     2. ``default_new_prefix``: this is the prefix to use when a new instance
         is being created.
     """
+    # TODO: why is this a form field and is it used ever?
     form_prefix = forms.CharField(max_length=50, required=False,
                                   widget=HiddenInput)
 
