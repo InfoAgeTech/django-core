@@ -70,19 +70,7 @@ class MultipleDecimalInputWidget(ExtendedMultiWidget):
 
     def get_widget_css_class(self, attrs):
         """Gets the class for the widget."""
-        size_class = ''
-        if self.num_inputs == 2:
-            size_class = 'seconds'
-        elif self.num_inputs == 3:
-            size_class = 'thirds'
-        elif self.num_inputs == 4:
-            size_class = 'fourths'
-        elif self.num_inputs == 5:
-            size_class = 'seconds'
-        elif self.num_inputs == 6:
-            size_class = 'sixths'
-        elif self.num_inputs == 7:
-            size_class = 'sevenths'
+        size_class = 'size-{0}'.format(self.num_inputs)
 
         if 'class' in attrs:
             attrs['class'] += ' {0}'.format(size_class)
