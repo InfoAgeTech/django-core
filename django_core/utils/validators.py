@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import re
+
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import ugettext as _
@@ -14,6 +16,22 @@ def is_valid_email(value):
         return True
     except ValidationError:
         return False
+
+
+def is_valid_color(value):
+    """Boolean check whether the value is a valid color."""
+    return is_valid_color_name(value) or is_valid_hex(value)
+
+
+def is_valid_hex(value):
+    """Boolean indicating of the value is a valid hex value."""
+    regex = re.compile(r'#[a-fA-F0-9]{3,6}$')
+    return bool(regex.match(value))
+
+
+def is_valid_color_name(value):
+    """Checks whether the value is a string of character A-Z."""
+    return value.isalpha() if value else False
 
 
 def validate_password_strength(value):
