@@ -25,12 +25,18 @@ def is_valid_color(value):
 
 def is_valid_hex(value):
     """Boolean indicating of the value is a valid hex value."""
+    if not value:
+        return False
+
     regex = re.compile(r'#[a-fA-F0-9]{3,6}$')
     return bool(regex.match(value))
 
 
 def is_valid_color_name(value):
     """Checks whether the value is a string of character A-Z."""
+    if not value:
+        return False
+
     return value.isalpha() if value else False
 
 
