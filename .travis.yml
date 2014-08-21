@@ -6,8 +6,8 @@ branches:
   only:
     - master
 env:
-  - DJANGO_VERSION=1.5.8
-  - DJANGO_VERSION=1.6.5
+  - DJANGO_VERSION=1.5.9
+  - DJANGO_VERSION=1.6.6
 install:
   - pip install -q django==$DJANGO_VERSION
   - pip install -r requirements.txt
