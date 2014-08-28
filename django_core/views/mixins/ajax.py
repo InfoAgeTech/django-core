@@ -14,7 +14,7 @@ class AjaxViewMixin(object):
 
     def render_to_response(self, context, **response_kwargs):
 
-        if self.request.is_ajax():
+        if self.request.is_ajax() and self.ajax_template_name is not None:
             return render_to_response(
                 self.ajax_template_name,
                 context,

@@ -77,7 +77,7 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
     def form_valid(self, form):
         if self.request.is_ajax():
             self.object = form.save()
-            context = self.get_json_context_data()
+            context = {}
 
             if self.json_template_name:
                 json_context = self.get_json_context_data(**{
@@ -86,6 +86,8 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
                 html = render_to_string(template_name=self.json_template_name,
                                         dictionary=json_context)
                 context['html'] = strip_spaces_between_tags(html.strip())
+            else:
+                context.update(self.get_json_context_data())
 
             return JSONResponseMixin.render_to_response(self, context=context)
 
