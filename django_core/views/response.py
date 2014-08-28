@@ -77,7 +77,8 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
     def form_valid(self, form):
         if self.request.is_ajax():
             self.object = form.save()
-            context = {}
+            context = self.get_json_context_data()
+
             if self.json_template_name:
                 json_context = self.get_json_context_data(**{
                     self.get_context_object_name(self.object): self.object
