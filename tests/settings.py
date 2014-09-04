@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 import os
-import sys
+
 
 DEBUG = False
 
@@ -9,7 +9,6 @@ ALLOWED_HOSTS = ['*']
 LANGUAGE_CODE = 'en-us'
 SECRET_KEY = '12345abcd'
 SITE_ID = 1
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 
@@ -17,7 +16,6 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django_core',
-    'django_nose',
     'django_testing',
     'test_objects',  # so the test models get picked up
 )
@@ -37,6 +35,3 @@ DATABASES = {
         'NAME': here('test_db.db')
     }
 }
-
-if 'test' in sys.argv:
-    NOSE_ARGS = ('--nocapture', '--with-doctest', '--testmatch=^test')
