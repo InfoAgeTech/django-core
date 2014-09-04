@@ -7,6 +7,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 LANGUAGE_CODE = 'en-us'
+ROOT_URLCONF = 'urls'
 SECRET_KEY = '12345abcd'
 SITE_ID = 1
 TIME_ZONE = 'UTC'
