@@ -8,7 +8,7 @@ from django_core.db.models.fields import ListField
 from django_core.db.models.mixins.base import AbstractBaseModel
 from django_core.db.models.mixins.generic import AbstractGenericObject
 
-from .managers import BaseTestManager
+from test_objects.managers import BaseTestManager
 
 
 list_field_choices = (('TEST', 'Testing'),

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import os
 import sys
 
-# Do not run in DEBUG in production!!!
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']

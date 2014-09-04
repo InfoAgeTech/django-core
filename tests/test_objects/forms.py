@@ -1,8 +1,8 @@
 from django import forms
 from django_core.forms.widgets import CommaSeparatedListWidget
 
-from .models import TestIntegerListFieldModel
-from .models import TestListFieldModel
+from test_objects.models import TestIntegerListFieldModel
+from test_objects.models import TestListFieldModel
 
 
 class TestListFieldForm(forms.ModelForm):
