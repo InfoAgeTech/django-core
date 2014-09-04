@@ -3,14 +3,11 @@ from __future__ import unicode_literals
 from copy import deepcopy
 from datetime import datetime
 
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django_core.db.models.managers import CommonManager
 from django_core.utils.list_utils import make_obj_list
-
-
-User = get_user_model()
 
 
 @python_2_unicode_compatible
@@ -27,11 +24,11 @@ class AbstractBaseModel(models.Model):
         updated.
     """
     created_user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='%(app_label)s_%(class)s_created_user+')
     created_dttm = models.DateTimeField(default=datetime.utcnow)
     last_modified_user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name='%(app_label)s_%(class)s_last_modified_user+')
     last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
     objects = CommonManager()
@@ -108,8 +105,8 @@ class AbstractBaseModel(models.Model):
                 instance.created_dttm = utc_now
 
             if instance.created_user:
-                if (not hasattr(instance, 'last_modified') or
-                    not instance.last_modified):
+                if not hasattr(instance, 'last_modified') or \
+                   not instance.last_modified:
                     instance.last_modified_user = instance.created_user
 
             instance.strip_fields()
@@ -162,7 +159,8 @@ class AbstractBaseModel(models.Model):
 
         # unset all the attributes that you don't want copied over
         for field in set(exclude_fields):
-            default = self.__class__._meta.get_field_by_name(field)[0].get_default()
+            meta = self.__class__._meta
+            default = meta.get_field_by_name(field)[0].get_default()
             setattr(instance, field, default or None)
 
         if override_fields:

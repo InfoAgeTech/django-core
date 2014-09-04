@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -11,17 +12,16 @@ from django_core.views import SuperuserRequiredViewMixin
 from mock import patch
 
 
-User = get_user_model()
-
-
 class AuthMixinTests(TestCase):
 
     def setUp(self):
         super(AuthMixinTests, self).setUpClass()
         self.username = uuid.uuid4().hex
         self.password = uuid.uuid4().hex
-        self.user = User.objects.create_user(username=self.username,
-                                             password=self.password)
+        self.user = get_user_model().objects.create_user(
+            username=self.username,
+            password=self.password
+        )
         self.client = Client()
 
     def tearDown(self):

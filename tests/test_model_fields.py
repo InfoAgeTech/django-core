@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from tests.test_objects.models import TestIntegerListFieldModel
-from tests.test_objects.models import TestListFieldModel
+from test_objects.models import TestIntegerListFieldModel
+from test_objects.models import TestListFieldModel
 
 
 class ListFieldTests(TestCase):

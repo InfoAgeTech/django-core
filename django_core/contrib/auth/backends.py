@@ -5,9 +5,6 @@ from django.contrib.auth.backends import ModelBackend
 from django_core.utils.validators import is_valid_email
 
 
-User = get_user_model()
-
-
 class EmailOrUsernameBackend(ModelBackend):
     """Authentication backend to allow a user to login via email address or
     username.
@@ -26,7 +23,7 @@ class EmailOrUsernameBackend(ModelBackend):
         if user.check_password(password):
             return user
 
-        if User.check_password(password):
+        if get_user_model().check_password(password):
             return user
         return None
 
@@ -39,12 +36,14 @@ class EmailOrUsernameBackend(ModelBackend):
         return self.get_by_username(username_or_email)
 
     def get_by_email(self, email):
+        User = get_user_model()
         try:
             return User.objects.get(email=email.lower())
         except User.DoesNotExist:
             return None
 
     def get_by_username(self, username):
+        User = get_user_model()
         try:
             return User.objects.get(username=username)
         except User.DoesNotExist:

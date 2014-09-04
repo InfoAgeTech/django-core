@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.http.response import Http404
 from django.utils.text import slugify
@@ -7,17 +7,19 @@ from django_core.utils.random_utils import random_alphanum
 from django_testing.testcases.users import SingleUserTestCase
 from django_testing.user_utils import create_user
 
-from tests.test_objects.models import TestManagerModel
-from tests.test_objects.models import TestModel
+from test_objects.models import TestManagerModel
+from test_objects.models import TestModel
 
 
 class CommonManagerTests(SingleUserTestCase):
 
     def test_get_or_none(self):
         """Getting an object which returns None if one is not found."""
-        test_model = TestModel.objects.create(created_user=self.user,
-                                some_unique_field=random_alphanum(),
-                                some_unique_field_default=random_alphanum())
+        test_model = TestModel.objects.create(
+            created_user=self.user,
+            some_unique_field=random_alphanum(),
+            some_unique_field_default=random_alphanum()
+        )
         test_model_db = TestModel.objects.get_or_none(id=test_model.id)
         self.assertEqual(test_model, test_model_db)
 
@@ -25,9 +27,11 @@ class CommonManagerTests(SingleUserTestCase):
 
     def test_get_by_id(self):
         """Test getting an object by id."""
-        test_model = TestModel.objects.create(created_user=self.user,
-                                some_unique_field=random_alphanum(),
-                                some_unique_field_default=random_alphanum())
+        test_model = TestModel.objects.create(
+            created_user=self.user,
+            some_unique_field=random_alphanum(),
+            some_unique_field_default=random_alphanum()
+        )
         test_model_db = TestModel.objects.get_by_id(id=test_model.id)
         self.assertEqual(test_model, test_model_db)
 
@@ -74,7 +78,8 @@ class CommonManagerTests(SingleUserTestCase):
     def test_is_slug_available(self):
         """Test if a slug is available."""
         self.assertTrue(TestManagerModel.objects.is_slug_available(
-                                                    slug=random_alphanum()))
+            slug=random_alphanum())
+        )
 
     def test_not_is_slug_available(self):
         """Test if a slug is not available."""

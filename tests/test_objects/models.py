@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django_core.db.models import AbstractTokenModel
 from django_core.db.models.fields import IntegerListField
@@ -11,7 +11,6 @@ from django_core.db.models.mixins.generic import AbstractGenericObject
 from .managers import BaseTestManager
 
 
-User = get_user_model()
 list_field_choices = (('TEST', 'Testing'),
                       ('HELLO', 'Hello'),
                       ('WORLD', 'world'))
@@ -38,7 +37,7 @@ class TestModel(AbstractBaseModel):
 
 class TestManagerModel(AbstractTokenModel, AbstractBaseModel):
     slug = models.SlugField(null=True, blank=True)
-    user = models.ForeignKey(User, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     objects = BaseTestManager()
 
 

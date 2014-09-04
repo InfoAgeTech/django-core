@@ -1,16 +1,12 @@
-# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from datetime import datetime
 from random import randint
 
-from django.contrib.auth import get_user_model
-from django_testing.testcases.users import SingleUserTestCase
 from django_core.utils.random_utils import random_alphanum
+from django_testing.testcases.users import SingleUserTestCase
 
-from tests.test_objects.models import TestModel
-
-
-User = get_user_model()
+from test_objects.models import TestModel
 
 
 class ModelTests(SingleUserTestCase):

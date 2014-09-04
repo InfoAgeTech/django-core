@@ -1,24 +1,10 @@
 from __future__ import unicode_literals
 
-from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.test import TestCase
-from django_core.utils.random_utils import random_alphanum
-from tests.test_objects.models import GenericObject
+from django_testing.user_utils import create_user
 
-
-User = get_user_model()
-
-
-def create_user(username=None, email=None):
-    if not username:
-        username = random_alphanum()
-
-    if not email:
-        email = '{0}@{1}.com'.format(random_alphanum(), random_alphanum())
-
-    return User.objects.create_user(username=username,
-                                    email=email)
+from test_objects.models import GenericObject
 
 
 class GenericObjectModelTests(TestCase):
