@@ -171,10 +171,11 @@ class JsonResponse(HttpResponse):
     :return: HttpResponse with json encoded activity content.
 
     """
-    def __init__(self, content, status=200):
+    def __init__(self, content, status=200, **kwargs):
         super(JsonResponse, self).__init__(content=json.dumps(content),
-                                           mimetype='application/json',
-                                           status=status)
+                                           content_type='application/json',
+                                           status=status,
+                                           **kwargs)
 
 
 def json_response(template):
