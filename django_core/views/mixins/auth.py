@@ -13,7 +13,7 @@ class CreatorRequiredViewMixin(CommonSingleObjectViewMixin):
     """
     def dispatch(self, request, *args, **kwargs):
         # does self.object exist at this point?
-        obj = self.get_object()
+        obj = self.get_creator_required_object()
 
         if not obj:
             raise Http404
@@ -24,6 +24,9 @@ class CreatorRequiredViewMixin(CommonSingleObjectViewMixin):
         return super(CreatorRequiredViewMixin, self).dispatch(request,
                                                               *args,
                                                               **kwargs)
+
+    def get_creator_required_object(self):
+        return self.get_object()
 
 
 class LoginRequiredViewMixin(object):
