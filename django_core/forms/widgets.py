@@ -6,8 +6,10 @@ from datetime import datetime
 from django.forms.widgets import DateInput
 from django.forms.widgets import DateTimeInput
 from django.forms.widgets import MultiWidget
+from django.forms.widgets import Select
 from django.forms.widgets import TextInput
 from django.utils.six import string_types
+
 
 try:
     # django >= 1.6
@@ -76,6 +78,35 @@ class MultipleDecimalInputWidget(ExtendedMultiWidget):
             attrs['class'] += ' {0}'.format(size_class)
         else:
             attrs['class'] = size_class
+
+
+class ChoiceAndCharInputWidget(ExtendedMultiWidget):
+    """Renders choice field and char field next to each other."""
+
+    def __init__(self, choices=None, attrs=None, widgets=None,
+                 widget_css_class='choice-and-char-widget', **kwargs):
+
+        if not attrs:
+            attrs = {}
+
+        if not widgets:
+            widgets = (
+                Select(choices=choices),
+                TextInput()
+            )
+
+        super(ChoiceAndCharInputWidget, self).__init__(
+            widgets=widgets,
+            attrs=attrs,
+            widget_css_class=widget_css_class,
+            **kwargs
+        )
+
+    def decompress(self, value):
+        if value:
+            return value
+
+        return [None, None]
 
 
 class Html5DateInput(DateInput):

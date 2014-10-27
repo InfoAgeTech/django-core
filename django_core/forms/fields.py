@@ -6,6 +6,8 @@ from django.forms.fields import DecimalField
 from django.forms.fields import MultiValueField
 
 from .widgets import MultipleDecimalInputWidget
+from django.forms.fields import ChoiceField
+from django_core.forms.widgets import ChoiceAndCharInputWidget
 
 
 class CharFieldStripped(CharField):
@@ -72,3 +74,31 @@ class MultipleDecimalField(MultiValueField):
                 value[index] = val
 
         return value
+
+
+class ChoiceAndCharField(MultiValueField):
+    widget = ChoiceAndCharInputWidget
+
+    def __init__(self, choices=None, widget_css_class='', *args, **kwargs):
+
+        fields = (
+            ChoiceField(choices=choices, required=False),
+            CharField(required=False)
+        )
+
+        widget_kwargs = {
+            'choices': choices
+        }
+
+        if widget_css_class:
+            css_class = 'choice-and-char-widget {0}'.format(widget_css_class)
+            widget_kwargs['widget_css_class'] = css_class
+
+        widget = self.widget(**widget_kwargs)
+        super(ChoiceAndCharField, self).__init__(fields=fields,
+                                                 widget=widget,
+                                                 *args,
+                                                 **kwargs)
+
+    def compress(self, data_list):
+        return data_list
