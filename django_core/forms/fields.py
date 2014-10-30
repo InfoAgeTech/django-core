@@ -81,6 +81,9 @@ class ChoiceAndCharField(MultiValueField):
 
     def __init__(self, choices=None, widget_css_class='', *args, **kwargs):
 
+        if 'widget' in kwargs:
+            self.widget = kwargs.pop('widget')
+
         fields = (
             ChoiceField(choices=choices, required=False),
             CharField(required=False)
