@@ -6,6 +6,19 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
 
+def get_setting(key):
+    """Gets a settings key or raises an improperly configured error.
+    
+    :param key: the settings key to get.
+    """
+    try:
+        return getattr(settings, key)
+    except:
+        raise ImproperlyConfigured(
+            _('"{0}" setting has not been properly set.').format(key)
+        )
+
+
 def get_class_from_settings(settings_key):
     """Gets a class from a setting key.  This will first check loaded models,
     then look in installed apps, then fallback to import from lib.
