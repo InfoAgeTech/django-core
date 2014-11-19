@@ -6,16 +6,19 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 
 
-def get_setting(key):
+def get_setting(key, default=None):
     """Gets a settings key or raises an improperly configured error.
     
     :param key: the settings key to get.
     """
     try:
-        return getattr(settings, key)
-    except:
+        if default is not None:
+            return getattr(settings, key, default)
+        else:
+            return getattr(settings, key)
+    except Exception as e:
         raise ImproperlyConfigured(
-            _('"{0}" setting has not been properly set.').format(key)
+            _('"{0}" setting has not been properly set. {1}').format(key, e)
         )
 
 
