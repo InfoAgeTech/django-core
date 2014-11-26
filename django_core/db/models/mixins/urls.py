@@ -8,9 +8,10 @@ class AbstractUrlLinkModelMixin(models.Model):
     """Mixin for accessing the links for the models.  This requires the object
     to have already implemented the following methods:
 
-    To override the model field used for the absolute url, just add the param:
+    To override the model field used for the absolute url, override the 
+    following method:
 
-    * link_text_field = 'some_field_name'
+    * get_link_text_field()
 
     to the model and that field will be used for the text.
 
@@ -19,8 +20,6 @@ class AbstractUrlLinkModelMixin(models.Model):
     * get_delete_url - return the link to delete the object.
     """
 
-    link_text_field = 'id'
-
     class Meta:
         abstract = True
 
@@ -28,7 +27,7 @@ class AbstractUrlLinkModelMixin(models.Model):
                               **attrs):
         """Gets the html link for the object."""
         if text is None:
-            text = getattr(self, self.link_text_field, self.id)
+            text = getattr(self, self.get_link_text_field(), self.id)
 
         return build_link(href=self.get_absolute_url(),
                           text=text,
@@ -59,3 +58,7 @@ class AbstractUrlLinkModelMixin(models.Model):
                           cls=cls,
                           icon_class=icon_class,
                           **attrs)
+
+    def get_link_text_field(self):
+        """This returns the field name to use for the absolute url."""
+        return 'id'
