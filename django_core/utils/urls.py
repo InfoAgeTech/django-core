@@ -4,6 +4,14 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.http import urlencode
 
+try:
+    # python 3
+    from urllib.parse import urlparse
+    from urllib.parse import parse_qsl
+except ImportError:
+    from urlparse import urlparse
+    from urlparse import parse_qsl
+
 
 def is_legit_next_url(next_url):
     if not next_url or next_url.startswith('//'):
@@ -41,3 +49,20 @@ def build_url(url, querystring_params=None):
         return url
 
     return '{0}?{1}'.format(url, urlencode(querystring_params))
+
+
+def replace_url_query_values(url, replace_vals):
+    """Replace querystring values in a url string.
+    
+    >>> url = 'http://helloworld.com/some/path?test=5'
+    >>> replace_vals = {'test': 10}
+    >>> replace_url_query_values(url=url, replace_vals=replace_vals)
+    'http://helloworld.com/some/path?test=10'
+    """
+    if '?' not in url:
+        return url
+
+    parsed_url = urlparse(url)
+    query = dict(parse_qsl(parsed_url.query))
+    query.update(replace_vals)
+    return '{0}?{1}'.format(url.split('?')[0], urlencode(query))
