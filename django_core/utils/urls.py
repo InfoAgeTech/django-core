@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.http import urlencode
+from django.utils.six import string_types
 
 try:
     # python 3
@@ -66,3 +67,31 @@ def replace_url_query_values(url, replace_vals):
     query = dict(parse_qsl(parsed_url.query))
     query.update(replace_vals)
     return '{0}?{1}'.format(url.split('?')[0], urlencode(query))
+
+
+def get_query_values_from_url(url, keys):
+    """Gets query string values from a url.
+    
+    if a list of keys are provided, then a dict will be returned.  If only a 
+    single string key is provided, then only a single value will be returned.
+    
+    >>> url = 'http://helloworld.com/some/path?test=5&hello=world&john=doe'
+    >>> get_query_values_from_url(url=url, keys='test')
+    "5"
+    >>> get_query_values_from_url(url=url, keys=['test'])
+    {'test': '5'}
+    >>> get_query_values_from_url(url=url, keys=['test', 'john'])
+    {'test': '5', 'john': 'doe'}
+    >>> get_query_values_from_url(url=url, keys=['test', 'john', 'blah'])
+    {'test': '5', 'john': 'doe', 'blah': None}
+    """
+    if '?' not in url or not keys:
+        return url
+
+    parsed_url = urlparse(url)
+    query = dict(parse_qsl(parsed_url.query))
+
+    if isinstance(keys, string_types):
+        return query.get(keys)
+
+    return {k: query.get(k) for k in keys}
