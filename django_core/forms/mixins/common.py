@@ -19,7 +19,7 @@ class PrefixFormMixin(forms.ModelForm):
         is being created.
     """
     # TODO: why is this a form field and is it used ever?
-    form_prefix = forms.CharField(max_length=50, required=False,
+    form_prefix = forms.CharField(max_length=200, required=False,
                                   widget=HiddenInput)
 
     default_instance_prefix = None
