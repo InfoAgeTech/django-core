@@ -4,6 +4,7 @@ import importlib
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.translation import ugettext as _
 
 
 def get_setting(key, default=None):
