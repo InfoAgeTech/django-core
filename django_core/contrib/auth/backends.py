@@ -23,8 +23,6 @@ class EmailOrUsernameBackend(ModelBackend):
         if user.check_password(password):
             return user
 
-        if get_user_model().check_password(password):
-            return user
         return None
 
     def get_by_username_or_email(self, username_or_email):
