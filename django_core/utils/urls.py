@@ -41,10 +41,10 @@ def safe_redirect(next_url, default=None):
 
 def build_url(url, querystring_params=None):
     """Builds a url string with properly encoded queryparams.
-    
-    :params url: the primary url with no querystring params.  I.E. 
+
+    :params url: the primary url with no querystring params.  I.E.
         http://somesite.com/path/to/page
-    :param querystring_params: dict of querystring key value pairs.    
+    :param querystring_params: dict of querystring key value pairs.
     """
     if not querystring_params:
         return url
@@ -54,7 +54,7 @@ def build_url(url, querystring_params=None):
 
 def replace_url_query_values(url, replace_vals):
     """Replace querystring values in a url string.
-    
+
     >>> url = 'http://helloworld.com/some/path?test=5'
     >>> replace_vals = {'test': 10}
     >>> replace_url_query_values(url=url, replace_vals=replace_vals)
@@ -69,12 +69,12 @@ def replace_url_query_values(url, replace_vals):
     return '{0}?{1}'.format(url.split('?')[0], urlencode(query))
 
 
-def get_query_values_from_url(url, keys):
+def get_query_values_from_url(url, keys=None):
     """Gets query string values from a url.
-    
-    if a list of keys are provided, then a dict will be returned.  If only a 
+
+    if a list of keys are provided, then a dict will be returned.  If only a
     single string key is provided, then only a single value will be returned.
-    
+
     >>> url = 'http://helloworld.com/some/path?test=5&hello=world&john=doe'
     >>> get_query_values_from_url(url=url, keys='test')
     "5"
@@ -85,11 +85,15 @@ def get_query_values_from_url(url, keys):
     >>> get_query_values_from_url(url=url, keys=['test', 'john', 'blah'])
     {'test': '5', 'john': 'doe', 'blah': None}
     """
-    if '?' not in url or not keys:
+    if '?' not in url:
+        # no query params
         return url
 
     parsed_url = urlparse(url)
     query = dict(parse_qsl(parsed_url.query))
+
+    if keys is None:
+        return query
 
     if isinstance(keys, string_types):
         return query.get(keys)
