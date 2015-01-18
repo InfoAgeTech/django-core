@@ -5,6 +5,7 @@ import json
 
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.encoding import smart_text
 from django.utils.six import string_types
@@ -176,6 +177,8 @@ class IntegerListField(with_metaclass(models.SubfieldBase, ListField)):
             return prepped_value.replace(' ', '')
 
         return prepped_value
+
+
 class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
     """Simple JSON field that stores python structures as JSON strings
     on database.
@@ -218,7 +221,7 @@ class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
     def get_prep_value(self, value):
         """Convert value to JSON string before save"""
         try:
-            return json.dumps(value)
+            return json.dumps(value, cls=DjangoJSONEncoder)
         except Exception as e:
             raise ValidationError(str(e))
 
