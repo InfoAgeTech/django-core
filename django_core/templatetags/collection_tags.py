@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import json
+
 from django import template
 
 
@@ -36,6 +38,12 @@ def attr(obj, attr):
         return ''
 
     return getattr(obj, attr, '')
+
+
+@register.filter
+def jsondumps(obj):
+    """Turns a json object into a string."""
+    return json.dumps(obj)
 
 
 @register.filter

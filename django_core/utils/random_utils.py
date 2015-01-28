@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import random
+from random import randint
 
 
 # Don't use l or 1 because sometimes hard to tell them apart. Don't use o, O or
@@ -61,3 +62,10 @@ def random_alphanum(length=10):
 
     random.shuffle(chars)
     return ''.join(chars[:length])
+
+
+def generate_key(low=7, high=10):
+    """Gets a random alphanumeric key between low and high characters in
+    length.
+    """
+    return random_alphanum(length=randint(7, 10))
