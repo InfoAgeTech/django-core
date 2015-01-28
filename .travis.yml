@@ -6,13 +6,13 @@ branches:
   only:
     - master
 env:
-  - DJANGO_VERSION=1.6.9
+  - DJANGO_VERSION=1.6.10
 matrix:
   include:
     - python: "3.3"
-      env: DJANGO_VERSION=1.7.2
+      env: DJANGO_VERSION=1.7.4
     - python: "3.4"
-      env: DJANGO_VERSION=1.7.2
+      env: DJANGO_VERSION=1.7.4
 install:
   - pip install -q django==$DJANGO_VERSION
   - pip install -r requirements.txt
