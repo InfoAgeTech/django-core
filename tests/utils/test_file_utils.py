@@ -17,6 +17,7 @@ class FilePathInfoTestCase(TestCase):
         cls.file_path_without_name = '/some path/to/'
         cls.path_info = FilePathInfo(file_path=cls.file_path)
 
+
     def test_file_path_extension(self):
         """Test file extension is correctly parsed from a file path."""
         self.assertEqual(self.path_info.file_extension, self.file_extension)
@@ -42,3 +43,11 @@ class FilePathInfoTestCase(TestCase):
         path."""
         self.assertEqual(self.path_info.file_path_without_name,
                          self.file_path_without_name)
+
+    def test_file_path_info_from_url(self):
+        """Test file path from url."""
+        url = 'http://somepath.com/to/a/file.jpg?some=queryparam'
+        path_info = FilePathInfo(url)
+
+        self.assertEqual(path_info.file_extension, 'jpg')
+        self.assertEqual(path_info.file_name, 'file.jpg')
