@@ -40,7 +40,10 @@ class FilePathInfo(object):
             self.file_name = os.path.basename(self._file_path).split('?')[0]
 
             if self.file_extension:
-                name_no_ext = self.file_name.replace(self.file_extension, '')
+
+                name_no_ext = ''.join(self.file_name.rsplit(
+                    self.file_extension, 1)
+                )
                 self.file_name_without_extension = name_no_ext
 
             path_no_ext = self.file_path.replace(self.file_extension, '')
