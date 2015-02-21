@@ -7,14 +7,18 @@ from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext as _
 
 
-def get_setting(key, default=None):
+def get_setting(key, **kwargs):
     """Gets a settings key or raises an improperly configured error.
-    
+
     :param key: the settings key to get.
+    :param default: the default value to return if no value is found
     """
+    has_default = 'default' in kwargs
+    default_val = kwargs.get('default')
+
     try:
-        if default is not None:
-            return getattr(settings, key, default)
+        if has_default:
+            return getattr(settings, key, default_val)
         else:
             return getattr(settings, key)
     except Exception as e:

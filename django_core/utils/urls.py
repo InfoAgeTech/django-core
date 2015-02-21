@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.shortcuts import redirect
 from django.utils.http import urlencode
 from django.utils.six import string_types
+from django_core.utils.loading import get_setting
+
 
 try:
     # python 3
@@ -15,12 +16,38 @@ except ImportError:
 
 
 def is_legit_next_url(next_url):
-    if not next_url or next_url.startswith('//'):
-        # Either no next or some //evil.com hackery, denied!
+
+    if not next_url:
         return False
 
-    # Make sure it's a resource on this site...
-    return next_url.startswith('/') or next_url.startswith(settings.SITE_ROOT_URI)
+    is_fully_qualified_url = (next_url.startswith('http') or
+                              next_url.startswith('//'))
+    site_domain = get_setting('SITE_DOMAIN', default=None)
+    parsed_url = urlparse(next_url)
+
+    try:
+        portless_netloc = parsed_url.netloc.split(':')[0]
+    except:
+        portless_netloc = None
+
+    if is_fully_qualified_url:
+        # domain validaition required
+
+        if not site_domain:
+            # can't validate without a SITE_DOMAIN setting
+            return False
+
+        if portless_netloc and portless_netloc.endswith(site_domain):
+            # trusted domain
+            return True
+
+        return False
+
+    if next_url.startswith('/'):
+        # url relative to the current site
+        return True
+
+    return False
 
 
 def safe_redirect(next_url, default=None):
