@@ -47,7 +47,7 @@ class AbstractGenericObject(models.Model):
 
     # see doc above as to why index it turned off for content type
     content_type = models.ForeignKey(ContentType, db_index=False)
-    object_id = models.PositiveIntegerField()
+    object_id = models.PositiveIntegerField(db_index=True, unique=False)
     content_object = django_generic.GenericForeignKey('content_type',
                                                       'object_id')
     objects = GenericManager()
