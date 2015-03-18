@@ -1,0 +1,41 @@
+from django.contrib.contenttypes.models import ContentType
+from django.http.response import Http404
+
+
+class GenericObjectViewMixin(object):
+    """View mixin that takes the content_type_id and object_id from the url
+    and it gets the object it refers to.
+    """
+    content_type = None
+    content_object = None
+
+    def dispatch(self, *args, **kwargs):
+        try:
+            content_type_id = kwargs['content_type_id']
+            object_id = kwargs['object_id']
+        except:
+            raise Http404
+
+        try:
+            self.content_type = ContentType.objects.get_for_id(
+                id=content_type_id
+            )
+        except:
+            raise Http404
+
+        content_model = self.content_type.model_class()
+
+        try:
+            self.content_object = content_model.objects.get(id=object_id)
+        except:
+            raise Http404
+
+        return super(GenericObjectViewMixin, self).dispatch(*args,
+                                                                **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(GenericObjectViewMixin,
+                        self).get_context_data(**kwargs)
+        context['content_type'] = self.content_type
+        context['content_object'] = self.content_object
+        return context
