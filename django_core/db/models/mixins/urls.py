@@ -8,7 +8,7 @@ class AbstractUrlLinkModelMixin(models.Model):
     """Mixin for accessing the links for the models.  This requires the object
     to have already implemented the following methods:
 
-    To override the model field used for the absolute url, override the 
+    To override the model field used for the absolute url, override the
     following method:
 
     * get_link_text_field()
