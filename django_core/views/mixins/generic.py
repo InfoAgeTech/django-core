@@ -38,4 +38,18 @@ class GenericObjectViewMixin(object):
                         self).get_context_data(**kwargs)
         context['content_type'] = self.content_type
         context['content_object'] = self.content_object
+
+        content_object_url = self.get_content_object_url()
+
+        if content_object_url:
+            context['content_object_url'] = content_object_url
+
         return context
+
+    def get_content_object_url(self):
+        """Gets the absolute url for the content object."""
+        if (self.content_object and
+            hasattr(self.content_object, 'get_absolute_url')):
+            return self.content_object.get_absolute_url()
+
+        return None
