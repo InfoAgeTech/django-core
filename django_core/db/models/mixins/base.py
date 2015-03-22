@@ -59,6 +59,7 @@ class AbstractBaseModel(models.Model):
         """Gets the verbose name for an object."""
         return self._meta.verbose_name
 
+    # TODO: shouldn't this just be the pre_save signal?
     @classmethod
     def save_prep(cls, instance_or_instances):
         """Common save functionality for all models. This can be called with a
@@ -184,4 +185,14 @@ class AbstractBaseModel(models.Model):
     @classmethod
     def post_save(cls, *args, **kwargs):
         """Adding a hook here so it's safe to call the super's post_save."""
+        pass
+
+    @classmethod
+    def post_delete(cls, *args, **kwargs):
+        """Adding a hook here so it's safe to call the super's post_delete."""
+        pass
+
+    @classmethod
+    def m2m_changed(cls, *args, **kwargs):
+        """Adding a hook here so it's safe to call the super's m2m_changed."""
         pass
