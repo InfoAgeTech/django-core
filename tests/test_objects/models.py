@@ -66,3 +66,8 @@ class TestIntegerListFieldModel(models.Model):
 
 class GenericObject(AbstractGenericObject):
     """Test model for a generic object."""
+
+
+class TestManyToManyRelationModel(AbstractBaseModel):
+    """Test model for many to many relations."""
+    m2m_field = models.ManyToManyField(TestModel)

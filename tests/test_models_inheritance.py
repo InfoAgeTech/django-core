@@ -6,6 +6,7 @@ from random import randint
 from django_core.utils.random_utils import random_alphanum
 from django_testing.testcases.users import SingleUserTestCase
 
+from test_objects.models import TestManyToManyRelationModel
 from test_objects.models import TestModel
 
 
@@ -103,3 +104,9 @@ class ModelTests(SingleUserTestCase):
         self.assertIsNone(test_model_copy.some_unique_field_blank)
         self.assertEqual(test_model_copy.some_unique_field_default,
                          'Hello world')
+
+    def test_get_many_to_many_model(self):
+        """Test for getting a many to many model field."""
+        obj = TestManyToManyRelationModel.objects.create(created_user=self.user)
+        self.assertEqual(obj.__class__._get_many_to_many_model('m2m_field'),
+                         TestModel)
