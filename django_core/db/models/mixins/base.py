@@ -180,7 +180,7 @@ class AbstractBaseModel(models.Model):
         for field in cls._meta.many_to_many:
             if field.attname == field_name:
                 # This is the for_objs model class
-                return field.related.parent_model
+                return field.related.model
 
     @classmethod
     def post_save(cls, *args, **kwargs):

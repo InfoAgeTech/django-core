@@ -6,6 +6,8 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext as _
 
+from django.apps import apps
+
 
 def get_setting(key, **kwargs):
     """Gets a settings key or raises an improperly configured error.
@@ -58,8 +60,6 @@ def get_model_from_settings(settings_key):
     :param settings_key: the key defined in settings to the value for
 
     """
-    from django.db.models import get_model
-
     cls_path = getattr(settings, settings_key, None)
     if not cls_path:
         raise NotImplementedError()
@@ -70,7 +70,7 @@ def get_model_from_settings(settings_key):
         raise ImproperlyConfigured("{0} must be of the form "
                                    "'app_label.model_name'".format(settings_key))
 
-    model = get_model(app_label, model_name)
+    model = apps.get_model(app_label, model_name)
 
     if model is None:
         raise ImproperlyConfigured("{0} refers to model '%s' that has not "
@@ -82,8 +82,6 @@ def get_model_from_settings(settings_key):
 def get_class_from_settings_from_apps(settings_key):
     """Try and get a class from a settings path by lookin in installed apps.
     """
-    from django.db.models import get_app
-
     cls_path = getattr(settings, settings_key, None)
 
     if not cls_path:
@@ -97,7 +95,7 @@ def get_class_from_settings_from_apps(settings_key):
                                    "'app_label.model_name'".format(
                                                                 settings_key))
 
-    app = get_app(app_label)
+    app = apps.get_app_config(app_label).models_module
 
     if not app:
         raise ImproperlyConfigured("{0} setting refers to an app that has not "
@@ -160,5 +158,5 @@ def get_function_from_settings(settings_key):
     try:
         mod = importlib.import_module(module_str)
         return getattr(mod, renderer_func_name)
-    except Exception as e:
+    except Exception:
         return None
