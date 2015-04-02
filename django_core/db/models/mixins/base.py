@@ -179,7 +179,9 @@ class AbstractBaseModel(models.Model):
 
         for field in cls._meta.many_to_many:
             if field.attname == field_name:
-                # This is the for_objs model class
+                if hasattr(field.related, 'parent_model'):
+                    # django < 1.8
+                    return field.related.parent_model
                 return field.related.model
 
     @classmethod
