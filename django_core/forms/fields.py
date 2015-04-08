@@ -1,13 +1,15 @@
 from __future__ import unicode_literals
 
+from copy import deepcopy
+
 from django.core.exceptions import ValidationError
 from django.forms.fields import CharField
+from django.forms.fields import ChoiceField
 from django.forms.fields import DecimalField
 from django.forms.fields import MultiValueField
+from django_core.forms.widgets import ChoiceAndCharInputWidget
 
 from .widgets import MultipleDecimalInputWidget
-from django.forms.fields import ChoiceField
-from django_core.forms.widgets import ChoiceAndCharInputWidget
 
 
 class CharFieldStripped(CharField):
@@ -52,16 +54,61 @@ class CommaSeparatedIntegerListField(CommaSeparatedListField):
 
 
 class MultipleDecimalField(MultiValueField):
+    """A field with multiple decimal fields that should be converted to single
+    line.
+
+    Example response values:
+
+    - "5px 0 5px 4px"
+    """
     widget = MultipleDecimalInputWidget
 
-    def __init__(self, num_inputs=2, *args, **kwargs):
+    def __init__(self, num_inputs=2, value_suffix='', *args, **kwargs):
+        """
+
+        :param value_suffix: the suffix to append to the end of the decimal
+            field. Default is nothing.
+        """
         self.num_inputs = num_inputs
+        self.value_suffix = value_suffix
         fields = [DecimalField(required=False)
                   for i in range(num_inputs)]
         widget = self.widget(num_inputs=num_inputs)
         super(MultipleDecimalField, self).__init__(fields=fields,
                                                    widget=widget,
                                                    *args, **kwargs)
+
+    def clean(self, value):
+        """Validates that the input can be converted to a list of decimals."""
+        if not value:
+            return None
+
+        # if any value exists, then add "0" as a placeholder to the remaining
+        # values.
+        if isinstance(value, list) and any(value):
+            for i, item in enumerate(value):
+                if not item:
+                    value[i] = '0'
+
+        return super(MultipleDecimalField, self).clean(value)
+
+    def compress(self, data_list):
+        # This should be formatted to a string 5px 5px 2px 2px
+        if not data_list:
+            return None
+
+        values = deepcopy(data_list)
+
+        for index, value in enumerate(values):
+            if value and float(value).is_integer():
+                value = int(value)
+
+            if value:
+                values[index] = '{0}{1}'.format(value, self.value_suffix)
+            else:
+                values[index] = '0'
+
+        return ' '.join(values)
 
     def to_python(self, value):
         """Validates that the input can be converted to a list of decimals."""

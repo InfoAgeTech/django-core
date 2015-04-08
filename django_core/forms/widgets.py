@@ -45,10 +45,11 @@ class ExtendedMultiWidget(MultiWidget):
 class MultipleDecimalInputWidget(ExtendedMultiWidget):
     """Renders an input with 4 decimal fields."""
 
-    def __init__(self, attrs=None, widgets=None, num_inputs=4,
+    def __init__(self, attrs=None, widgets=None, num_inputs=4, value_suffix='',
                  widget_css_class='horizontal-widget multi-decimal-widget',
                  **kwargs):
         self.num_inputs = num_inputs
+        self.value_suffix = value_suffix
 
         if not attrs:
             attrs = {}
@@ -66,8 +67,12 @@ class MultipleDecimalInputWidget(ExtendedMultiWidget):
         )
 
     def decompress(self, value):
+        if value and self.value_suffix and isinstance(value, string_types):
+            value = value.replace(self.value_suffix, '')
+
         if value:
             return value.split(' ')
+
         return [None for i in range(self.num_inputs)]
 
     def get_widget_css_class(self, attrs):
