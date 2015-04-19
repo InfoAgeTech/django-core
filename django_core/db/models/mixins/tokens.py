@@ -6,7 +6,7 @@ from django_core.utils.list_utils import make_obj_list
 
 
 class AbstractTokenModel(models.Model):
-
+    """Abstract class for token logic."""
     token = models.CharField(max_length=100, db_index=True, unique=True)
     token_length = 15
     objects = TokenManager()

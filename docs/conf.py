@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # django-core documentation build configuration file, created by
 # sphinx-quickstart on Thu Feb 21 12:52:04 2013.
 #

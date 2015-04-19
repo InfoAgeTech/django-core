@@ -188,6 +188,11 @@ class JSONField(with_metaclass(models.SubfieldBase, models.TextField)):
     https://github.com/omab/django-social-auth/blob/master/social_auth/fields.py
 
     """
+    def __init__(self, *args, **kwargs):
+        default = kwargs.get('default', None)
+        if default is None:
+            kwargs['default'] = '{}'
+        models.TextField.__init__(self, *args, **kwargs)
 
     def to_python(self, value):
         """

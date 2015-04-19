@@ -8,4 +8,4 @@ from .mixins.paging import PagingViewMixin
 from .mixins.query import QueryStringAliasViewMixin
 from .request import ApiFormView
 from .response import JSONResponseMixin
-from .response import JsonResponse
+from .response import JSONResponse

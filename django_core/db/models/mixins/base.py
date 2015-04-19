@@ -59,7 +59,6 @@ class AbstractBaseModel(models.Model):
         """Gets the verbose name for an object."""
         return self._meta.verbose_name
 
-    # TODO: shouldn't this just be the pre_save signal?
     @classmethod
     def save_prep(cls, instance_or_instances):
         """Common save functionality for all models. This can be called with a

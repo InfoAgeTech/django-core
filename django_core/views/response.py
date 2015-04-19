@@ -154,8 +154,7 @@ class JSONHybridDeleteView(JSONResponseMixin, DeleteView):
         return HttpResponseRedirect(success_url)
 
 
-# TODO: this should go away in favor of JSONResponseMixin above
-class JsonResponse(HttpResponse):
+class JSONResponse(HttpResponse):
     """Returns a HttpResponse that has content that's json encoded. Returns a
     status of 200.
 
@@ -172,25 +171,7 @@ class JsonResponse(HttpResponse):
 
     """
     def __init__(self, content, status=200, **kwargs):
-        super(JsonResponse, self).__init__(content=json.dumps(content),
+        super(JSONResponse, self).__init__(content=json.dumps(content),
                                            content_type='application/json',
                                            status=status,
                                            **kwargs)
-
-
-def json_response(template):
-    """Returns a json response."""
-    def renderer(func):
-        def wrapper(request, *args, **kw):
-            output = func(request, *args, **kw)
-
-            # httpresponse_kwargs = {'mimetype': kwargs.pop('mimetype', None)}
-            # return HttpResponse(loader.render_to_string(*args, **kwargs), **httpresponse_kwargs)
-
-            return render_to_response(output[1],
-                                      output[0],
-                                      RequestContext(request),
-                                      mimetype='application/json')
-
-        return wrapper
-    return renderer
