@@ -1,4 +1,4 @@
 include LICENSE
 include *.md
 include setup.py
-include django_core/*.py
+include django_core/*
