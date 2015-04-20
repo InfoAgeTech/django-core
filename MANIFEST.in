@@ -1,4 +1,8 @@
 include LICENSE
 include *.md
 include setup.py
-include django_core/*
+include MANIFEST.in
+recursive-include django_core *
+recursive-exclude tests * 
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
