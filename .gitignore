@@ -3,6 +3,8 @@ __pycache__
 *.db
 *.log
 *.pyc
+.DS_Store
+.eggs/
 .idea
 .project
 .pydevproject
