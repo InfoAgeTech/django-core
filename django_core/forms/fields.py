@@ -7,6 +7,7 @@ from django.forms.fields import CharField
 from django.forms.fields import ChoiceField
 from django.forms.fields import DecimalField
 from django.forms.fields import MultiValueField
+from django.utils.translation import ugettext as _
 from django_core.forms.widgets import ChoiceAndCharInputWidget
 
 from .widgets import MultipleDecimalInputWidget
@@ -28,8 +29,33 @@ class CharFieldStripped(CharField):
 class CommaSeparatedListField(CharFieldStripped):
     """Form field that takes a string and converts into a list of strings."""
 
-    def clean(self, value):
-        value = super(CharFieldStripped, self).clean(value)
+    def __init__(self, max_list_length=None, max_list_length_error_msg=None,
+                 *args, **kwargs):
+        """
+        :params max_list_length: the max number of items in the list.  If None,
+            there is no limit.
+        :params max_list_length_error_msg: if the max limit is reached, this is
+            the error message that will display.
+        """
+        super(CommaSeparatedListField, self).__init__(*args, **kwargs)
+        self.max_list_length = max_list_length
+        self.max_list_length_error_msg = max_list_length_error_msg
+
+    def validate(self, value):
+        super(CommaSeparatedListField, self).validate(value)
+
+        if (self.max_list_length is not None and
+            len(value) > self.max_list_length):
+
+            if self.max_list_length_error_msg:
+                raise ValidationError(self.max_list_length_error_msg)
+
+            raise ValidationError(_(
+                'Maximum number of items is {0}. There are currently {1} items '
+                'listed.').format(self.max_list_length, len(value)))
+
+    def to_python(self, value):
+        value = super(CharFieldStripped, self).to_python(value)
         return [item.strip() for item in value.split(',') if item.strip()]
 
 
@@ -40,17 +66,17 @@ class CommaSeparatedIntegerListField(CommaSeparatedListField):
     #    min_value (each item in the list can't be < this value)
     #    max_length (could be the number of items in the list)
 
-    def clean(self, value):
-        val = super(CommaSeparatedIntegerListField, self).clean(value)
+    def to_python(self, value):
+        value = super(CommaSeparatedIntegerListField, self).to_python(value)
 
         if isinstance(value, (list, tuple)):
             # Ensure all values are integers
             try:
-                val = [int(item) for item in val]
+                value = [int(item) for item in value]
             except:
                 raise ValidationError('All values in list must be whole '
                                       'numbers.')
-        return val
+        return value
 
 
 class MultipleDecimalField(MultiValueField):
