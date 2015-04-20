@@ -28,6 +28,10 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         user object can be placed back on this authorization for traceability
         purposes.
 
+    All of the below fields can be configured in proxy models to redefine the
+    defaults values:
+
+    * default_token_duration_days: the number of days until the token expires.
     * reason_default: the string value for why the token is being created.
     * token_length: the default length of the token
     """
@@ -40,6 +44,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         blank=True,
         null=True)
 
+    default_token_duration_days = 1
     reason_default = None
     token_length = 75
 
@@ -50,7 +55,8 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
 
         if not self.expires:
             # token is valid for 24 hours if not set
-            self.expires = datetime.utcnow() + timedelta(days=1)
+            self.expires = (datetime.utcnow() +
+                            timedelta(days=self.default_token_duration_days))
 
         if not self.id and not self.reason and self.reason_default:
             self.reason = self.reason_default
