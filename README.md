@@ -23,6 +23,6 @@ Settings
 
 Tests
 =====
-From the ``tests`` directory where the manage.py file is, run::
+From the ``tests`` directory where the manage.py file is, run:
 
-   python manage.py test
+    python manage.py test
