@@ -10,3 +10,4 @@ __pycache__
 .pydevproject
 .settings
 docs/guide
+/dist/
