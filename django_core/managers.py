@@ -30,7 +30,7 @@ class TokenAuthorizationManager(TokenManager, CommonManager):
                 # no valid emails
                 return None
 
-            kwargs['email_address__in'] = set(email_address)
+            kwargs['email_address__in'] = email_address
         else:
             kwargs['email_address'] = email_address
 
