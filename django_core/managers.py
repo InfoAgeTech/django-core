@@ -17,11 +17,19 @@ class TokenAuthorizationManager(TokenManager, CommonManager):
         :param reason: the codified reason for the tokens.  If explicitly set
             to None, this will expire all tokens for the email provided.
         """
-        if email_address is None:
+        if not email_address:
             # no email(s) provided.  Nothing to do.
             return None
 
         if isinstance(email_address, (set, list, tuple)):
+            email_address = [e.strip() for e in set(email_address)
+                             if e and e.strip()]
+
+            # make sure there's at least 1 valid email address
+            if len(email_address) <= 0:
+                # no valid emails
+                return None
+
             kwargs['email_address__in'] = set(email_address)
         else:
             kwargs['email_address'] = email_address
