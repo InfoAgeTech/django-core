@@ -6,8 +6,10 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from django_core.db.models.mixins.base import AbstractBaseModel
-from django_core.db.models.mixins.tokens import AbstractTokenModel
+
+from .managers import TokenAuthorizationManager
+from .db.models.mixins.base import AbstractBaseModel
+from .db.models.mixins.tokens import AbstractTokenModel
 
 
 @python_2_unicode_compatible
@@ -20,8 +22,8 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         purposes.  For example, if it's the 'CHANGE_EMAIL' flow, this would be
         the new email address.
     * expires: the date and time when the token expires
-    * reason: a reason the token was generated.  This is preferably a constant
-        but can be any string value.
+    * reason: the codified reason the token was generated.  This is preferably
+        a constant but can be any string value.
     * user: a foreign key to the user model. This can be any user needed for
         the specific authorization purpose. For example, if this was an
         "invite to join a system" flow, once the user created their account, the
@@ -35,7 +37,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
     * reason_default: the string value for why the token is being created.
     * token_length: the default length of the token
     """
-    email_address = models.EmailField(blank=True, null=True)
+    email_address = models.EmailField(db_index=True, blank=True, null=True)
     expires = models.DateTimeField()
     reason = models.CharField(max_length=50, blank=True, null=True)
     user = models.ForeignKey(
@@ -47,6 +49,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
     default_token_duration_days = 1
     reason_default = None
     token_length = 75
+    objects = TokenAuthorizationManager()
 
     def __str__(self, *args, **kwargs):
         return str(self.id)

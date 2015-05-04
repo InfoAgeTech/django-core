@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 from random import randint
 
+from django_core.models import TokenAuthorization
 from django_core.utils.random_utils import random_alphanum
 from django_testing.testcases.users import SingleUserTestCase
 
@@ -110,3 +111,66 @@ class ModelTests(SingleUserTestCase):
         obj = TestManyToManyRelationModel.objects.create(created_user=self.user)
         self.assertEqual(obj.__class__._get_many_to_many_model('m2m_field'),
                          TestModel)
+
+
+class TokenAuthorizationTests(SingleUserTestCase):
+    """Test case for the token authorization model."""
+
+    def test_expire_by_email(self):
+        """Test expiring tokens by an email address."""
+        email_address = 'testing@example{0}.com'.format(random_alphanum(5))
+        reason = 'BECAUSE_I_AM_TESTING'
+        num_tokens = 3
+        created_tokens = []
+        for num in range(num_tokens):
+            created_tokens.append(TokenAuthorization.objects.create(
+                email_address=email_address,
+                reason=reason,
+                created_user=self.user
+            ))
+
+        TokenAuthorization.objects.expire_by_email(email_address=email_address,
+                                                   reason=reason)
+
+        token_auths = TokenAuthorization.objects.filter(
+            email_address=email_address
+        )
+
+        self.assertEqual(len(token_auths), num_tokens)
+
+        for auth in token_auths:
+            self.assertTrue(auth.is_expired())
+
+    def test_expire_by_emails(self):
+        """Test expiring tokens by an email address."""
+        email_address_1 = 'testing@example1{0}.com'.format(random_alphanum(5))
+        email_address_2 = 'testing@example2{0}.com'.format(random_alphanum(5))
+        reason = 'BECAUSE_I_AM_TESTING_{0}'.format(random_alphanum(5))
+
+        # created the token auth for email 1
+        TokenAuthorization.objects.create(
+            email_address=email_address_1,
+            reason=reason,
+            created_user=self.user
+        )
+
+        # created the token auth for email 2
+        TokenAuthorization.objects.create(
+            email_address=email_address_2,
+            reason=reason,
+            created_user=self.user
+        )
+
+        TokenAuthorization.objects.expire_by_emails(
+            email_addresses=[email_address_1, email_address_2],
+            reason=reason
+        )
+
+        token_auths = TokenAuthorization.objects.filter(
+            email_address__in=[email_address_1, email_address_2]
+        )
+
+        self.assertEqual(len(token_auths), 2)
+
+        for auth in token_auths:
+            self.assertTrue(auth.is_expired())
