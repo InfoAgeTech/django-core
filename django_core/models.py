@@ -29,6 +29,9 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         "invite to join a system" flow, once the user created their account, the
         user object can be placed back on this authorization for traceability
         purposes.
+    * text: free text.  This can be anything additional text needed.  For
+        example, if this is a invite to join a site token auth then this could
+        be a custom message to the invited user.
 
     All of the below fields can be configured in proxy models to redefine the
     defaults values:
@@ -45,6 +48,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         related_name='%(app_label)s_%(class)s_user+',
         blank=True,
         null=True)
+    text = models.TextField(blank=True, null=True)
 
     default_token_duration_days = 7
     reason_default = None

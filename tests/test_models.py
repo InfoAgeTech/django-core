@@ -16,6 +16,7 @@ class TestTokenAuthorization(TokenAuthorization):
     reason_default = 'TEST_DEFAULT_REASON'
 
     class Meta:
+        app_label = 'django_core'
         proxy = True
 
 
