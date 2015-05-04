@@ -46,9 +46,9 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         blank=True,
         null=True)
 
-    default_token_duration_days = 1
+    default_token_duration_days = 7
     reason_default = None
-    token_length = 75
+    token_length = 50
     objects = TokenAuthorizationManager()
 
     def __str__(self, *args, **kwargs):
@@ -57,7 +57,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
     def save(self, *args, **kwargs):
 
         if not self.expires:
-            # token is valid for 24 hours if not set
+            # token is valid for self.default_token_duration_days
             self.expires = (datetime.utcnow() +
                             timedelta(days=self.default_token_duration_days))
 
