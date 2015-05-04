@@ -9,7 +9,7 @@ from .db.models.managers import TokenManager
 class TokenAuthorizationManager(TokenManager, CommonManager):
     """Model manager for token authorizations."""
 
-    def expire_by_email(self, email_address, reason, **kwargs):
+    def expire_by_email(self, email_address, **kwargs):
         """Expires tokens for an email address or email addresses.
 
         :param email_address: the string email address or emails addresses to
@@ -21,18 +21,23 @@ class TokenAuthorizationManager(TokenManager, CommonManager):
             # no email(s) provided.  Nothing to do.
             return None
 
-        if isinstance(email_address, (list, tuple)):
-            kwargs['email_address__in'] = email_address
+        if isinstance(email_address, (set, list, tuple)):
+            kwargs['email_address__in'] = set(email_address)
         else:
             kwargs['email_address'] = email_address
 
-        if reason is not None:
-            kwargs['reason'] = reason
+        # try setting the reason default if one exists (in the case of proxy
+        # models)
+        if 'reason' not in kwargs and self.model.reason_default:
+            kwargs['reason'] = self.model.reason_default
+
+        if 'reason' in kwargs and kwargs.get('reason') is None:
+            # explicitly setting the reason to None will expire all tokens for
+            # a user regardless of the reason.
+            del kwargs['reason']
 
         self.filter(**kwargs).update(expires=datetime(1970, 1, 1))
 
-    def expire_by_emails(self, email_addresses, reason, **kwargs):
+    def expire_by_emails(self, email_addresses, **kwargs):
         """Expires tokens by a list of email addresses."""
-        self.expire_by_email(email_address=email_addresses,
-                             reason=reason,
-                             **kwargs)
+        self.expire_by_email(email_address=email_addresses, **kwargs)

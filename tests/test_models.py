@@ -11,6 +11,14 @@ from test_objects.models import TestManyToManyRelationModel
 from test_objects.models import TestModel
 
 
+class TestTokenAuthorization(TokenAuthorization):
+    """Proxy model for token authorization."""
+    reason_default = 'TEST_DEFAULT_REASON'
+
+    class Meta:
+        proxy = True
+
+
 class ModelTests(SingleUserTestCase):
 
     def test_copy1(self):
@@ -122,6 +130,7 @@ class TokenAuthorizationTests(SingleUserTestCase):
         reason = 'BECAUSE_I_AM_TESTING'
         num_tokens = 3
         created_tokens = []
+
         for num in range(num_tokens):
             created_tokens.append(TokenAuthorization.objects.create(
                 email_address=email_address,
@@ -141,8 +150,34 @@ class TokenAuthorizationTests(SingleUserTestCase):
         for auth in token_auths:
             self.assertTrue(auth.is_expired())
 
+    def test_expire_by_email_all_reasons(self):
+        """Test expiring tokens by an email address for all reasons."""
+        email_address = 'testing@example{0}.com'.format(random_alphanum(5))
+        reason = 'BECAUSE_I_AM_TESTING'
+        num_tokens = 3
+        created_tokens = []
+
+        for num in range(num_tokens):
+            created_tokens.append(TokenAuthorization.objects.create(
+                email_address=email_address,
+                reason='TEST_REASON_{0}'.format(num),
+                created_user=self.user
+            ))
+
+        TokenAuthorization.objects.expire_by_email(email_address=email_address,
+                                                   reason=None)
+
+        token_auths = TokenAuthorization.objects.filter(
+            email_address=email_address
+        )
+
+        self.assertEqual(len(token_auths), num_tokens)
+
+        for auth in token_auths:
+            self.assertTrue(auth.is_expired())
+
     def test_expire_by_emails(self):
-        """Test expiring tokens by an email address."""
+        """Test expiring tokens by an email addresses."""
         email_address_1 = 'testing@example1{0}.com'.format(random_alphanum(5))
         email_address_2 = 'testing@example2{0}.com'.format(random_alphanum(5))
         reason = 'BECAUSE_I_AM_TESTING_{0}'.format(random_alphanum(5))
@@ -171,6 +206,31 @@ class TokenAuthorizationTests(SingleUserTestCase):
         )
 
         self.assertEqual(len(token_auths), 2)
+
+        for auth in token_auths:
+            self.assertTrue(auth.is_expired())
+
+    def test_expire_by_email_proxy_model(self):
+        """Test expiring tokens by an email address."""
+        email_address = 'testing@example{0}.com'.format(random_alphanum(5))
+        num_tokens = 3
+        created_tokens = []
+
+        for num in range(num_tokens):
+            created_tokens.append(TestTokenAuthorization.objects.create(
+                email_address=email_address,
+                created_user=self.user
+            ))
+
+        TestTokenAuthorization.objects.expire_by_email(
+            email_address=email_address
+        )
+
+        token_auths = TestTokenAuthorization.objects.filter(
+            email_address=email_address
+        )
+
+        self.assertEqual(len(token_auths), num_tokens)
 
         for auth in token_auths:
             self.assertTrue(auth.is_expired())
