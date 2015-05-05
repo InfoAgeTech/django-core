@@ -32,6 +32,9 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
     * text: free text.  This can be anything additional text needed.  For
         example, if this is a invite to join a site token auth then this could
         be a custom message to the invited user.
+    * email_sent: boolean indicating if an email has been sent for this token
+        authorization.  Useful if you have a workflow where you need to track
+        if an email was sent to a user from a background task such as celery.
 
     All of the below fields can be configured in proxy models to redefine the
     defaults values:
@@ -49,6 +52,7 @@ class TokenAuthorization(AbstractTokenModel, AbstractBaseModel):
         blank=True,
         null=True)
     text = models.TextField(blank=True, null=True)
+    email_sent = models.BooleanField(default=False)
 
     default_token_duration_days = 7
     reason_default = None

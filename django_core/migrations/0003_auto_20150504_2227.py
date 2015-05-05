@@ -13,6 +13,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='tokenauthorization',
+            name='email_sent',
+            field=models.BooleanField(default=False),
+        ),
+        migrations.AddField(
+            model_name='tokenauthorization',
             name='text',
             field=models.TextField(null=True, blank=True),
         ),
