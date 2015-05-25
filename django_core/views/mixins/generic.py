@@ -6,7 +6,7 @@ class GenericObjectViewMixin(object):
     """View mixin that takes the content_type_id and object_id from the url
     and it gets the object it refers to.
     """
-    content_type = None
+    generic_object_content_type = None
     content_object = None
 
     def dispatch(self, *args, **kwargs):
@@ -17,13 +17,13 @@ class GenericObjectViewMixin(object):
             raise Http404
 
         try:
-            self.content_type = ContentType.objects.get_for_id(
+            self.generic_object_content_type = ContentType.objects.get_for_id(
                 id=content_type_id
             )
         except:
             raise Http404
 
-        content_model = self.content_type.model_class()
+        content_model = self.generic_object_content_type.model_class()
 
         try:
             self.content_object = content_model.objects.get(id=object_id)
@@ -36,7 +36,7 @@ class GenericObjectViewMixin(object):
     def get_context_data(self, **kwargs):
         context = super(GenericObjectViewMixin,
                         self).get_context_data(**kwargs)
-        context['content_type'] = self.content_type
+        context['generic_object_content_type'] = self.generic_object_content_type
         context['content_object'] = self.content_object
 
         content_object_url = self.get_content_object_url()
