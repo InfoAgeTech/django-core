@@ -10,6 +10,7 @@ source = django_core
 
 [report]
 omit = 
+    */migrations/*
     */*urls.py
     *__init__.py
 include = 

@@ -143,21 +143,20 @@ def parse_datetime(dt, ignoretz=True, **kwargs):
     except:
         return None
 
-# print parse_date('2011-12-30')
-# print parse_date('12/30/2011')
 
-# print parse_datetime('hello world')
-# print parse_datetime('12/30/2011 13:45:12 CDT')
-# print parse_datetime('2011-12-30 13:45:12 CDT', ignoretz=False)
-# print parse_datetime('12/30/2011 13:45:12 CDT', ignoretz=False)
-
-# print utc_to_tz(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
-# print utc_to_tz(datetime.datetime(2011, 11, 25, 9), 'US/Central', False)
-
-# print tz_to_utc(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
-# print tz_to_utc(datetime.datetime(2011, 11, 25, 9), 'US/Central', False)
-
-# print now_by_tz('US/Pacific')
-# print now_by_tz('US/Pacific', False)
-# print now_by_tz(pytz.timezone('US/Central'))
-# print now_by_tz(pytz.timezone('US/Central'), False)
+"""
+print(parse_date('2011-12-30'))
+print(parse_date('12/30/2011'))
+print(parse_datetime('hello world'))
+print(parse_datetime('12/30/2011 13:45:12 CDT'))
+print(parse_datetime('2011-12-30 13:45:12 CDT', ignoretz=False))
+print(parse_datetime('12/30/2011 13:45:12 CDT', ignoretz=False))
+print(utc_to_tz(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
+print(utc_to_tz(datetime.datetime(2011, 11, 25, 9), 'US/Central', False))
+print(tz_to_utc(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
+print(tz_to_utc(datetime.datetime(2011, 11, 25, 9), 'US/Central', False))
+print(now_by_tz('US/Pacific'))
+print(now_by_tz('US/Pacific', False))
+print(now_by_tz(pytz.timezone('US/Central')))
+print(now_by_tz(pytz.timezone('US/Central'), False))
+"""

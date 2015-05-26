@@ -17,6 +17,25 @@ Documentation
 =============
 - [http://django-core.readthedocs.org](http://django-core.readthedocs.org)
 
+View Mixins
+-----------
+Below are the view mixins within django-core.
+
+### AuthorizationTokenRequiredViewMixin
+The view mixin that requires an authorization token.
+
+**Example Usage**
+
+```
+from django.views.generic.base import TemplateView
+from django_core.auth.views import AuthorizationTokenRequiredViewMixin
+
+class MyView(AuthorizationTokenRequiredViewMixin, TemplateView):
+    template_name = 'path/to/template.html'
+```
+
+
+
 Settings
 ========
 1. ``CORE_BASE_HTML_EMAIL_TEMPLATE``: This is the default path to the html template to use for emails.  The template must call the ``{{ email_content }}`` variable as this is the placeholder for the actual email content. This defaults to ``django_core/mail/base_email.html``.
@@ -26,3 +45,7 @@ Tests
 From the ``tests`` directory where the manage.py file is, run:
 
     python manage.py test
+
+Run tests and output test coverage (requires ``coverage`` lib: ``pip install coverage``):
+
+    coverage run manage.py test && coverage report --rcfile=../.coveragerc

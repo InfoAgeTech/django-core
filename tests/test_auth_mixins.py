@@ -13,6 +13,7 @@ from mock import patch
 
 
 class AuthMixinTests(TestCase):
+    """Test case for authorization mixins."""
 
     def setUp(self):
         super(AuthMixinTests, self).setUpClass()

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 
 class PagingViewMixin(object):
-
+    """View mixin for views that deal with paging."""
     page_num = 1
     page_size = 15
     page_offset = 0
