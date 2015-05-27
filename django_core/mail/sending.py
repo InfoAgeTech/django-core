@@ -9,19 +9,20 @@ from django.template.loader import render_to_string
 def send_email_from_template(to_email, from_email, subject,
                              markdown_template=None,
                              text_template=None, html_template=None,
-                             fail_silently=False, context=None):
+                             fail_silently=False, context=None,
+                             **kwargs):
     """Send an email from a template.
-    
+
     :param to_email: the email address to send the email to
     :param from_email: the email address the email will be from
     :param subject: the subject of the email
-    :param markdown_template: the markdown syntax template to use for the 
+    :param markdown_template: the markdown syntax template to use for the
         email. If provided, this will generate both the text and html versions
-        of the email. You must have the "markdown" library installed in order 
+        of the email. You must have the "markdown" library installed in order
         to use this. pip install markdown.
-    :param text_template: the template for the text version of the email. This 
+    :param text_template: the template for the text version of the email. This
         can be omitted if the markdown_template is provided.
-    :param html_template: the template for the html version of the email. This 
+    :param html_template: the template for the html version of the email. This
         can be omitted if the markdown_template is provided.
     :param context: the context for the email templates
     """
@@ -33,29 +34,33 @@ def send_email_from_template(to_email, from_email, subject,
         text_template=text_template,
         html_template=html_template,
         fail_silently=fail_silently,
-        context=context
+        context=context,
+        **kwargs
     )
 
 
 def send_emails_from_template(to_emails, from_email, subject,
                               markdown_template=None, text_template=None,
                               html_template=None, fail_silently=False,
-                              context=None):
+                              context=None, attachments=None, **kwargs):
     """Send many emails from single template.  Each email address listed in the
     ``to_emails`` will receive an separate email.
-    
+
     :param to_emails: list of email address to send the email to
     :param from_email: the email address the email will be from
     :param subject: the subject of the email
-    :param markdown_template: the markdown syntax template to use for the 
+    :param markdown_template: the markdown syntax template to use for the
         email.  If provided, this will generate both the text and html versions
-        of the email. You must have the "markdown" library installed in order 
+        of the email. You must have the "markdown" library installed in order
         to use this. pip install markdown.
-    :param text_template: the template for the text version of the email. This 
+    :param text_template: the template for the text version of the email. This
         can be omitted if the markdown_template is provided.
-    :param html_template: the template for the html version of the email. This 
+    :param html_template: the template for the html version of the email. This
         can be omitted if the markdown_template is provided.
     :param context: the context for the email templates
+    :param attachments: list of additional attachments to add to the email
+        (example: email.mime.image.MIMEImage object).  The attachments will be
+        added to each email sent.
     """
     if not to_emails:
         return
@@ -88,13 +93,21 @@ def send_emails_from_template(to_emails, from_email, subject,
     emails = []
 
     for email_address in to_emails:
-        emails.append(EmailMultiAlternatives(
+        email = EmailMultiAlternatives(
             subject=subject,
             body=text_content,
             from_email=from_email,
             to=[email_address],
             alternatives=[(html_content, 'text/html')]
-        ))
+        )
+
+        if attachments:
+            email.mixed_subtype = 'related'
+
+            for attachment in attachments:
+                email.attach(attachment)
+
+        emails.append(email)
 
     connection = mail.get_connection()
 
