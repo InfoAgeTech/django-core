@@ -4,8 +4,6 @@ import json
 from django.forms import Form
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from django.utils.html import strip_spaces_between_tags
 from django.views.generic.base import TemplateView
