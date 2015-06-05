@@ -30,7 +30,13 @@ class CreatorRequiredViewMixin(CommonSingleObjectViewMixin):
 
 
 class LoginRequiredViewMixin(object):
-    """Use this with CBVs to ensure user is logged in."""
+    """Use this with CBVs to ensure user is logged in.
+
+    Example:
+
+    class MyView(LoginRequireViewMixin, TemplateView):
+        # to view stuff
+    """
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
