@@ -27,7 +27,7 @@ class AbstractUrlLinkModelMixin(models.Model):
                               **attrs):
         """Gets the html link for the object."""
         if text is None:
-            text = getattr(self, self.get_link_text_field(), self.id)
+            text = self.get_link_text()
 
         return build_link(href=self.get_absolute_url(),
                           text=text,
@@ -62,3 +62,7 @@ class AbstractUrlLinkModelMixin(models.Model):
     def get_link_text_field(self):
         """This returns the field name to use for the absolute url."""
         return 'id'
+
+    def get_link_text(self):
+        """Gets the text for the absolute url link."""
+        return getattr(self, self.get_link_text_field(), self.id)
