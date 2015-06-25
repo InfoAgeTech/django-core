@@ -112,7 +112,7 @@ def get_query_values_from_url(url, keys=None):
     >>> get_query_values_from_url(url=url, keys=['test', 'john', 'blah'])
     {'test': '5', 'john': 'doe', 'blah': None}
     """
-    if '?' not in url:
+    if not url or '?' not in url:
         # no query params
         return url
 

@@ -1,10 +1,26 @@
 from __future__ import unicode_literals
 
-import datetime
+from datetime import datetime
 
 from dateutil.parser import parse
 from django.utils.six import string_types
 from django.utils.timezone import pytz
+
+
+def hex_timestamp_to_datetime(hex_timestamp):
+    """Converts hex timestamp to a datetime object.
+
+    >>> hex_timestamp_to_datetime('558BBCF9')
+    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    >>> hex_timestamp_to_datetime('0x558BBCF9')
+    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    >>> datetime.fromtimestamp(0x558BBCF9)
+    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    """
+    if not hex_timestamp.startswith('0x'):
+        hex_timestamp = '0x{0}'.format(hex_timestamp)
+
+    return datetime.fromtimestamp(int(hex_timestamp, 16))
 
 
 def now_by_tz(tz='US/Central', ignoretz=True):
@@ -33,8 +49,8 @@ def now_by_tz(tz='US/Central', ignoretz=True):
         tz = pytz.timezone(tz)
 
     if ignoretz:
-        return datetime.datetime.now(tz).replace(tzinfo=None)
-    return datetime.datetime.now(tz)
+        return datetime.now(tz).replace(tzinfo=None)
+    return datetime.now(tz)
 
 
 def tz_to_utc(dt, tz, ignoretz=True):
@@ -49,11 +65,11 @@ def tz_to_utc(dt, tz, ignoretz=True):
 
     Examples:
 
-    >>> tz_to_utc(datetime.datetime(2011, 11, 25, 9), 'US/Central')
+    >>> tz_to_utc(datetime(2011, 11, 25, 9), 'US/Central')
     2011-11-25 15:00:00
-    >>> tz_to_utc(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
+    >>> tz_to_utc(datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
     2011-11-25 15:00:00
-    >>> tz_to_utc(datetime.datetime(2011, 11, 25, 9), 'US/Central', False)
+    >>> tz_to_utc(datetime(2011, 11, 25, 9), 'US/Central', False)
     2011-11-25 15:00:00+00:00
 
     """
@@ -61,7 +77,7 @@ def tz_to_utc(dt, tz, ignoretz=True):
         tz = pytz.timezone(tz)
 
     dt = tz.localize(dt)
-    dt = datetime.datetime.astimezone(dt, pytz.timezone('UTC'))
+    dt = datetime.astimezone(dt, pytz.timezone('UTC'))
 
     if ignoretz:
         return dt.replace(tzinfo=None)
@@ -81,9 +97,9 @@ def utc_to_tz(dt, tz, ignoretz=True):
 
     Examples:
 
-    >>> utc_to_tz(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
+    >>> utc_to_tz(datetime(2011, 11, 25, 9), pytz.timezone('US/Central'))
     2011-11-25 03:00:00
-    >>> utc_to_tz(datetime.datetime(2011, 11, 25, 9), 'US/Central', False)
+    >>> utc_to_tz(datetime(2011, 11, 25, 9), 'US/Central', False)
     2011-11-25 03:00:00-06:00
 
     """
@@ -151,10 +167,10 @@ print(parse_datetime('hello world'))
 print(parse_datetime('12/30/2011 13:45:12 CDT'))
 print(parse_datetime('2011-12-30 13:45:12 CDT', ignoretz=False))
 print(parse_datetime('12/30/2011 13:45:12 CDT', ignoretz=False))
-print(utc_to_tz(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
-print(utc_to_tz(datetime.datetime(2011, 11, 25, 9), 'US/Central', False))
-print(tz_to_utc(datetime.datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
-print(tz_to_utc(datetime.datetime(2011, 11, 25, 9), 'US/Central', False))
+print(utc_to_tz(datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
+print(utc_to_tz(datetime(2011, 11, 25, 9), 'US/Central', False))
+print(tz_to_utc(datetime(2011, 11, 25, 9), pytz.timezone('US/Central')))
+print(tz_to_utc(datetime(2011, 11, 25, 9), 'US/Central', False))
 print(now_by_tz('US/Pacific'))
 print(now_by_tz('US/Pacific', False))
 print(now_by_tz(pytz.timezone('US/Central')))
