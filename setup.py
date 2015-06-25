@@ -35,6 +35,7 @@ setup(
     zip_safe=False,
     setup_requires=[
         'django >= 1.7',
+        'python-dateutil'
     ],
     classifiers=classifiers
 )
