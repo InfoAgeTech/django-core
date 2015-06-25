@@ -11,11 +11,11 @@ def hex_timestamp_to_datetime(hex_timestamp):
     """Converts hex timestamp to a datetime object.
 
     >>> hex_timestamp_to_datetime('558BBCF9')
-    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    datetime.datetime(2015, 6, 25, 8, 34, 1)
     >>> hex_timestamp_to_datetime('0x558BBCF9')
-    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    datetime.datetime(2015, 6, 25, 8, 34, 1)
     >>> datetime.fromtimestamp(0x558BBCF9)
-    datetime.datetime(2015, 6, 25, 2, 34, 1)
+    datetime.datetime(2015, 6, 25, 8, 34, 1)
     """
     if not hex_timestamp.startswith('0x'):
         hex_timestamp = '0x{0}'.format(hex_timestamp)
@@ -125,10 +125,9 @@ def parse_date(dt, ignoretz=True, as_tz=None):
     Examples:
 
     >>> parse_date('2011-12-30')
-    2011-12-30
+    datetime.date(2011, 12, 30)
     >>> parse_date('12/30/2011')
-    2011-12-30
-
+    datetime.date(2011, 12, 30)
     """
     dttm = parse_datetime(dt, ignoretz=ignoretz)
     return None if dttm is None else dttm.date()
