@@ -114,7 +114,7 @@ def get_query_values_from_url(url, keys=None):
     """
     if not url or '?' not in url:
         # no query params
-        return url
+        return None
 
     parsed_url = urlparse(url)
     query = dict(parse_qsl(parsed_url.query))
