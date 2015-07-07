@@ -21,4 +21,4 @@ class AbstractExpiresModelMixin(models.Model):
             # an object with no expires_dttm won't ever expire
             return False
 
-        return datetime.utcnow() <= self.expires_dttm
+        return datetime.utcnow() >= self.expires_dttm
