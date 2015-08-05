@@ -2,11 +2,14 @@ from __future__ import unicode_literals
 
 from django.http.response import Http404
 from django.shortcuts import redirect
-from umanage.models import TokenAuthorization
+from django_core.models import TokenAuthorization
 
 
 class AuthorizationTokenRequiredViewMixin(object):
-    """View mixin that requires an authorization token."""
+    """View mixin that requires an authorization token.
+
+    Consumers of this view must implement the "get_auth_expired_url()" method.
+    """
     authorization_class = TokenAuthorization
     authorization = None
     authorization_user = None
@@ -60,7 +63,9 @@ class AuthorizationTokenRequiredViewMixin(object):
         return self.authorization_class
 
     def get_auth_expired_url(self):
-        return reversed('umanage_token_expired')
+        """The url to redirect to when a token has expired."""
+        raise NotImplemented('"{0}" must implement the "get_auth_expired_url '
+                             'method.'.format(self.__class__))
 
     def get_context_data(self, *args, **kwargs):
         context = super(AuthorizationTokenRequiredViewMixin,
