@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeText
 
 
 def build_link(href, text, cls=None, icon_class=None, **attrs):
@@ -48,9 +49,14 @@ def build_html_element(tag, text=None, icon_class=None, cls=None, **kwargs):
 
     icon = '<i class="{0}"></i> '.format(icon_class) if icon_class else ''
 
+    if not text:
+        text = ''
+    elif not isinstance(text, SafeText):
+        text = escape(text)
+
     return mark_safe('<{tag_content}>{icon}{text}</{tag}>'.format(
         tag_content=tag_content,
         icon=icon,
         tag=tag,
-        text=escape(text) or '')
+        text=text)
     )
