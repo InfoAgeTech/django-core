@@ -93,13 +93,21 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
 
     def form_invalid(self, form):
         if self.request.is_ajax():
-            context = {'errors': form.errors}
+            context = self.get_form_invalid_ajax_context(form)
             return JSONResponseMixin.render_to_response(self, context)
 
         return super(JSONHybridProcessFormViewMixin, self).form_invalid(form)
 
     def get_json_context_data(self, **kwargs):
         return kwargs or {}
+
+    def get_form_invalid_ajax_context(self, form, **kwargs):
+        """Gets the context when a form is invalid on an ajax request.
+
+        :param form: the form object that errored.
+        :return: dict
+        """
+        return {'errors': form.errors}
 
 
 class JSONHybridCreateView(JSONHybridProcessFormViewMixin, CreateView):
