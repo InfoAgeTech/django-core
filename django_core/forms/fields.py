@@ -35,11 +35,20 @@ class CommaSeparatedListField(CharFieldStripped):
         :params max_list_length: the max number of items in the list.  If None,
             there is no limit.
         :params max_list_length_error_msg: if the max limit is reached, this is
-            the error message that will display.
+            the error message that will display.  This can also be a formatted
+            string that contains one or more of the following values:
+
+            - max_list_length: the max list length for the field
+            - actual_list_length: the current number of items
         """
         super(CommaSeparatedListField, self).__init__(*args, **kwargs)
         self.max_list_length = max_list_length
         self.max_list_length_error_msg = max_list_length_error_msg
+
+        if max_list_length:
+            # add the data attribute to the widget so the max length is
+            # accessible in the dom
+            self.widget.attrs['data-max_list_length'] = max_list_length
 
     def validate(self, value):
         super(CommaSeparatedListField, self).validate(value)
@@ -48,6 +57,19 @@ class CommaSeparatedListField(CharFieldStripped):
             len(value) > self.max_list_length):
 
             if self.max_list_length_error_msg:
+                error_msg_kwargs = {}
+
+                if '{max_list_length}' in self.max_list_length_error_msg:
+                    error_msg_kwargs['max_list_length'] = self.max_list_length
+
+                if '{actual_list_length}' in self.max_list_length_error_msg:
+                    error_msg_kwargs['actual_list_length'] = len(value)
+
+                if error_msg_kwargs:
+                    raise ValidationError(self.max_list_length_error_msg.format(
+                        **error_msg_kwargs
+                    ))
+
                 raise ValidationError(self.max_list_length_error_msg)
 
             raise ValidationError(_(
