@@ -7,6 +7,7 @@ from django_core.utils.validators import validate_password_strength
 from django_core.utils.validators import is_valid_hex
 from django_core.utils.validators import is_valid_color_name
 from django_core.utils.validators import is_valid_color
+from django_core.utils.validators import is_valid_rgb_color
 
 
 class ValidatorsTestCase(TestCase):
@@ -45,6 +46,7 @@ class ValidatorsTestCase(TestCase):
         """
         self.assertTrue(is_valid_color('black'))
         self.assertTrue(is_valid_color('#aabb11'))
+        self.assertTrue(is_valid_color('rgba(23,45,67, .5)'))
         self.assertFalse(is_valid_color('bl(ack'))
 
     def test_is_valid_hex(self):
@@ -65,3 +67,22 @@ class ValidatorsTestCase(TestCase):
         self.assertTrue(is_valid_color_name('red'))
         self.assertFalse(is_valid_color_name('#aabb11'))
         self.assertFalse(is_valid_color_name('bl(ack'))
+
+    def test_is_valid_rgb_color(self):
+        """Test the is_valid_rgb_color method returns the correct boolean for
+        valid rgb and rgba colors.
+        """
+        self.assertTrue(is_valid_rgb_color('rgb(12,23,5)'))
+        self.assertTrue(is_valid_rgb_color('rgb(12, 223, 225)'))
+        self.assertTrue(is_valid_rgb_color('rgba(12, 223, 225, 1)'))
+        self.assertTrue(is_valid_rgb_color('rgba(12, 223, 225, 1.0)'))
+        self.assertTrue(is_valid_rgb_color('rgba(12, 223, 225, 0)'))
+        self.assertTrue(is_valid_rgb_color('rgba(12, 223, 225, .3)'))
+        self.assertTrue(is_valid_rgb_color('rgba(12, 223, 225, .34521)'))
+
+        # invalid cases
+        self.assertFalse(is_valid_rgb_color('rgb(12, 223, 225, 0.5)'))
+        self.assertFalse(is_valid_rgb_color('rgb(12, 223, 225, 5)'))
+        self.assertFalse(is_valid_rgb_color('rgb(1234, 223, 225)'))
+        self.assertFalse(is_valid_rgb_color('rgba(1234, 223, 225,.5)'))
+        self.assertFalse(is_valid_rgb_color('rgba(1234, 223, 225,1.1)'))

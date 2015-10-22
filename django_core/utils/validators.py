@@ -20,7 +20,9 @@ def is_valid_email(value):
 
 def is_valid_color(value):
     """Boolean check whether the value is a valid color."""
-    return is_valid_color_name(value) or is_valid_hex(value)
+    return (is_valid_color_name(value) or
+            is_valid_hex(value) or
+            is_valid_rgb_color(value))
 
 
 def is_valid_hex(value):
@@ -38,6 +40,25 @@ def is_valid_color_name(value):
         return False
 
     return value.isalpha() if value else False
+
+
+def is_valid_rgb_color(value):
+    """Checks whether the value is a valid rgb or rgba color string.
+
+    Valid colors consist of:
+
+    - rgb(255, 255, 255)
+    - rgba(23, 34, 45, .5)
+    """
+    if not value:
+        return False
+
+    regex = re.compile(
+        r'rgb\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3}\)|'
+         'rgba\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3},'
+               '\s*?(((0|\.|0.)?[0-9]+?)|1[\.0]+?)\)'
+    )
+    return bool(regex.match(value))
 
 
 def validate_password_strength(value):
