@@ -7,6 +7,12 @@ from django.core.validators import validate_email
 from django.utils.translation import ugettext as _
 
 
+HEX_COLOR_REGEX = r'#[a-fA-F0-9]{3,6}'
+RGB_COLOR_REGEX = (r'rgb\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3}\)|'
+                    'rgba\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3},'
+                    '\s*?(((0|\.|0.)?[0-9]+?)|1[\.0]+?)\)')
+
+
 def is_valid_email(value):
     """Checks to see if the value is a valid email. Returns True if the email
     is valid. Otherwise, False.
@@ -30,7 +36,7 @@ def is_valid_hex(value):
     if not value:
         return False
 
-    regex = re.compile(r'#[a-fA-F0-9]{3,6}$')
+    regex = re.compile(HEX_COLOR_REGEX)
     return bool(regex.match(value))
 
 
@@ -53,11 +59,7 @@ def is_valid_rgb_color(value):
     if not value:
         return False
 
-    regex = re.compile(
-        r'rgb\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3}\)|'
-         'rgba\(\d{1,3},\s*?\d{1,3},\s*?\d{1,3},'
-               '\s*?(((0|\.|0.)?[0-9]+?)|1[\.0]+?)\)'
-    )
+    regex = re.compile(RGB_COLOR_REGEX)
     return bool(regex.match(value))
 
 
