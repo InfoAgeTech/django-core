@@ -111,7 +111,8 @@ class MultipleDecimalField(MultiValueField):
     """
     widget = MultipleDecimalInputWidget
 
-    def __init__(self, num_inputs=2, value_suffix='', *args, **kwargs):
+    def __init__(self, num_inputs=2, value_suffix='', widget_attrs=None,
+                 *args, **kwargs):
         """
 
         :param value_suffix: the suffix to append to the end of the decimal
@@ -121,7 +122,7 @@ class MultipleDecimalField(MultiValueField):
         self.value_suffix = value_suffix
         fields = [DecimalField(required=False)
                   for i in range(num_inputs)]
-        widget = self.widget(num_inputs=num_inputs)
+        widget = self.widget(num_inputs=num_inputs, attrs=widget_attrs)
         super(MultipleDecimalField, self).__init__(fields=fields,
                                                    widget=widget,
                                                    *args, **kwargs)
