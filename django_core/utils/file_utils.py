@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import os
 import hashlib
+import json
 
 
 class FilePathInfo(object):
@@ -84,3 +85,13 @@ def get_md5_for_file(file):
         md5.update(data)
 
     return md5.hexdigest()
+
+
+def get_dict_from_json_file(path, encoding='utf-8'):
+    """Gets a dict of data form a json file.
+
+    :param path: the absolute path to the file
+    :param encoding: the encoding the file is in
+    """
+    with open(path, encoding=encoding) as data_file:
+        return json.loads(data_file.read())
