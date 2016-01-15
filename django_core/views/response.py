@@ -11,6 +11,7 @@ from django.views.generic.base import View
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
+from django.views.generic.edit import FormView
 
 
 class JSONResponseMixin(object):
@@ -74,13 +75,17 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
 
     def form_valid(self, form):
         if self.request.is_ajax():
-            self.object = form.save()
+
+            if hasattr(form, 'save'):
+                self.object = form.save()
+                json_context_data = {
+                    self.get_context_object_name(self.object): self.object
+                }
+
             context = {}
 
             if self.json_template_name:
-                json_context = self.get_json_context_data(**{
-                    self.get_context_object_name(self.object): self.object
-                })
+                json_context = self.get_json_context_data(**json_context_data)
                 html = render_to_string(template_name=self.json_template_name,
                                         dictionary=json_context)
                 context['html'] = strip_spaces_between_tags(html.strip())
@@ -108,6 +113,19 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
         :return: dict
         """
         return {'errors': form.errors}
+
+
+class JSONHybridFormView(JSONHybridProcessFormViewMixin, FormView):
+    """Hybrid view that handles regular forms requests as well as json create
+    requests.
+    """
+    def render_to_response(self, context):
+
+        if self.request.is_ajax():
+            return JSONHybridProcessFormViewMixin.render_to_response(self,
+                                                                     context)
+
+        return FormView.render_to_response(self, context)
 
 
 class JSONHybridCreateView(JSONHybridProcessFormViewMixin, CreateView):
