@@ -160,7 +160,7 @@ class AbstractBaseModel(models.Model):
         # unset all the attributes that you don't want copied over
         for field in set(exclude_fields):
             meta = self.__class__._meta
-            default = meta.get_field_by_name(field)[0].get_default()
+            default = meta.get_field(field_name=field).get_default()
             setattr(instance, field, default or None)
 
         if override_fields:
@@ -178,9 +178,9 @@ class AbstractBaseModel(models.Model):
 
         for field in cls._meta.many_to_many:
             if field.attname == field_name:
-                if hasattr(field.related, 'parent_model'):
-                    # django < 1.8
-                    return field.related.parent_model
+                if hasattr(field, 'remote_field'):
+                    # django >= 1.9
+                    return field.remote_field.model
                 return field.related.model
 
     @classmethod
