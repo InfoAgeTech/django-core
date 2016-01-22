@@ -87,7 +87,7 @@ class JSONHybridProcessFormViewMixin(JSONResponseMixin):
             if self.json_template_name:
                 json_context = self.get_json_context_data(**json_context_data)
                 html = render_to_string(template_name=self.json_template_name,
-                                        dictionary=json_context)
+                                        context=json_context)
                 context['html'] = strip_spaces_between_tags(html.strip())
             else:
                 context.update(self.get_json_context_data())
