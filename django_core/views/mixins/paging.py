@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 
 
 class PagingViewMixin(object):
@@ -7,7 +6,8 @@ class PagingViewMixin(object):
     page_size = 15
     page_offset = 0
     paginate_by = page_size
-    page_kwarg = 'p'  # used by django's core ListView CBV
+    page_kwarg = 'p'
+    page_size_kwarg = 'ps'
     _original_page_size = page_size
     _original_paginate_by = paginate_by
 
@@ -49,7 +49,7 @@ class PagingViewMixin(object):
 
         try:
 
-            page_num = int(self.request.GET.get('p'))
+            page_num = int(self.request.GET.get(self.page_kwarg or 'p'))
 
             if page_num < 1:
                 page_num = orig_page_num
@@ -58,7 +58,7 @@ class PagingViewMixin(object):
 
         try:
             orig_page_size = self.page_size
-            page_size = int(self.request.GET.get('ps'))
+            page_size = int(self.request.GET.get(self.page_size_kwarg or 'ps'))
 
             if page_size < 1:
                 page_size = orig_page_size
