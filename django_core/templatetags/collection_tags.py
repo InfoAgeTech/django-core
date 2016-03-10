@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import json
 
 from django import template
@@ -62,3 +60,19 @@ def make_iterable(obj):
         return obj
 
     return (obj,)
+
+
+@register.filter
+def contains(obj, check_item):
+    """Returns boolean indicating if the "check_item" is in the "obj".
+
+    :param obj: the object to check if if contains the check_item
+    :param check_item: the item to check if it exists in "obj".
+
+    >>> contains(['hello', 'world'], 'hello')
+    True
+    """
+    if not obj or not check_item:
+        return False
+
+    return check_item in obj
