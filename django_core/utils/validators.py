@@ -75,8 +75,8 @@ def validate_password_strength(value):
 
     # check for digit
     if not any(char.isdigit() for char in value):
-        raise ValidationError(_('Password must container at least 1 digit.'))
+        raise ValidationError(_('Password must contain at least 1 digit.'))
 
     # check for letter
     if not any(char.isalpha() for char in value):
-        raise ValidationError(_('Password must container at least 1 letter.'))
+        raise ValidationError(_('Password must contain at least 1 letter.'))
