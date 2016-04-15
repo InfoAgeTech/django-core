@@ -3,6 +3,20 @@ from datetime import datetime
 from django.db import models
 
 
+class AbstractDateTimeTrackingModelMixin(models.Model):
+    """Model for tracking created and last modified datetimes."""
+    created_dttm = models.DateTimeField(default=datetime.utcnow)
+    last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.last_modified_dttm = datetime.utcnow()
+        return super(AbstractDateTimeTrackingModelMixin, self).save(*args,
+                                                                    **kwargs)
+
+
 class AbstractExpiresModelMixin(models.Model):
     """Model mixin for models that can expire.
 

@@ -7,11 +7,12 @@ from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django_core.db.models.managers import CommonManager
+from django_core.db.models.mixins.dates import AbstractDateTimeTrackingModelMixin
 from django_core.utils.list_utils import make_obj_list
 
 
 @python_2_unicode_compatible
-class AbstractBaseModel(models.Model):
+class AbstractBaseModel(AbstractDateTimeTrackingModelMixin):
     """Base model for other db model to extend.  This class contains common
     model attributes needed by almost all models.
 
@@ -26,11 +27,9 @@ class AbstractBaseModel(models.Model):
     created_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='%(app_label)s_%(class)s_created_user+')
-    created_dttm = models.DateTimeField(default=datetime.utcnow)
     last_modified_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name='%(app_label)s_%(class)s_last_modified_user+')
-    last_modified_dttm = models.DateTimeField(default=datetime.utcnow)
     objects = CommonManager()
 
     class Meta:
