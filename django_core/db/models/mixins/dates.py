@@ -12,7 +12,11 @@ class AbstractDateTimeTrackingModelMixin(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        self.last_modified_dttm = datetime.utcnow()
+        if self.id or not self.last_modified_dttm:
+            # only update the last_modified_dttm if the object is new or the
+            # last modified dttm doesn't exists.
+            self.last_modified_dttm = datetime.utcnow()
+
         return super(AbstractDateTimeTrackingModelMixin, self).save(*args,
                                                                     **kwargs)
 
