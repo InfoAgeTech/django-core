@@ -236,18 +236,48 @@ class UserManager(models.Manager):
 
 
 class GenericManager(models.Manager):
+    """Model manager for models that have generic objects."""
 
-    def get_or_create_generic(self, content_object, **kwargs):
+    def create_generic(self, content_object=None, **kwargs):
+        """Create a generic object.
+
+        :param content_object: the content object to create a new object for.
+        """
+        if content_object:
+            kwargs['content_type'] = ContentType.objects.get_for_model(
+                content_object
+            )
+            kwargs['object_id'] = content_object.id
+
+        return self.create(**kwargs)
+
+    def filter_generic(self, content_object=None, **kwargs):
+        """Filter by a generic object.
+
+        :param content_object: the content object to filter on.
+        """
+        if content_object:
+            kwargs['content_type'] = ContentType.objects.get_for_model(
+                content_object
+            )
+            kwargs['object_id'] = content_object.id
+
+        return self.filter(**kwargs)
+
+    def get_or_create_generic(self, content_object=None, **kwargs):
         """Gets or creates a generic object.  This is a wrapper for
         get_or_create(...) when you need to get or create a generic object.
 
         :param obj: the object to get or create
         :param kwargs: any other kwargs that the model accepts.
         """
-        content_type = ContentType.objects.get_for_model(content_object)
-        return self.get_or_create(content_type=content_type,
-                                  object_id=content_object.id,
-                                  **kwargs)
+        if content_object:
+            kwargs['content_type'] = ContentType.objects.get_for_model(
+                content_object
+            )
+            kwargs['object_id'] = content_object.id
+
+        return self.get_or_create(**kwargs)
 
     def get_by_content_type(self, content_type):
         """Gets all objects by a content type."""
