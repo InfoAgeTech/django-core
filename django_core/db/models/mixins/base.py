@@ -58,6 +58,10 @@ class AbstractBaseModel(AbstractDateTimeTrackingModelMixin):
         """Gets the verbose name for an object."""
         return self._meta.verbose_name
 
+    def get_verbose_name_plural(self):
+        """Gets the plural verbose name for an object."""
+        return self._meta.verbose_name_plural
+
     @classmethod
     def save_prep(cls, instance_or_instances):
         """Common save functionality for all models. This can be called with a
